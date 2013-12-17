@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="../article.css" />
+	<link rel="stylesheet" href="../mappy.css" />
+</head>
+<body>
+
+	<h2>Example: Full Window</h2>
+	<p>
+		Illustrates using <strong>mappy</strong> in <i>full window</i> mode, 
+		with all the bells and whistles on, like:
+	</p>
+	<ul>
+		<li>Map initialisation options, e.g. zoom level, custom map styles, etc.</li>
+		<li>Draw on your own custom image markers.</li>
+		<li>Add places from your own database.</li>
+		<li>Add a search box for searching for places in the map vicinity.</li>
+		<li>Notify your web application when a place is "selected".</li>
+		<li>Notify your web application when someone adds a new "custom place".</li>
+		<li>Takes over the window as an overlay, no DIVs required!</li>
+	</ul>
+	<p>
+		When in <i>full window</i> mappy creates a DIV on your behalf and 
+		creates an overlay in the current window.
+	</p>
+	<p>
+		You will also notice an <strong>X</strong> appear in the top right corner
+		so the end user can close the map when desired.
+	</p>
+	<p>
+		See <strong>fullWindowExample</strong> method.
+	</p>
+	<p>
+		<button id="open-full-window">Open Full Window Map</button>
+	</p>
+	
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js"></script>
+	<script type="text/javascript"src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+	
+	<script type="text/javascript" src="../mappy.js"></script>
+	<script type="text/javascript" src="variables.js"></script>
+	<script type="text/javascript">
+		
+		function fullWindowExample() {
+			$.fn.mappy({
+				// Map initialisation options to pass onto Google Maps
+				mapOptions: {
+					zoom: 15,
+					styles: _avocadoStyle
+				},
+				
+				// Custom marker images
+				getMarkerImage: function(mappy, markerType) {				
+					var imageUrl = "";
+					
+					if (markerType == "custom")
+						imageUrl = "../custom-place.png";
+					else if (markerType == "new")
+						imageUrl = "../add-place.png";
+					else 
+						imageUrl = "../google-place.png";
+						
+					return {
+						url: imageUrl,
+						size: new google.maps.Size(35, 50),
+						origin: new google.maps.Point(0, 0),
+						anchor: new google.maps.Point(17, 34)						
+					};
+				
+				},
+
+				// Emulate places being loaded from a db
+				customPlaces: _myPlaces,
+				
+				// Adds a predictive search box
+				searchOptions: {
+					enabled: true,
+					initSearch: "5aside in Leeds",
+					placeholder: "Search ..."
+				},
+				
+				// Enables place selection
+				// ... note the presence of the callback is 
+				// ... all that's required to enable selection
+				onSelect: function(mappy, details) {
+					if (details)
+						alert("You picked " + details.name);
+					else
+						alert("Details could not be found .. probably no 'reference' property available.");
+					// indicate tip should be closed
+					return true;
+				},
+				
+				// Enables adding of new places (to your web application, not Google Maps!)
+				// ... again the presence of the callback enables the functionality
+				onAddOK: function(mappy, newPlace) {
+					if (newPlace) {
+						var msg = "onAdd (" +
+							"name: '" + newPlace.name +
+							"', street: '" + newPlace.street +
+							"', area: '" + newPlace.area +
+							"', town: '" + newPlace.town +
+							"', telNo: '" + newPlace.telNo 
+							+ "')"
+						;
+						alert(msg);
+						
+					}
+					// indicate tip should be closed
+					return true;
+				}	
+
+			});
+		}
+
+		$(document).ready(function() {
+			// wire up button for full window example
+			$("#open-full-window").on("click", fullWindowExample);
+		});
+
+	</script>
+</body>
+</html>
+
+

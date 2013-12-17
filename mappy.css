@@ -1,0 +1,175 @@
+body {
+	font-family: "Calibri", "Arial";
+}
+
+/*
+ * Core styles (you always need these)
+*/
+	.mappy-container, .mappy-address-entry {
+		/* Root container in the Google Maps infoWindow */
+		/* (move container to appear as though it's part of the Google container) */
+		margin-top: -13px;
+		margin-right: 10px;
+		width: 100%;
+		min-width: 190px;
+	}
+
+/*
+ * ToolTip styles (you probably always need these)
+*/
+	.mappy-container h1, .mappy-address-entry h1 {
+		font-family: Calibri, Arial;
+		font-size: medium;
+		background-color: #eee;
+		color: #333;
+		border-radius: 5px;
+		padding-left: 5px;
+	}
+
+
+	/* container for address details, phone, etc */
+	.mappy-left {
+		vertical-align: top;
+	}
+
+		.mappy-left address {
+			font-size: small;
+			xxmargin-bottom: 10px;
+		}
+		
+		.mappy-left .telno {
+			xxdisplay:block;
+			font-size: small;
+		}
+
+	.mappy-right {
+		/* where the photo and select appears */
+		margin: 0;
+		padding: 0;
+		vertical-align: top;
+		float: right;
+	}
+	
+	.mappy-right img {
+		/* In case there's a "pick" button underneath the photo image*/
+		margin-bottom: 10px;		
+	}
+	
+	/* container for address data entry */
+	.mappy-address-entry {
+		width: 300px;
+	}
+	.mappy-address-entry ul {
+		list-style-type: none;	
+		margin: 0 5px 0 5px;
+		padding: 0;
+	}
+	.mappy-address-entry .mappy-save-button {
+		margin-top: 20px;
+	}
+	.mappy-address-entry label {
+		width: 60px;
+		float: left;
+	}
+	.mappy-address-entry input {
+		width: 210px;	
+		float: left;
+	}
+	
+	
+
+		
+/*
+* Search styles (see "showSearch" property)
+*/
+	.searchbox {
+		background-color: #fff;
+		padding: 0 11px 0 13px;
+		width: 400px;
+		font-family: "Calibri", "Arial";
+		font-size: 15px;
+		font-weight: 300;
+		text-overflow: ellipsis;
+
+		/* positioning */
+		z-index: 0; 
+		position: absolute; 
+		left: 88px; 
+		top: 0px;
+	}
+	.searchbox:focus {
+		border-color: #4d90fe;
+		margin-left: -1px;
+		padding-left: 14px;  /* Regular padding-left + 1. */
+		width: 401px;
+	}		
+	.controls {
+		margin-top: 16px;
+		border: 1px solid transparent;
+		border-radius: 2px 0 0 2px;
+		box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		height: 32px;
+		outline: none;
+		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);		
+	}
+
+	
+/*
+* Select styles, see "showSelect" property.
+*/
+	.mappy-select-container {
+		float: right;
+		clear: both;
+	}
+
+	.mappy-select-button, .mappy-save-button {
+		/* in case the button isn't under a photo */
+		
+		
+		margin: 0;
+		border: solid 2px #8686CF;
+		border-radius: 5px;
+		background-color: #5454C9;
+		color: #fff;
+		padding: 5px 15px 5px 15px;
+		font-weight: bold;
+		font-family: Georgia;
+	}
+	.mappy-select-button:hover, .mappy-save-button:hover {
+		cursor: pointer;
+		background-color: #8686CF;
+	}
+
+
+
+/*
+* Full window styles (just for making the generated div overlay)
+*/
+	.mappy-full-window {
+		position: fixed !important;
+		top: 0; bottom: 0;
+		left: 0; right: 0;
+		/* Google places predictive results are on z-index 1000, so 1 below so they can appear */
+		z-index: 999;
+	}
+	
+	/* close button styles */
+		.mappy-close-container {
+			border: solid 1px #ddd;
+			border-radius: 2px;
+			background-color: #fff;
+			margin: 5px 0 0 0;
+			box-shadow: 2px 2px 2px #aaa;
+		}
+		a.mappy-close-button  {
+			padding: 3px 5px 3px 5px;
+			font-family: Calibri, Arial;
+			font-size: 12px;
+			color: #777;
+			text-decoration: none;
+		}
+
+	
+
+
