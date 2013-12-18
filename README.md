@@ -20,7 +20,7 @@ Google Places library (v3)
 
 ## Source code
 The source code is knocked up to satisfy a need.  I'm not advertising it as best practice, but if you think it will benefit you, please feel free to use it.
-mappy.js is released under a _do_what_you_like_with_it_ license :-)
+mappy.js is released under a <u>do what you like with it</u> license :-)
 
 ## Change Log
 
