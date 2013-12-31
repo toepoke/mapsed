@@ -10,8 +10,12 @@ In short it provides the following:
 * UI for adding "custom" places
 * Support for firing a map up full-window (without having to create a DIV on the page)
 * Add searching to the map
-* Add/Edit and update your own "custom places" (i.e. those the **[Google Places API](https://developers.google.com/places/documentation/)** doesn't know about, but you do
+* Add/Edit and update your own "custom places" 
+	(i.e. not those in the **[Google Places API](https://developers.google.com/places/documentation/)** doesn't know about, but you do)
 * Works with multiple maps on the same page
+
+## Demos
+Demos at http://mappy.apphb.com
 
 ## Dependencies
 jQuery (10.2 used in development)

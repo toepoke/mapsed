@@ -1,29 +1,43 @@
-body {
-	font-family: "Calibri", "Arial";
-}
 
 /*
  * Core styles (you always need these)
 */
-	.mappy-container, .mappy-address-entry {
-		/* Root container in the Google Maps infoWindow */
-		/* (move container to appear as though it's part of the Google container) */
-		margin-top: -13px;
-		margin-right: 10px;
+	.mappy-container {
 		width: 100%;
-		min-width: 190px;
+		min-width: 200px;
+		font-family: "Calibri", "Arial";
+		color: #000;
+		/* Fixes problem with scrollbars appearing the first time a tooltip is used on a marker */
+		line-height: 1; 
+	}
+	
+	.mappy-address-entry { 
+		/* edit dialog needs to be a bit bigger */
+		min-width: 300px;
+	}
+	
+	.mappy-container {
+		width: 95%;
+		margin: 3px;
 	}
 
 /*
  * ToolTip styles (you probably always need these)
 */
-	.mappy-container h1, .mappy-address-entry h1 {
+	.mappy-container h1, .mappy-help h3 {
 		font-family: Calibri, Arial;
 		font-size: medium;
 		background-color: #eee;
 		color: #333;
 		border-radius: 5px;
 		padding-left: 5px;
+	}
+	.mappy-container h1 {
+		margin-top: 0px;
+		margin-bottom: 10px;
+	}
+	.mappy-view h1 {
+		cursor: help;
 	}
 
 
@@ -34,12 +48,16 @@ body {
 
 		.mappy-left address {
 			font-size: small;
-			xxmargin-bottom: 10px;
+			margin-bottom: 10px;
 		}
 		
-		.mappy-left .telno {
-			xxdisplay:block;
+		.mappy-left a {
 			font-size: small;
+			color: #428bca;
+		}
+		.mappy-left a:hover, .mappy-left a:focus {
+			color: #2a6496;
+			text-decoration: underline;
 		}
 
 	.mappy-right {
@@ -47,100 +65,148 @@ body {
 		margin: 0;
 		padding: 0;
 		vertical-align: top;
-		float: right;
 	}
 	
 	.mappy-right img {
-		/* In case there's a "pick" button underneath the photo image*/
-		margin-bottom: 10px;		
+		/* In case there's a "select" button underneath the photo image*/
+		margin-bottom: 10px;	
+		float: right;		
 	}
 	
 	/* container for address data entry */
-	.mappy-address-entry {
-		width: 300px;
+	.mappy-address-entry {			
 	}
-	.mappy-address-entry ul {
-		list-style-type: none;	
-		margin: 0 5px 0 5px;
-		padding: 0;
-	}
-	.mappy-address-entry .mappy-save-button {
-		margin-top: 20px;
-	}
-	.mappy-address-entry label {
-		width: 60px;
-		float: left;
-	}
-	.mappy-address-entry input {
-		width: 210px;	
-		float: left;
-	}
+		.mappy-address-entry ul {
+			list-style-type: none;	
+			margin: 0 5px 0 5px;
+			padding: 0;
+		}
+		.mappy-address-entry ul li {
+			margin: 5px 0px;
+		}
+		.mappy-address-entry .mappy-save-button {
+		}
+		.mappy-address-entry label {
+			width: 100%;
+			display: inline-block;
+			float: left;
+		}
+		
+		.mappy-address-entry label input {
+			display: inline-block;
+			width: 70%;	
+			float: right;
+			color: #333;
+			background-color: #fff;
+			border: solid 1px #ddd;
+			border-radius: 2px;
+		}
+		.mappy-address-entry label, .mappy-address-entry label input {
+			/* force vertical alignment */
+			height: 20px;
+			line-height: 20px;
+			margin-bottom: 5px;
+		}
 	
-	
+	.mappy-view .mappy-website, .mappy-view .mappy-url {
+		
+	}
 
 		
 /*
 * Search styles (see "showSearch" property)
 */
-	.searchbox {
+	input.mappy-searchbox {
 		background-color: #fff;
 		padding: 0 11px 0 13px;
-		width: 400px;
+		width: 50%;
 		font-family: "Calibri", "Arial";
 		font-size: 15px;
 		font-weight: 300;
 		text-overflow: ellipsis;
 
-		/* positioning */
-		z-index: 0; 
-		position: absolute; 
-		left: 88px; 
-		top: 0px;
-	}
-	.searchbox:focus {
-		border-color: #4d90fe;
-		margin-left: -1px;
-		padding-left: 14px;  /* Regular padding-left + 1. */
-		width: 401px;
-	}		
-	.controls {
 		margin-top: 16px;
-		border: 1px solid transparent;
+		height: 32px;
+		border: 1px solid #fff;
+		outline: none;
 		border-radius: 2px 0 0 2px;
+		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);		
 		box-sizing: border-box;
 		-moz-box-sizing: border-box;
-		height: 32px;
-		outline: none;
-		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);		
 	}
+	input.mappy-searchbox:focus {
+		border-color: #4d90fe;
+		background-color: #fff;
+	}		
 
 	
 /*
 * Select styles, see "showSelect" property.
 */
 	.mappy-select-container {
-		float: right;
 		clear: both;
 	}
+	button.mappy-select-button {
 
-	.mappy-select-button, .mappy-save-button {
-		/* in case the button isn't under a photo */
-		
-		
-		margin: 0;
-		border: solid 2px #8686CF;
-		border-radius: 5px;
-		background-color: #5454C9;
-		color: #fff;
-		padding: 5px 15px 5px 15px;
-		font-weight: bold;
-		font-family: Georgia;
-	}
-	.mappy-select-button:hover, .mappy-save-button:hover {
-		cursor: pointer;
-		background-color: #8686CF;
 	}
 
+
+/*
+* Custom map control styles
+*/
+.mappy-control-button {
+	border: solid 1px #888;
+	border-radius: 2px;
+	background-color: #fff;
+	box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
+	-webkit-box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
+	padding: 1px 6px;
+	font-family: Calibri, Arial;
+	font-size: 12px;
+	color: #000;
+	text-decoration: none;
+	font-weight: 400;
+	
+	margin-right: 3px;
+	margin-top: 5px;
+	cursor: pointer;
+}
+:hover.mappy-control-button {
+	background-color: #ddd;
+	text-decoration: none;
+}
+
+button.mappy-select-button, 
+button.mappy-edit-button, 
+button.mappy-save-button, 
+button.mappy-delete-button, 
+a.mappy-search-button  {
+	color: #fff;
+
+	padding: 5px 7px;
+
+	font-weight: bold;
+	margin: 5px 0 0 5px;
+	
+	background-image: -webkit-linear-gradient(top,#4d90fe,#4787ed);
+	background-color: #4d90fe;
+	border: none;
+	border-radius: 0 2px 2px 0;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+	cursor: pointer;
+}
+.mappy-error {
+	color: #880000;
+	margin-left: 10px;
+}
+
+a.mappy-search-button {
+	/* search button is a little bit different to the other button controls */
+	padding: 7px 20px;
+	font-size: 15px;
+	margin-left: 1%;
+	margin-top: 16px;
+}
 
 
 /*
@@ -154,22 +220,45 @@ body {
 		z-index: 999;
 	}
 	
-	/* close button styles */
-		.mappy-close-container {
-			border: solid 1px #ddd;
-			border-radius: 2px;
-			background-color: #fff;
-			margin: 5px 0 0 0;
-			box-shadow: 2px 2px 2px #aaa;
-		}
-		a.mappy-close-button  {
-			padding: 3px 5px 3px 5px;
-			font-family: Calibri, Arial;
-			font-size: 12px;
-			color: #777;
-			text-decoration: none;
-		}
+/*
+* Help dialog styles
+*/
+	.mappy-help {
+		margin: 0;
+		right: 10px;
+		padding: 5px;
+		background: #fff;
+		border: solid 1px #ddd;
+		border-radius: 2px;
+		box-shadow: 2px 2px 2px #aaa;
+		min-width: 250px;
+		color: #000;
+	}
 
+	.mappy-help  h3 {
+		margin: 0;
+	}
 	
-
-
+	.mappy-help ol {
+		padding-left: 25px;
+	}
+	.mappy-help ol li, .mappy-help ul li {
+		color: #000;
+		background-color: #fff;
+		margin: initial;
+		font-size: small;
+	}
+	.mappy-help ol li {
+		list-style-type: decimal;
+	}
+	.mappy-help ul li {
+		list-style-type: disc;
+	}
+	.mappy-help-button.open {
+		background-color: #ccc;
+	}
+	
+	
+	
+	
+	
