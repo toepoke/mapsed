@@ -1,5 +1,10 @@
 /* Global Styles */
 
+.leader-banner {
+	background: #000;
+	text-align: center;
+}
+
 html,
 body {
   height: 100%;
