@@ -262,6 +262,9 @@
 			// find the appropriate marker
 			var marker = findMarker(lat, lng);
 			
+			// close any open tooltips so the user can concentrate on editing
+			closeTooltips();
+			
 			// user clicks the edit button, so swap to edit mode
 			marker.showTooltip(true/*inRwMode*/);
 		
