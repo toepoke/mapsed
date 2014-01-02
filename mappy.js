@@ -6,6 +6,9 @@
  * If you redistribute this file, please keep this section in place.
  *
  * License: Same as jQuery - see http://jquery.org/license
+ *
+ * Compressed with:
+ *   - http://closure-compiler.appspot.com/
  * 
 */
 
