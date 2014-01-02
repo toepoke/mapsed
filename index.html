@@ -1,65 +1,71 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="author" content="">
 
-    <title>mappy.js - jQuery plug-in for Google Maps and Places API integration</title>
+		<title>mappy.js - jQuery plug-in for Google Maps and Places API integration</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="ws/css/bootstrap.css" rel="stylesheet">
+		<!-- Bootstrap core CSS -->
+		<link href="ws/css/bootstrap.css" rel="stylesheet">
 
-    <!-- Core mappy styles -->
+		<!-- Core mappy styles -->
 		<link href="mappy.css" rel="stylesheet">
 
-    <!-- Add custom CSS here -->
-    <link href="ws/css/stylish-portfolio.css" rel="stylesheet">
-    <link href="ws/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+		<!-- Add custom CSS here -->
+		<link href="ws/css/stylish-portfolio.css" rel="stylesheet">
+		<link href="ws/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 		<link href="examples/examples.css" rel="stylesheet">
 		<style type="text/css">
 			body {
 				font-family: "Calibri", "Arial";
 			}
+			.code {
+				display: none;
+			}
+			.show-code {
+				cursor: pointer;
+			}
 		</style>
-  </head>
+	</head>
 
-  <body>
+	<body>
 		<div class="leader-banner">
 			<a href="http://toepoke.co.uk?mappy=1"><img src="ws/img/leaderboard-banner.gif" alt="Lose the faff, bring back the fun with toepoke.co.uk"></a>
 		</div>	
 
-    <!-- Side Menu -->
-    <a id="menu-toggle" href="#" class="btn btn-primary btn-lg toggle"><i class="fa fa-bars"></i></a>
-    <div id="sidebar-wrapper">
-      <ul class="sidebar-nav">
-        <a id="menu-close" href="#" class="btn btn-default btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
-        <li class="sidebar-brand"><a href="https://toepoke.co.uk?ref=mappy">built by toepoke.co.uk</a></li>
-        <li><a href="#top">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#examples">Examples</a></li>
-        <li><a href="#code">Code &amp; Dependencies</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </div>
-    <!-- /Side Menu -->
-  
-    <!-- Full Page Image Header Area -->
-    <div id="top" class="header">
-      <div class="vert-text">
-        <h1>Mappy.js!</h1>
+		<!-- Side Menu -->
+		<a id="menu-toggle" href="#" class="btn btn-primary btn-lg toggle"><i class="fa fa-bars"></i></a>
+		<div id="sidebar-wrapper">
+			<ul class="sidebar-nav">
+				<a id="menu-close" href="#" class="btn btn-default btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
+				<li class="sidebar-brand"><a href="https://toepoke.co.uk?ref=mappy">built by toepoke.co.uk</a></li>
+				<li><a href="#top">Home</a></li>
+				<li><a href="#about">About</a></li>
+				<li><a href="#examples">Examples</a></li>
+				<li><a href="#code">Code &amp; Dependencies</a></li>
+				<li><a href="#contact">Contact</a></li>
+			</ul>
+		</div>
+		<!-- /Side Menu -->
+	
+		<!-- Full Page Image Header Area -->
+		<div id="top" class="header">
+			<div class="vert-text">
+				<h1>Mappy.js!</h1>
 				<h3>Google <em>maps</em> &amp; <em>places</em> jQuery integration plug-in</h3>
-        <a href="#about" class="btn btn-default btn-lg">Find Out More</a>
-      </div>
-    </div>
-    <!-- /Full Page Image Header Area -->
-  
-    <!-- Intro -->
-    <div id="about" class="intro">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6 col-md-offset-3 text-center">
+				<a href="#about" class="btn btn-default btn-lg">Find Out More</a>
+			</div>
+		</div>
+		<!-- /Full Page Image Header Area -->
+	
+		<!-- Intro -->
+		<div id="about" class="intro">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6 col-md-offset-3 text-center">
 						<h2>Google Map Picker</h2>
 						<p class="lead">
 							On <a href="https://toepoke.co.uk?ref=mappy">my little website</a> I need to allow users to
@@ -74,78 +80,160 @@
 							As well as <em>picking</em> places, you can add/edit ones to integrate with your
 							own database; check out the examples to see what else it does.
 						</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- /Intro -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Intro -->
 
-    <!-- Callout -->
-    <div class="callout">
-      <div class="vert-text">
-        <h1>Show me the <strike>money</strike> demos ...</h1>
-      </div>
-    </div>
-    <!-- /Callout -->
+		<!-- Callout -->
+		<div class="callout">
+			<div class="vert-text">
+				<h1>Show me the <strike>money</strike> demos ...</h1>
+			</div>
+		</div>
+		<!-- /Callout -->
 
-    <!-- Examples -->
-    <div id="examples" class="portfolio">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-4 col-md-offset-4 text-center">
-            <h2>Examples</h2>
-          </div>
-        </div>
+		<!-- Examples -->
+		<div id="examples" class="portfolio">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-4 col-md-offset-4 text-center">
+						<h2>Examples</h2>
+					</div>
+				</div>
 
-        <div class="row">
-          <div class="col-md-10 col-md-offset-1">
-            <div class="portfolio-item">
-              <h3 class="text-center">Custom Places</h3>
-							<p class="lead">
-								The places shown here are dervied from a JSON object on
-								load, illustrating loading <em>custom places</em> from 
-								your own database.
-							</p>
-							<div id="custom-places" class="small-map"></div>
-							<p class="pull-right">
-								<a href="examples/examples.js">see customPlacesExample function</a>
-							</p>
-							<div class="clearfix"></div>
-							<p class="lead">
-								Clicking on a marker brings up a tooltip, just as you
-								would see in Google Maps normally.  So far, not very interesting :D
-							</p>
-            </div>
-          </div>
+				<div class="row">
+					<div class="col-md-10 col-md-offset-1">
+						<div class="portfolio-item">
+							<h3 class="text-center">Custom Places</h3>
+								<p class="lead">
+									The places shown here are derived from a JSON object on
+									load, illustrating loading <em>custom places</em> from 
+									your own database.
+								</p>
+								<div id="custom-places" class="small-map"></div>
+								<p class="pull-right">
+									<a class="show-code">show/hide code illustration</a>
+								</p>
+								<div class="clearfix"></div>
+								<div class="code">
+									<pre class="prettyprint lang-js">
+$("#custom-places").mappy({
+  customPlaces: 	
+  // City Varieties
+  {
+    // flag that this place should have the tooltip shown when the map is first loaded
+    autoShow: true,
+    // flags the user can edit this place
+    canEdit: false,
+    lat: 53.798823,
+    lng:-1.5426760000000286,
+    reference: "CoQBfAAAAPw-5BTCS53grSLDwX8rwo5BnWnEWnA72lmOjxdgWg2ODGfC5lLjGyoz428IEaln1vJ6rq1jI96Npzlm-N-wmPH2jdJMGfOLxno_rmgnajAnMPzNzuI8UjexIOdHVZPBPvQGloC-tRhudGeKkbdTT-IWNP5hp4DIl4XOLWuYFOVYEhBxNPxaXZdW9uhKIETXf60hGhTc9yKchnS6oO-6z5XZJkK2ekewYQ",
+    name: "City Varieties Music Hall",
+    url: "https://plus.google.com/103655993956272197223/about?hl=en-GB",
+    website: "http://www.cityvarieties.co.uk/",
+    telNo: "0845 644 1881",
+    street: "Swan Street,",
+    town: "Leeds",
+    area: "West Yorkshire",
+    postCode: "LS1 6LW"
+  }
+});									
+									</pre>
+								</div>
+								<p class="lead">
+									Clicking on a marker brings up a tooltip, just as you
+									would see in Google Maps normally.  So far, not very interesting :D
+								</p>
+						</div>
+					</div>
 				</div>
 				<hr>
 				
 				<div class="row">
-          <div class="col-md-10 col-md-offset-1">
-            <div class="portfolio-item">
-              <h3 class="text-center">Place Picker</h3>
+					<div class="col-md-10 col-md-offset-1">
+						<div class="portfolio-item">
+							<h3 class="text-center">Place Picker</h3>
 							<p class="lead">
 								Try clicking on a marker this time; as before we get a nice
 								little tooltip, but ooooh there's a <em>Select</em> button.
 							</p>
 							<div id="place-picker" class="small-map"></div>
 							<p class="pull-right">
-								<a href="examples/examples.js">see placePickerExample function</a>
+								<a class="show-code">show/hide code illustration</a>
 							</p>
 							<div class="clearfix"></div>
+							<div class="code">
+								<pre class="prettyprint lang-js">
+$("#place-picker").mappy({
+  // allow user to select somewhere
+  onSelect: function(mappy, details) {
+    var msg = 
+      "\nName:\n" + details.name + 
+      "\n\nAddress:\n" + details.street + ", " + details.town + ", " + details.area + ", " + details.postCode +
+      "\n\nwebsite:\n" + details.website +
+      "\n\ng+:\n" + details.url +
+      "\n\nTel:\n" + details.telNo						
+     ;
+    if (details)
+      alert("You picked:\n" + msg);
+    else
+      alert("Details could not be found .. probably no 'reference' property available.");
+    // indicate tip should be closed
+    return true;
+  },
+  
+  customPlaces: [
+    // North Bar, Leeds
+    {
+      // flags the user can edit this place
+      canEdit: false,
+      lat: 53.796592,
+      lng: -1.543926,
+      // "reference" should be a unique reference in "your system"
+      // If the user "selects" this place, this is used to map back to these details
+      reference: "sldfkjsdlkfj",
+      name: "The Former Bond Street Shopping Centre",
+      street: "Albion Street,",
+      town: "Leeds",
+      area: "West Yorkshire"
+    },
+    // City Varieties
+    {
+      // flag that this place should have the tooltip shown when the map is first loaded
+      autoShow: true,
+      // flags the user can edit this place
+      canEdit: false,
+      lat: 53.798823,
+      lng:-1.5426760000000286,
+      reference: "CoQBfAAAAPw-5BTCS53grSLDwX8rwo5BnWnEWnA72lmOjxdgWg2ODGfC5lLjGyoz428IEaln1vJ6rq1jI96Npzlm-N-wmPH2jdJMGfOLxno_rmgnajAnMPzNzuI8UjexIOdHVZPBPvQGloC-tRhudGeKkbdTT-IWNP5hp4DIl4XOLWuYFOVYEhBxNPxaXZdW9uhKIETXf60hGhTc9yKchnS6oO-6z5XZJkK2ekewYQ",
+      name: "City Varieties Music Hall",
+      url: "https://plus.google.com/103655993956272197223/about?hl=en-GB",
+      website: "http://www.cityvarieties.co.uk/",
+      telNo: "0845 644 1881",
+      street: "Swan Street,",
+      town: "Leeds",
+      area: "West Yorkshire",
+      postCode: "LS1 6LW"
+    }
+  ]
+);
+								</pre>
+							</div>
 							<p class="lead">
 								Clicking on the <em>Select</em> button fires a callback to
 								your code (yup, that ugly <em>alert</em> is the example one).
 							</p>
-            </div>
-          </div>
-        </div>
+						</div>
+					</div>
+				</div>
 				<hr>
 
-        <div class="row">
-          <div class="col-md-10 col-md-offset-1">
-            <div class="portfolio-item">
-              <h3 class="text-center">Adding [Custom] Places</h3>
+				<div class="row">
+					<div class="col-md-10 col-md-offset-1">
+						<div class="portfolio-item">
+							<h3 class="text-center">Adding [Custom] Places</h3>
 							<p class="lead">
 								Being able to <em>Select</em> places is pretty useful,
 								but a waste of time if we can't create them!
@@ -156,45 +244,154 @@
 							</p>
 							<div id="add-places" class="small-map"></div>
 							<p class="pull-right">
-								<a href="examples/examples.js">see placeAddExample function</a>
+								<a class="show-code">show/hide code illustration</a>
 							</p>
 							<div class="clearfix"></div>
+							<div class="code">
+								<pre class="prettyprint lang-js">
+$("#add-places").mappy({
+
+  // Adds the "+" button to the control bar at the top right of the map
+  allowAdd: true,
+  
+  // Enables edit of custom places (to your web application, not Google Maps!)
+  // ... again the presence of the callback enables the functionality
+  onSave: function(mappy, newPlace) {
+    var missing = [];
+    
+    // detect errors starting at bottom
+    // ... we only have space for one error at a time, so this way we'll report 
+    // ... from the top down
+    if (newPlace.postCode === "") missing.push("postcode");
+    if (newPlace.street === "")   missing.push("street");
+    if (newPlace.name === "")     missing.push("name");
+    
+    // anything missing?
+    if (missing.length > 0) {
+      // return the error message so the callback doesn't progress
+      return "Required: " + missing.join();
+    }
+    
+    if (newPlace) {
+      var msg = "onSave (" +
+      "name: '" + newPlace.name +
+      "', street: '" + newPlace.street +
+      "', area: '" + newPlace.area +
+      "', town: '" + newPlace.town +
+      "', postcode: '" + newPlace.postCode + 
+      "', telNo: '" + newPlace.telNo + 
+      "', website: '" + newPlace.website + 
+      "', g+: '" + newPlace.url +
+      "')"
+      ;
+      alert(msg);		
+    }
+  
+    // indicate form was OK and saved
+    return "";
+  }
+});
+								</pre>
+							</div>
 							<p class="lead">
 								There's some noddy validation too, try hitting <em>Save</em>
 								without a <em>Name</em> property.
 							</p>
-            </div>
-          </div>
+						</div>
+					</div>
 				</div>
 				<hr>
 
-        <div class="row">
-           <div class="col-md-10 col-md-offset-1">
-            <div class="portfolio-item">
-              <h3 class="text-center">Editing [Custom] Places</h3>
+				<div class="row">
+					 <div class="col-md-10 col-md-offset-1">
+						<div class="portfolio-item">
+							<h3 class="text-center">Editing [Custom] Places</h3>
 							<p class="lead">
 								OK, adding new places is pretty cool ... but not very cool if 
 								we can't change the definition afterwards?
 							</p>
 							<div id="edit-places" class="small-map"></div>
 							<p class="pull-right">
-								<a href="examples/examples.js">see placeEditExample function</a>
+								<a class="show-code">show/hide code illustration</a>
 							</p>
 							<div class="clearfix"></div>
+							<div class="code">
+								<pre class="prettyprint lang-js">
+$("#edit-places").mappy({
+  customPlaces: [
+    // City Varieties
+    {
+    autoShow: true,
+    canEdit: true,
+    lat: 53.798823,
+    lng:-1.5426760000000286,
+    //reference: "CoQBfAAAAPw-5BTCS53grSLDwX8rwo5BnWnEWnA72lmOjxdgWg2ODGfC5lLjGyoz428IEaln1vJ6rq1jI96Npzlm-N-wmPH2jdJMGfOLxno_rmgnajAnMPzNzuI8UjexIOdHVZPBPvQGloC-tRhudGeKkbdTT-IWNP5hp4DIl4XOLWuYFOVYEhBxNPxaXZdW9uhKIETXf60hGhTc9yKchnS6oO-6z5XZJkK2ekewYQ",
+    reference: "two",
+    name: "CITY Varieties Music Hall",
+    url: "https://plus.google.com/103655993956272197223/about?hl=en-GB",
+    website: "http://www.cityvarieties.co.uk/",
+    telNo: "0845 644 1881",
+    street: "Swan Street,",
+    town: "Leeds",
+    area: "West Yorkshire",
+    postCode: "LS1 6LW"
+    }
+  ],
+	
+  // Enables edit of custom places (to your web application, not Google Maps!)
+  // ... again the presence of the callback enables the functionality
+  onSave: function(mappy, newPlace) {
+    var missing = [];
+    
+    // detect errors starting at bottom
+    // ... we only have space for one error at a time, so this way we'll report 
+    // ... from the top down
+    if (newPlace.postCode === "") missing.push("postcode");
+    if (newPlace.street === "")   missing.push("street");
+    if (newPlace.name === "")     missing.push("name");
+    
+    // anything missing?
+    if (missing.length > 0) {
+    // return the error message so the callback doesn't progress
+    return "Required: " + missing.join();
+    }
+    
+    if (newPlace) {
+      var msg = "onSave (" +
+      "name: '" + newPlace.name +
+      "', street: '" + newPlace.street +
+      "', area: '" + newPlace.area +
+      "', town: '" + newPlace.town +
+      "', postcode: '" + newPlace.postCode + 
+      "', telNo: '" + newPlace.telNo + 
+      "', website: '" + newPlace.website + 
+      "', g+: '" + newPlace.url +
+      "')"
+      ;
+      alert(msg);		
+    }
+
+    // indicate form was OK and saved
+    return "";
+  }
+			
+});									
+								</pre>
+							</div>
 							<p class="lead">
 								There's noddy validation here too (indeed the <em>Save</em>
 								for an <em>edit</em> is the same callback as for <em>new</em>
 								places).
 							</p>
-            </div>
-          </div>
+						</div>
+					</div>
 				</div>
 				<hr>
 
 				<div class="row">
-          <div class="col-md-10 col-md-offset-1">
-            <div class="portfolio-item">
-              <h3 class="text-center">Searching for Places</h3>
+					<div class="col-md-10 col-md-offset-1">
+						<div class="portfolio-item">
+							<h3 class="text-center">Searching for Places</h3>
 							<p class="lead">
 								All this viewing and editing <em>custom</em> places
 								is nice, but a bit limiting.  &ldquo;I want to hook-up
@@ -202,30 +399,60 @@
 							</p>
 							<div id="search-for-places" class="small-map"></div>
 							<p class="pull-right">
-								<a href="examples/examples.js">see placeSearchExample function</a>
+								<a class="show-code">show/hide code illustration</a>
 							</p>
 							<div class="clearfix"></div>
+							<div class="code">
+								<pre class="prettyprint lang-js">
+$("#search-for-places").mappy({
+  // Adds a predictive search box
+  searchOptions: {
+    enabled: true,
+    initSearch: "Football in Leeds",
+    placeholder: "Search ..."
+  },
+
+  // allow user to select somewhere
+  onSelect: function(mappy, details) {
+    var msg = 
+      "\nName:\n" + details.name + 
+      "\n\nAddress:\n" + details.street + ", " + details.town + ", " + details.area + ", " + details.postCode +
+      "\n\nwebsite:\n" + details.website +
+      "\n\ng+:\n" + details.url +
+      "\n\nTel:\n" + details.telNo						
+     ;
+    if (details)
+      alert("You picked:\n" + msg);
+    else
+      alert("Details could not be found .. probably no 'reference' property available.");
+    // indicate tip should be closed
+    return true;
+  },
+	
+});								
+								</pre>
+							</div>
 							<p class="lead">
 								Notice that little <em>[?]</em> in the top-right corner of the
 								map?  This brings up some small text telling your users what
 								to do, and it's configurable of course!
 							</p>
-            </div>
+						</div>
 					</div>
-        </div>
+				</div>
 				<hr>
 				
-      </div>
+			</div>
 
-    </div>
-    <!-- /Examples -->
+		</div>
+		<!-- /Examples -->
 
-    <!-- Call to Action -->
-    <div class="call-to-action">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6 col-md-offset-3 text-center">
-            <h3>Bringing it all together ...</h3>
+		<!-- Call to Action -->
+		<div class="call-to-action">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6 col-md-offset-3 text-center">
+						<h3>Bringing it all together ...</h3>
 						<p>
 							One last feature is being able to bring up a map and taking
 							over the full window, plus a couple of other little treats.
@@ -233,23 +460,23 @@
 						<p>You'll notice a little <em>[X]</em> 
 							at the top-right corner to close it when you've finished.
 						</p>
-            <a id="show-full-window" href="#" class="btn btn-lg btn-primary">Go full!</a>
+						<a id="show-full-window" href="#" class="btn btn-lg btn-primary">Go full!</a>
 						<br/>
 						<p>
 							... added advantage of <em>full window mode</em> is you don't even
 							need a <em>DIV</em> as a placeholder for the map!
 						</p>
 						<a href="examples/examples.js">see fullWindowExample function</a>
-          </div>
-        </div>
-      </div>
-    </div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-    <!-- Intro -->
-    <div id="code" class="intro">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-8 col-md-offset-2 text-center">
+		<!-- Intro -->
+		<div id="code" class="intro">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8 col-md-offset-2 text-center">
 						<h2>Dependencies</h2>
 						<ul class="list-unstyled">
 							<li><a href="http://jquery.com/">jQuery</a> (10.2 used in development)</li>
@@ -271,82 +498,85 @@
 							<em>Mappy</em> is released under a &ldquo;<a href="https://jquery.org/license/">Do what you like with it</a>&rdquo; license.
 						</p>
 					</div>
-        </div>
-      </div>
-    </div>
-    <!-- /Intro -->
+				</div>
+			</div>
+		</div>
+		<!-- /Intro -->
 		
-    
-    <!-- Footer -->
-    <footer>
-      <div id="contact" class="container">
-        <div class="row">
-          <div class="col-md-6 col-md-offset-3 text-center">
-            <ul class="list-inline">
+		
+		<!-- Footer -->
+		<footer>
+			<div id="contact" class="container">
+				<div class="row">
+					<div class="col-md-6 col-md-offset-3 text-center">
+						<ul class="list-inline">
 							<li><a href="https://github.com/toepoke/mappy"><i class="fa fa-github fa-3x"></i></a></li>
 							<li><a href="https://twitter.com/toepoke_co_uk"><i class="fa fa-twitter fa-3x"></i></a></li>
-              <li><a href="https://plus.google.com/+ToepokeCoUk"><i class="fa fa-google-plus fa-3x"></i></a></li>
-              <li><a href="https://www.facebook.com/lose.the.faff"><i class="fa fa-facebook fa-3x"></i></a></li>
-            </ul>
-            <div class="top-scroll">
-              <a href="#top"><i class="fa fa-circle-arrow-up scroll fa-4x"></i></a>
-            </div>
-            <hr>
-            <p>Built with indifference by <a href="http://toepoke.co.uk?mappy=3">toepoke.co.uk</a></p>
+							<li><a href="https://plus.google.com/+ToepokeCoUk"><i class="fa fa-google-plus fa-3x"></i></a></li>
+							<li><a href="https://www.facebook.com/lose.the.faff"><i class="fa fa-facebook fa-3x"></i></a></li>
+						</ul>
+						<div class="top-scroll">
+							<a href="#top"><i class="fa fa-circle-arrow-up scroll fa-4x"></i></a>
+						</div>
+						<hr>
+						<p>Built with indifference by <a href="http://toepoke.co.uk?mappy=3">toepoke.co.uk</a></p>
 						<p>Lovely template provided by <a href="http://startbootstrap.com/stylish-portfolio">start Bootstrap</a></p>
-          </div>
-        </div>
-      </div>
-    </footer>
-    <!-- /Footer -->
+					</div>
+				</div>
+			</div>
+		</footer>
+		<!-- /Footer -->
 
-    <!-- Dependencies -->
+		<!-- Dependencies -->
 		<script src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
-    <script src="ws/js/jquery-1.10.2.js"></script>
-    <script src="ws/js/bootstrap.js"></script>
+		<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+		<script src="ws/js/jquery-1.10.2.js"></script>
+		<script src="ws/js/bootstrap.js"></script>
 
-    <!-- Mappy JavaScript -->
-    <script src="mappy.min.js"></script>
+		<!-- Mappy JavaScript -->
+		<script src="mappy.min.js"></script>
 		
-    <!-- Examples JavaScript -->
-    <script src="examples/variables.js"></script>
-    <script src="examples/helpers.js"></script>
-    <script src="examples/examples.js"></script>
-    <script src="examples/full-example.js"></script>
+		<!-- Examples JavaScript -->
+		<script src="examples/full-example.js"></script>
+		<script src="examples/01-custom-places-example.js"></script>
+		<script src="examples/02-place-picker-example.js"></script>
+		<script src="examples/03-add-places-example.js"></script>
+		<script src="examples/04-edit-places-example.js"></script>
+		<script src="examples/05-search-for-places-example.js"></script>
 		
 		
 		
-    <!-- Custom JavaScript for the Side Menu and Smooth Scrolling -->
-    <script>
-        $("#menu-close").click(function(e) {
-            e.preventDefault();
-            $("#sidebar-wrapper").toggleClass("active");
-        });
-    </script>
-    <script>
-        $("#menu-toggle").click(function(e) {
-            e.preventDefault();
-            $("#sidebar-wrapper").toggleClass("active");
-        });
-    </script>
-    <script>
-      $(function() {
-        $('a[href*=#]:not([href=#])').click(function() {
-          if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') 
-            || location.hostname == this.hostname) {
+		<!-- Custom JavaScript for the Side Menu and Smooth Scrolling -->
+		<script>
+				$("#menu-close").click(function(e) {
+						e.preventDefault();
+						$("#sidebar-wrapper").toggleClass("active");
+				});
+		</script>
+		<script>
+				$("#menu-toggle").click(function(e) {
+						e.preventDefault();
+						$("#sidebar-wrapper").toggleClass("active");
+				});
+		</script>
+		<script>
+			$(function() {
+				$('a[href*=#]:not([href=#])').click(function() {
+					if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') 
+						|| location.hostname == this.hostname) {
 
-            var target = $(this.hash);
-            target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-            if (target.length) {
-              $('html,body').animate({
-                scrollTop: target.offset().top
-              }, 1000);
-              return false;
-            }
-          }
-        });
-      });
-    </script>
+						var target = $(this.hash);
+						target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+						if (target.length) {
+							$('html,body').animate({
+								scrollTop: target.offset().top
+							}, 1000);
+							return false;
+						}
+					}
+				});
+			});
+		</script>
 		<script>
 			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -356,8 +586,16 @@
 			ga('create', 'UA-1524341-6', 'apphb.com');
 			ga('send', 'pageview');
 		</script>
+		<script>
+			$(document).ready(function() {
+				$(".show-code").on("click", function() {
+					event.preventDefault();
+					$(this).parent().parent().find(".code").slideToggle("fast");
+				});
+			});
+		</script>
 	
 
-  </body>
+	</body>
 
 </html>
