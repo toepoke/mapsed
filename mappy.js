@@ -33,6 +33,8 @@
 				_searchBox = null,        // Search box that appears on the map 
 				_gmSearchBox = null,      // Google (autocompleting) Search box the underlying input text box is twinned with 
 				_searchBtn = null,        // Button to click to confirm search should be applied (not strictly needed (ENTER does the same), but users may be confused if there isn't one!)
+				_moreBtn = null,          // Available when more results are available for a result set (Google Places API pages the results)
+				_pageNum = 0,             // Keeps track of how many pages of results are shown (used to reset the markers on a new search)
 				_gMap = null,             // Underlying Google maps object for the div
 				_mapContainer = null,     // jQuery reference to the DIV the map is in
 				_placesApi = null,        // Reference to the Google Places API object
@@ -387,13 +389,15 @@
 		/// control (if enabled).
 		/// places: Results from the Google Places API query
 		/// </summary>
-		function gmPlaceSelected(places) {
+		function gmPlaceSelected(places, status, pagination) {
 			if (!_firstSearch) {
 				// If we're pre-populated the map with (via "customPlaces" setting)
 				// and put some results up on start-up (via the "initSearch" option)
 				// we don't want to clear the markers as we'll remove the "customPlaces"
 				// we've added
-				clearMarkers(); 
+				
+				if (_pageNum == 0)
+					clearMarkers(); 
 			}
 			_firstSearch = false;
 			
@@ -402,26 +406,67 @@
 			for (var i = 0, place; place = places[i]; i++) {
 				if (!place.reference)
 					continue;
-				
-				var request = {
-					reference: place.reference
-				};				
-				_placesApi.getDetails( request, 
-					function(placeDetails, status) {
-						if (status != gp.PlacesServiceStatus.OK) {
-							return;
-						}
-						
-						var pos = placeDetails.geometry.location;
-						var marker = addMarker(placeDetails, pos, "google", bounds);
 
-						normaliseAddress(marker.details, placeDetails);
-						_gMap.fitBounds(bounds);
-					}
-				);
+				var pos = place.geometry.location;
+				var marker = addMarker(place, pos, "google", bounds);
+
+				// start off with just the minimal info we're given
+				// ... later we'll try and get more details, but if we can't at least
+				// ... we have _something_!
+				normaliseFormattedAddress(marker.details, place.formatted_address);
+				
+				// expand the map out so the new places fit
+				bounds.extend(pos);
+				_gMap.fitBounds(bounds);
 			} // for
+			
+			if (pagination) {
+				_moreBtn[0].disabled = !pagination.hasNextPage;
+				
+				if (pagination.hasNextPage) {
+					gm.event.addDomListenerOnce(_moreBtn[0], "click", function() {
+						event.preventDefault();
+						
+						_pageNum++;
+						pagination.nextPage();
+					});
+				}
+			}
 
 		} // gmPlaceSelected
+		
+		
+		/// <summary>
+		/// Helper method to perform a search to the Google Places API, translate
+		/// the results into something more useful for us and fire a callback once complete
+		/// </summary>
+		function getPlaceDetails(forMarker, callback) {
+			if (!forMarker.details)
+				return;
+			if (!forMarker.details.reference)
+				return;
+
+				
+			var request = {
+				reference: forMarker.details.reference
+			};
+			_placesApi.getDetails(request, 
+				function(placeDetails, status) {
+					// Either way we're loaded. 
+					// If we fail, we revert to using the basic data (otherwise we'll just keep trying!)
+					forMarker.details.isLoaded = true;
+				
+					if (status != gp.PlacesServiceStatus.OK) {
+						return;
+					}
+					
+					normalisePlacesApiAddress(forMarker.details, placeDetails);				
+
+					callback(forMarker);
+				}
+			);
+			
+		} // getPlaceDetails
 		
 		
 		/// <summary>
@@ -658,8 +703,8 @@
 			// and wire up the callback when a user selects a hit
 			gm.event.addListener(_gmSearchBox, "places_changed", 
 				function() {
-					var places = _gmSearchBox.getPlaces();
-					gmPlaceSelected(places);
+					var searchFor = _searchBox.val();
+					doSearch(searchFor);
 				}
 			);
 			// and again for when they zoom in/out
@@ -669,9 +714,11 @@
 				evt.preventDefault();
 				var searchFor = _searchBox.val();
 				doSearch(searchFor);
-				
 			});
 			
+			// For handling additional results, note there is not event handlers as this is]
+			// ... driven from the first set of search results we get back from Google
+			_moreBtn = createControlButton("More|There are more results available ...", gm.ControlPosition.TOP_LEFT, "mappy-more-button", null);
 		} // addSearch
 		
 		
@@ -822,12 +869,12 @@
 			}
 
 			var markUp = 
-				"<a href='#'" 
+				"<button " 
 				+ classes
 				+ tooltip
 				+ ">" 
 				+ buttonText
-				+ "</a>"
+				+ "</button>"
 			;
 			
 			btn = _plugIn.addMapControl(markUp, ctrlPos);
@@ -892,7 +939,7 @@
 		/// </summary>
 		function createMarker(title, latLng, isDraggable, type) {
 			var image = null;
-
+			
 			if (settings.getMarkerImage) {
 				image = settings.getMarkerImage(_plugIn, type);
 			}
@@ -910,6 +957,10 @@
 			// create a default details object too
 			marker.details = {
 				markerType: type,
+				// isLoaded basically means the extended place data has been loaded
+				// ... this is only relevant to places that have come from google, not 
+				// ... "custom" or "new" ones
+				isLoaded: (type != "google"),
 				lat: latLng.lat(),
 				lng: latLng.lng(),
 				reference: "",
@@ -962,41 +1013,66 @@
 			forMarker.tooltip.setContent( item[0] );
 			// we'll still need a reference to the marker later on
 			forMarker.tooltip.marker = forMarker;
-			forMarker.showTooltip = function(inRwMode) {
-				var marker = this;
-				var tip = marker.tooltip;
-				var model = marker.details;
-				var $ele = $(tip.getContent());
-				var $ro = $ele.find(".mappy-view");
-				var $rw = $ele.find(".mappy-edit");
-				var settings = _plugIn.getSettings();
-		
-				$rw.toggle(inRwMode);
-				$ro.toggle(!inRwMode);
-
-				// ensure we have a _clean_ model to play with
-				sanitise(model);
-					
-				if (inRwMode) {
-					// re-apply template
-					var tmpl = getEditTemplate();
-					applyTemplate(tmpl, model, $rw);
-					
-				} else {
-					// re-apply template
-					var tmpl = getViewTemplate();
-					applyTemplate(tmpl, model, $ro);
-					hideEmpty(model, $ro);					
-				}
-				
-				tip.close();
-				// re-open for the right width to be used
-				tip.open(_gMap, marker);
-			};
+			forMarker.showTooltip = showTooltip;
 			
 			return item;
 			
 		} // createTooltip
+				
+		
+		/// <summary>
+		/// Handles the showing of the appropriate tooltip, depending 
+		/// on whether we're in "edit" or "read" mode.
+		/// Also attempts to get more detailed place information from the 
+		/// Google Places API if it can (only done once per tooltip).
+		/// </summary>
+		function showTooltip(inRwMode) {
+			var marker = this;
+			var tip = marker.tooltip;
+			var model = marker.details;
+			var $ele = $(tip.getContent());
+			var $ro = $ele.find(".mappy-view");
+			var $rw = $ele.find(".mappy-edit");
+			var settings = _plugIn.getSettings();
+	
+			// If we're previously got the place details, or it's a "custom" place
+			// we're ok, otherwise we'll have to shoot off and get the main details
+			if (!model.isLoaded) {
+				// don't have full details yet, so go get them
+				getPlaceDetails(marker, 
+					function(forM) { 
+						marker.showTooltip(inRwMode); 
+					}
+				);
+				
+				// terminate here, we'll pick up where we left off once we have the details
+				return;
+			}
+			
+			// continue displaying the tooltip
+			$rw.toggle(inRwMode);
+			$ro.toggle(!inRwMode);
+
+			// ensure we have a _clean_ model to play with
+			sanitise(model);
+				
+			if (inRwMode) {
+				// re-apply template
+				var tmpl = getEditTemplate();
+				applyTemplate(tmpl, model, $rw);
+				
+			} else {
+				// re-apply template
+				var tmpl = getViewTemplate();
+				applyTemplate(tmpl, model, $ro);
+				hideEmpty(model, $ro);					
+			}
+			
+			tip.close();
+			// re-open for the right width to be used
+			tip.open(_gMap, marker);
+		
+		} // showTooltip
 				
 
 		/// <summary>
@@ -1018,7 +1094,7 @@
 			  +         "<div class='mappy-area'>{AREA}</div>"
 			  +         "<div class='mappy-postCode'>{POSTCODE}</div>"
 			  +       "</address>"
-			  +       "<a class='mappy-telNo' href='{TELNO}'>{TELNO}</a>"
+			  +       "<a class='mappy-telNo' href='tel:{TELNO}'>{TELNO}</a>"
 			  +       "<a class='mappy-website' href='{WEBSITE}' title='{WEBSITE}'>website</a>"
 			  +       "<a class='mappy-url' href='{GPLUS}' title='{GPLUS}'>g+</a>"
 			  +     "</td>"
@@ -1294,6 +1370,7 @@
 		/// the results on the map
 		/// </summary>
 		function doSearch(searchFor) {
+			_pageNum = 0;
 			var request = {
 				query: searchFor
 			};
@@ -1308,7 +1385,7 @@
 		/// usable for our purposes.
 		/// details: object to be normalised (this is a Google Places result)
 		/// </summary>
-		function normaliseAddress(details, fromGP) {
+		function normalisePlacesApiAddress(details, fromGP) {
 			var ac = fromGP.address_components;
 			 
 			// Copy Googles version of an address to something more useable for us
@@ -1335,7 +1412,23 @@
 			details.website = fromGP.website || "";		
 			details.telNo = fromGP.formatted_phone_number || fromGP.telNo || "";
 		
-		} // normaliseAddress
+		} // normalisePlacesApiAddress
+		
+		function normaliseFormattedAddress(details, src) {
+			if (!src)
+				return;
+			var elements = src.split(",");
+			
+			// pure guess!
+			if (elements.length >= 1)
+				details.street = $.trim(elements[0]);
+			if (elements.length >= 2)
+				details.town = $.trim(elements[1]);
+			if (elements.length >= 3)
+				details.area = $.trim(elements[2]);
+			if (elements.length >= 4)
+				details.postCode = $.trim(elements[3]);
+		}
 		
 		
 		/// <summary>
