@@ -154,7 +154,12 @@
 /*
 * Custom map control styles
 */
-.mappy-control-button {
+.mappy-control-button,
+:link.mappy-control-button,
+:visited.mappy-control-button,
+:hover.mappy-control-button,
+:target.mappy-control-button {
+
 	border: solid 1px #888;
 	border-radius: 2px;
 	background-color: #fff;
@@ -171,16 +176,16 @@
 	margin-top: 5px;
 	cursor: pointer;
 }
+
 :hover.mappy-control-button {
 	background-color: #ddd;
-	text-decoration: none;
 }
 
 button.mappy-select-button, 
 button.mappy-edit-button, 
 button.mappy-save-button, 
 button.mappy-delete-button, 
-a.mappy-search-button  {
+a.mappy-search-button.mappy-control-button  {
 	color: #fff;
 
 	padding: 5px 7px;
@@ -200,12 +205,13 @@ a.mappy-search-button  {
 	margin-left: 10px;
 }
 
-a.mappy-search-button {
+a.mappy-search-button.mappy-control-button {
 	/* search button is a little bit different to the other button controls */
 	padding: 7px 20px;
 	font-size: 15px;
 	margin-left: 1%;
 	margin-top: 16px;
+	line-height: 1.3;
 }
 
 
