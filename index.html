@@ -428,6 +428,28 @@ $("#search-for-places").mappy({
     // indicate tip should be closed
     return true;
   },
+
+  // shows additional instructions to the user		
+  getHelpWindow: function(mappy) {
+    var html = "" + 
+      "&lt;div class='mappy-help'&gt;" +
+        "&lt;h3&gt;Find a venue&lt;/h3&gt;" +
+        "&lt;ol&gt;" +
+          "&lt;li&gt;Simply use the &lt;strong&gt;search&lt;/strong&gt; box to find a venue in your area.&lt;/li&gt;" +
+          "&lt;li&gt;On the pop-up, click &lt;strong&gt;Select&lt;/strong&gt; to pick a pitch.&lt;/li&gt;" + 
+        "&lt;/ol&gt;" +
+        "&lt;h3&gt;New venues&lt;/h3&gt;" +
+        "&lt;ol&gt;" +
+          "&lt;li&gt;Your venue isn't displayed?  Simply click on the map where your pitch is.&lt;/li&gt;" +
+          "&lt;li&gt;Fill in the details in the dialog.&lt;/li&gt;" + 
+          "&lt;li&gt;You can drag the marker around to pinpoint the right location.&lt;/li&gt;" + 
+          "&lt;li&gt;Once you're happy, click the &lt;strong&gt;OK&lt;/strong&gt; button&lt;/li&gt;" + 
+        "&lt;/ol&gt;" +
+      "&lt;/div&gt;"
+    ;
+    
+    return html;
+  }
 	
 });								
 								</pre>
