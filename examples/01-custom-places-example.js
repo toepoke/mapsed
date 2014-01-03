@@ -2,7 +2,7 @@ function runExample3() {
 	$("#custom-places").mappy({
 		// Map initialisation options to pass onto Google Maps
 		mapOptions: {
-			zoom: 8
+			zoom: 10
 		},
 
 		customPlaces: 	

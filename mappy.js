@@ -23,6 +23,11 @@
 	;
 
 	$.fn.mappy = function (options) {
+		// consts
+		// - Somewhere near the City Varieties ...
+		var DEFAULT_CENTER = new google.maps.LatLng(53.798823, -1.5426760000000286);
+		var DEFAULT_ZOOM = 10;
+		
 		// private plug-in variables
 		var _plugIn = this,           // Reference back to the "mappy" plug-in instance
 				_searchBox = null,        // Search box that appears on the map 
@@ -36,6 +41,7 @@
 				_fullWin = false,         // Flags "mappy" is in full-window mode, which means "mappy" created the DIV we're in
 				_firstSearch = true,      // Used to ensure we don't clear markers when the map is drawn for the first time (so any "customPlaces" aren't cleared)
 				_hasMapInitFired = false, // Used to flag initialisation of the map (after Google Maps API has finished drawing it)
+				_areBoundsSet = false,    // Used to flag that an event has set the boundary (so we don't set the zoom/center manually as GM will calc this for us)
 				_helpBtn = null,          // Reference to the help dialog button ([?])
 				_helpDlg = null,          // Reference to the help dialog that is toggled by the help button
 				_closeBtn = null,         // Reference to the close button (only used in full-window mode)
@@ -62,10 +68,10 @@
 				// Initial zoom level (initially not set)
 				// ... be cautious when setting a zoom level _and_ defining custom places as you may set the
 				// ... level to such a level that your places aren't visible
-				zoom: null,
+				zoom: DEFAULT_ZOOM,
 				
 				// Default to the best theatre ever :-)
-				center: new google.maps.LatLng(53.798822, -1.542799),
+				center: DEFAULT_CENTER,
 
 				// Type of map to show initially
 				mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -373,13 +379,6 @@
 				}
 			}
 
-			// Bounds will have changed due to custom places being added.  If which case any Zoom
-			// setting will have been ignored, so kick if off again
-			var opts = settings.mapOptions;
-			if (opts && opts.zoom)
-				_gMap.setZoom(opts.zoom);
-			
-			
 		} // gmMapLoaded
 
 
@@ -437,6 +436,8 @@
 				_gmSearchBox.setBounds(bounds);
 			}
 			
+			// Boundary has been set, so don't set the zoom/center
+			_areBoundsSet = true;
 		} // gmBoundsChanged
 
 		
@@ -474,11 +475,13 @@
 				marker.showTooltip(false/*inRwMode*/);
 			}
 			
+			_areBoundsSet = true;
+			
 			return marker;
 			
 		} // addMarker
-
-
+		
+		
 		/// <summary>
 		/// Convenience function to shorten a string to a 
 		/// maximum length, adding an ellipsis (...) if required.
@@ -1274,6 +1277,13 @@
 			var so = settings.searchOptions;
 			if (so.enabled && so.initSearch && so.initSearch.length > 0) {
 				doSearch(so.initSearch);
+			}
+
+			if (!_areBoundsSet) {
+				// Boundary hasn't been set (by adding a custom place for instance)
+				// ... so apply the zoom and center (otherwise GM won't know where to draw it's map! and you'll just get a grey box)
+				_gMap.setZoom(settings.mapOptions.zoom);
+				_gMap.setCenter(settings.mapOptions.center);
 			}
 			
 		} // ctor
