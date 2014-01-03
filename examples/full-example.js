@@ -89,7 +89,7 @@ function fullWindowExample() {
 	$.fn.mappy({
 		// Map initialisation options to pass onto Google Maps
 		mapOptions: {
-			zoom: 10,
+			zoom: 15,
 			styles: _avocadoStyle	// see variables.js
 		},
 

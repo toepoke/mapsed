@@ -17,7 +17,7 @@
 	"use strict";	
 	
 	// singleton here (same variable across all instances of the plug-in)
-	var _version = '(0.1.0)',
+	var _version = '(0.0.1)',
 			_plugInName = "mappy",
 			_plugInInstances = 1
 	;
@@ -59,8 +59,10 @@
 			// you should be able to add in your own initialisation code 
 			// to this object.
 			mapOptions: {
-				// Initial zoom level
-				zoom: 10,
+				// Initial zoom level (initially not set)
+				// ... be cautious when setting a zoom level _and_ defining custom places as you may set the
+				// ... level to such a level that your places aren't visible
+				zoom: null,
 				
 				// Default to the best theatre ever :-)
 				center: new google.maps.LatLng(53.798822, -1.542799),
@@ -370,8 +372,13 @@
 					_helpBtn.trigger("click");
 				}
 			}
+
+			// Bounds will have changed due to custom places being added.  If which case any Zoom
+			// setting will have been ignored, so kick if off again
+			var opts = settings.mapOptions;
+			if (opts && opts.zoom)
+				_gMap.setZoom(opts.zoom);
 			
-			_hasMapInitFired = true;
 			
 		} // gmMapLoaded
 
@@ -424,7 +431,6 @@
 		///   boundary of the map (and therefore the boundary the search should
 		///   be applied to) has changed.
 		/// </summary>
-		// zoom in/out
 		function gmBoundsChanged() {
 			var bounds = _gMap.getBounds();
 			if (bounds) {
