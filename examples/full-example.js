@@ -59,7 +59,7 @@ var _places = [
 	// No info
 	{
 		autoShow: true,
-		canEdit: true,
+		canEdit: false,
 		lat: 53.79,
 		lng: -1.59,
 		reference: "three",
@@ -86,6 +86,7 @@ function onThemeChange(me, mappy) {
 } // onThemeChange
 
 function fullWindowExample() {
+
 	$.fn.mappy({
 		// Map initialisation options to pass onto Google Maps
 		mapOptions: {
@@ -186,9 +187,11 @@ function fullWindowExample() {
 				
 			return {
 				url: imageUrl,
-				size: new google.maps.Size(35, 50),
+				size: new google.maps.Size(28, 40),
 				origin: new google.maps.Point(0, 0),
-				anchor: new google.maps.Point(17, 34)						
+				
+				// where the little cross-hair appears (on new markers) relative to the image
+				anchor: new google.maps.Point(14, 45)
 			};
 		},
 				
@@ -257,11 +260,10 @@ function fullWindowExample() {
 
 }
 
-
 $(document).ready(function() {			
 	// wire up examples
 	
 	// wire up full window example
-	$("#show-full-window").on("click", fullWindowExample);	
+	$("#show-full-window").on("click", fullWindowExample);
 });
 
