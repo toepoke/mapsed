@@ -19,7 +19,7 @@ function runExample2() {
 			return true;
 		},
 		
-		customPlaces: 
+		showOnLoad: 
 		[
 			// City Varieties
 			{

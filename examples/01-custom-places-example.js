@@ -1,6 +1,6 @@
 function runExample3() {
 	$("#custom-places").mappy({
-		customPlaces: 	
+		showOnLoad: 	
 		[
 			// City Varieties
 			{

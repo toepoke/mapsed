@@ -47,7 +47,7 @@
 				_markers = [],            // Set of markers displayed on the map
 				_instance = -1,           // Instance "this" plug-in is managing (so we can support zmultiple maps on the page)
 				_fullWin = false,         // Flags "mappy" is in full-window mode, which means "mappy" created the DIV we're in
-				_firstSearch = true,      // Used to ensure we don't clear markers when the map is drawn for the first time (so any "customPlaces" aren't cleared)
+				_firstSearch = true,      // Used to ensure we don't clear markers when the map is drawn for the first time (so any "showOnLoad" markers aren't cleared)
 				_hasMapInitFired = false, // Used to flag initialisation of the map (after Google Maps API has finished drawing it)
 				_areBoundsSet = false,    // Used to flag that an event has set the boundary (so we don't set the zoom/center manually as GM will calc this for us)
 				_helpBtn = null,          // Reference to the help dialog button ([?])
@@ -65,7 +65,7 @@
 		var settings = $.extend({
 			// Array of places to show on the map initially
 			// (see accompanying examples for illustration)
-			customPlaces: null,
+			showOnLoad: null,
 			
 			// Options for drawing the map.  This is the same object
 			// that is passed to the Google Maps API when creating the map.
@@ -445,10 +445,10 @@
 		/// </summary>
 		function gmPlaceSelected(places, status, pagination) {
 			if (!_firstSearch) {
-				// If we're pre-populated the map with (via "customPlaces" setting)
+				// If we're pre-populated the map with markers (via "showOnLoad" setting)
 				// and put some results up on start-up (via the "initSearch" option)
-				// we don't want to clear the markers as we'll remove the "customPlaces"
-				// we've added
+				// we don't want to clear the markers as we'll remove the "showOnLoad"
+				// ones we've added
 				
 				if (_pageNum == 0)
 					clearMarkers(); 
@@ -1292,7 +1292,7 @@
 		} // getViewModel
 
 		
-		// some of these might not be there (e.g. customPlaces not passing a telephone number through)
+		// some of these might not be there (e.g. showOnLoad not passing a telephone number through)
 		// ... so make sure the data we return is sensible
 		function sanitise(place) {
 			if (!place.canEdit) place.canEdit = false;
@@ -1312,17 +1312,17 @@
 		
 		/// <summary>
 		/// Draws any custom places on the map when the map is first drawn.
-		/// - see "settings.customPlaces"
+		/// - see "settings.showOnLoad"
 		/// </summary>
-		function addCustomPlaces() {
+		function addInitialPlaces() {
 			var placeDetails = [],
 					bounds = new gm.LatLngBounds()
 			;
 			
 			clearMarkers();
 			
-			for (var i=0; i < settings.customPlaces.length; i++) {
-				var p = settings.customPlaces[i],
+			for (var i=0; i < settings.showOnLoad.length; i++) {
+				var p = settings.showOnLoad[i],
 						pos = new gm.LatLng(p.lat, p.lng),
 						markerType = ""
 				;
@@ -1341,7 +1341,7 @@
 			// we done?
 			_gMap.fitBounds(bounds);
 			
-		} // addCustomPlaces
+		} // addInitialPlaces
 
 		
 		/// <summary>
@@ -1503,8 +1503,8 @@
 			if (_fullWin || settings.onClose) {
 				addCloseButton();
 			}
-			if (settings.customPlaces != null) {
-				addCustomPlaces();
+			if (settings.showOnLoad != null) {
+				addInitialPlaces();
 			}
 			if (settings.getHelpWindow) {
 				addHelpButton();

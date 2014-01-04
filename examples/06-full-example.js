@@ -121,7 +121,7 @@ function fullWindowExample() {
 		},
 
 		// Emulate places being loaded from a db
-		customPlaces: _places,	// see variables.js
+		showOnLoad: _places,	// see variables.js
 		
 		// Adds the "+" button to the control bar at the top right of the map
 		allowAdd: true,

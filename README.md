@@ -19,7 +19,7 @@ Demos at http://mappy.apphb.com
 
 ## Settings
 
-### customPlaces *(array)*
+### showOnLoad *(array)*
 
 An array JSON objects defining places should should be displayed whe the map is first loaded.
 

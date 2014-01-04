@@ -1,6 +1,6 @@
 function runExample4() {
 	$("#delete-places").mappy({
-		customPlaces: [
+		showOnLoad: [
 			// City Varieties
 			{
 				autoShow: true,

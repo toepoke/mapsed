@@ -107,11 +107,11 @@
 				<div class="row">
 					<div class="col-md-10 col-md-offset-1">
 						<div class="portfolio-item">
-							<h3 class="text-center">Custom Places</h3>
+							<h3 class="text-center">Loading Places</h3>
 								<p class="lead">
 									Here we're illustrating loading places from our own database,
 									and telling <em>mappy</em> what places to draw
-									(via the <a href="https://github.com/toepoke/mappy/blob/master/README.md#customplaces-array">customPlaces</a>
+									(via the <a href="https://github.com/toepoke/mappy/blob/master/README.md#showOnLoad-array">showOnLoad</a>
 									array).
 								</p>
 								<p class="lead">
@@ -126,7 +126,7 @@
 								<div class="code">
 									<pre class="prettyprint lang-js">
 $("#custom-places").mappy({
-  customPlaces:
+  showOnLoad:
   [
     // City Varieties
     {
@@ -193,7 +193,7 @@ $("#place-picker").mappy({
     return true;
   },
   
-  customPlaces: 
+  showOnLoad: 
 	[
     // City Varieties
     {
@@ -321,7 +321,7 @@ $("#add-places").mappy({
 							<div class="code">
 								<pre class="prettyprint lang-js">
   $("#delete-places").mappy({
-    customPlaces: 
+    showOnLoad: 
     [
       // City Varieties
       {
@@ -354,7 +354,7 @@ $("#add-places").mappy({
 							<p class="lead">
 								Enabling <em<>deletes</em> is simply a matter of implementing the
 								<a href="https://github.com/toepoke/mappy/blob/master/README.md#ondelete">onDelete</a>
-								callback and the <strong>Delete</strong> will appear when appropriate.
+								callback and the <strong>Delete</strong> button will appear when appropriate.
 							</p>
 						</div>
 					</div>
@@ -455,8 +455,9 @@ $("#search-for-places").mappy({
 					<div class="col-md-6 col-md-offset-3 text-center">
 						<h3>Bringing it all together ...</h3>
 						<p>
-							One last feature is being able to bring up a map and taking
-							over the full window, plus a couple of other little treats.
+							One last feature is opening a map and taking
+							over the full window, plus an illustration of adding in more
+							controls (map style picker).
 						</p>
 						<p>You'll notice a little <em>[X]</em> 
 							at the top-right corner to close it when you've finished.
@@ -520,7 +521,7 @@ $("#search-for-places").mappy({
 							<a href="#top"><i class="fa fa-circle-arrow-up scroll fa-4x"></i></a>
 						</div>
 						<hr>
-						<p>Built with indifference by <a href="http://toepoke.co.uk?mappy=3">toepoke.co.uk</a></p>
+						<p>Required by necessity, built by <a href="http://toepoke.co.uk?mappy=3">toepoke.co.uk</a></p>
 						<p>Lovely template provided by <a href="http://startbootstrap.com/stylish-portfolio">start Bootstrap</a></p>
 					</div>
 				</div>
