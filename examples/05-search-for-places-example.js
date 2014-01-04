@@ -1,10 +1,5 @@
 function runExample5() {
 	$("#search-for-places").mappy({
-		// Map initialisation options to pass onto Google Maps
-		mapOptions: {
-			zoom: 15,
-		},
-
 		// Adds a predictive search box
 		searchOptions: {
 			enabled: true,
@@ -15,21 +10,20 @@ function runExample5() {
 		// allow user to select somewhere
 		onSelect: function(mappy, details) {
 			var msg = 
-				"\nName:\n" + details.name + 
-				"\n\nAddress:\n" + details.street + ", " + details.town + ", " + details.area + ", " + details.postCode +
-				"\n\nwebsite:\n" + details.website +
-				"\n\ng+:\n" + details.url +
-				"\n\nTel:\n" + details.telNo						
-			 ;
-			if (details)
-				alert("You picked:\n" + msg);
-			else
-				alert("Details could not be found .. probably no 'reference' property available.");
-			// indicate tip should be closed
+				"name: " + details.name +
+				"<br/>street: " + details.street + ", " + 
+					details.area + ", " + 
+					details.town + ", " + details.postCode + 
+				"<br/>telNo: " + details.telNo + 
+				"<br/>website: " + details.website + 
+				"<br/>g+: " + details.url
+			;
+			mappy.showMsg("You selected ...", msg);
+				// indicate tip should be closed
 			return true;
 		},
 		
-		// shows additional instructions to the user		
+		// shows additional instructions to the user	
 		getHelpWindow: function(mappy) {
 			var html = 
 				"<div class='mappy-help'>" +

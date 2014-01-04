@@ -72,8 +72,9 @@
 							be able to <em>pick</em> somewhere to play football.
 						</p>
 						<p class="lead">
-							I couldn't find anything that would satisfy this simple need 
-							(that worked with <a href="https://developers.google.com/maps/documentation/javascript/">v3</a>)
+							Couldn't really find anything that did what I was after (even
+							<a href="https://mapsengine.google.com/map/">Google Map Engine</a> 
+							didn't quite do it)
 							so I built <em>mappy.js</em>.  
 						</p>
 						<p class="lead">
@@ -108,9 +109,14 @@
 						<div class="portfolio-item">
 							<h3 class="text-center">Custom Places</h3>
 								<p class="lead">
-									The places shown here are derived from a JSON object on
-									load, illustrating loading <em>custom places</em> from 
-									your own database.
+									Here we're illustrating loading places from our own database,
+									and telling <em>mappy</em> what places to draw
+									(via the <a href="https://github.com/toepoke/mappy/blob/master/README.md#customplaces-array">customPlaces</a>
+									array).
+								</p>
+								<p class="lead">
+									One stores a lookup to a <a href="https://developers.google.com/places/documentation/details#PlaceDetailsRequests">Google Place reference</a>,
+									the other stores the whole object.
 								</p>
 								<div id="custom-places" class="small-map"></div>
 								<p class="pull-right">
@@ -120,31 +126,33 @@
 								<div class="code">
 									<pre class="prettyprint lang-js">
 $("#custom-places").mappy({
-  customPlaces: 	
-  // City Varieties
-  {
-    // flag that this place should have the tooltip shown when the map is first loaded
-    autoShow: true,
-    // flags the user can edit this place
-    canEdit: false,
-    lat: 53.798823,
-    lng:-1.5426760000000286,
-    reference: "CoQBfAAAAPw-5BTCS53grSLDwX8rwo5BnWnEWnA72lmOjxdgWg2ODGfC5lLjGyoz428IEaln1vJ6rq1jI96Npzlm-N-wmPH2jdJMGfOLxno_rmgnajAnMPzNzuI8UjexIOdHVZPBPvQGloC-tRhudGeKkbdTT-IWNP5hp4DIl4XOLWuYFOVYEhBxNPxaXZdW9uhKIETXf60hGhTc9yKchnS6oO-6z5XZJkK2ekewYQ",
-    name: "City Varieties Music Hall",
-    url: "https://plus.google.com/103655993956272197223/about?hl=en-GB",
-    website: "http://www.cityvarieties.co.uk/",
-    telNo: "0845 644 1881",
-    street: "Swan Street,",
-    town: "Leeds",
-    area: "West Yorkshire",
-    postCode: "LS1 6LW"
-  }
+  customPlaces:
+  [
+    // City Varieties
+    {
+      // flag that this place should have the tooltip shown when the map is first loaded
+      autoShow: true,
+      // flags the user can edit this place
+      canEdit: false,
+      lat: 53.798823,
+      lng:-1.5426760000000286,
+      reference: "CoQBfAAAAPw-5BTCS53grSLDwX8rwo5BnWnEWnA72lmOjxdgWg2ODGfC5lLjGyoz428IEaln1vJ6rq1jI96Npzlm-N-wmPH2jdJMGfOLxno_rmgnajAnMPzNzuI8UjexIOdHVZPBPvQGloC-tRhudGeKkbdTT-IWNP5hp4DIl4XOLWuYFOVYEhBxNPxaXZdW9uhKIETXf60hGhTc9yKchnS6oO-6z5XZJkK2ekewYQ"
+    },
+    // Random made up CUSTOM place
+    {
+      // flag that this place should have the tooltip shown when the map is first loaded
+      autoShow: true,
+      lat: 53.79,
+      lng:-1.5426760000000286,
+      name: "Somewhere",
+      street: "Over the rainbow, Up high way"
+    }
+  ]
 });									
 									</pre>
 								</div>
 								<p class="lead">
-									Clicking on a marker brings up a tooltip, just as you
-									would see in Google Maps normally.  So far, not very interesting :D
+									So far, so uninteresting :oD
 								</p>
 						</div>
 					</div>
@@ -156,8 +164,7 @@ $("#custom-places").mappy({
 						<div class="portfolio-item">
 							<h3 class="text-center">Place Picker</h3>
 							<p class="lead">
-								Try clicking on a marker this time; as before we get a nice
-								little tooltip, but ooooh there's a <em>Select</em> button.
+								Ooooh, this time there's a <em>Select</em> button!
 							</p>
 							<div id="place-picker" class="small-map"></div>
 							<p class="pull-right">
@@ -170,60 +177,40 @@ $("#place-picker").mappy({
   // allow user to select somewhere
   onSelect: function(mappy, details) {
     var msg = 
-      "\nName:\n" + details.name + 
-      "\n\nAddress:\n" + details.street + ", " + details.town + ", " + details.area + ", " + details.postCode +
-      "\n\nwebsite:\n" + details.website +
-      "\n\ng+:\n" + details.url +
-      "\n\nTel:\n" + details.telNo						
-     ;
-    if (details)
-      alert("You picked:\n" + msg);
-    else
-      alert("Details could not be found .. probably no 'reference' property available.");
+      "Name: " + details.name + 
+      "Address: " + 
+        details.street + ", " + 
+        details.town + ", " + 
+        details.area + ", " + 
+        details.postCode +
+      "website: " + details.website +
+      "g+: " + details.url +
+      "Tel: " + details.telNo						
+      ;
+    mappy.showMsg("Place selected!", msg);
+      
     // indicate tip should be closed
     return true;
   },
   
-  customPlaces: [
-    // North Bar, Leeds
-    {
-      // flags the user can edit this place
-      canEdit: false,
-      lat: 53.796592,
-      lng: -1.543926,
-      // "reference" should be a unique reference in "your system"
-      // If the user "selects" this place, this is used to map back to these details
-      reference: "sldfkjsdlkfj",
-      name: "The Former Bond Street Shopping Centre",
-      street: "Albion Street,",
-      town: "Leeds",
-      area: "West Yorkshire"
-    },
+  customPlaces: 
+	[
     // City Varieties
     {
       // flag that this place should have the tooltip shown when the map is first loaded
       autoShow: true,
-      // flags the user can edit this place
-      canEdit: false,
       lat: 53.798823,
       lng:-1.5426760000000286,
-      reference: "CoQBfAAAAPw-5BTCS53grSLDwX8rwo5BnWnEWnA72lmOjxdgWg2ODGfC5lLjGyoz428IEaln1vJ6rq1jI96Npzlm-N-wmPH2jdJMGfOLxno_rmgnajAnMPzNzuI8UjexIOdHVZPBPvQGloC-tRhudGeKkbdTT-IWNP5hp4DIl4XOLWuYFOVYEhBxNPxaXZdW9uhKIETXf60hGhTc9yKchnS6oO-6z5XZJkK2ekewYQ",
-      name: "City Varieties Music Hall",
-      url: "https://plus.google.com/103655993956272197223/about?hl=en-GB",
-      website: "http://www.cityvarieties.co.uk/",
-      telNo: "0845 644 1881",
-      street: "Swan Street,",
-      town: "Leeds",
-      area: "West Yorkshire",
-      postCode: "LS1 6LW"
+      reference: "CoQBfAAAAPw-5BTCS53grSLDwX8rwo5BnWnEWnA72lmOjxdgWg2ODGfC5lLjGyoz428IEaln1vJ6rq1jI96Npzlm-N-wmPH2jdJMGfOLxno_rmgnajAnMPzNzuI8UjexIOdHVZPBPvQGloC-tRhudGeKkbdTT-IWNP5hp4DIl4XOLWuYFOVYEhBxNPxaXZdW9uhKIETXf60hGhTc9yKchnS6oO-6z5XZJkK2ekewYQ"
     }
   ]
-);
+});
 								</pre>
 							</div>
 							<p class="lead">
-								Clicking on the <em>Select</em> button fires a callback to
-								your code (yup, that ugly <em>alert</em> is the example one).
+								The <em>Select</em> button is turned on simply by implementing 
+								the <a href="https://github.com/toepoke/mappy/blob/master/README.md#onselect">onSelect</a> 
+								callback.
 							</p>
 						</div>
 					</div>
@@ -233,14 +220,20 @@ $("#place-picker").mappy({
 				<div class="row">
 					<div class="col-md-10 col-md-offset-1">
 						<div class="portfolio-item">
-							<h3 class="text-center">Adding [Custom] Places</h3>
+							<h3 class="text-center">Adding Places</h3>
 							<p class="lead">
 								Being able to <em>Select</em> places is pretty useful,
 								but a waste of time if we can't create them!
 							</p>
 							<p class="lead">
-								You may notice this time a new icon <em>[+]</em> at the
-								top-right of the map.  Click this to add a new place.								
+								This time we have a new icon at the
+								top-right of the map.  Simply click <strong>+</strong> 
+								to add a new place.
+								The marker can be dragged around to refine the location.
+							</p>
+							<p class="lead">
+								There's noddy validation support too, try hitting <em>Save</em>
+								without a <strong>Name</strong> property.
 							</p>
 							<div id="add-places" class="small-map"></div>
 							<p class="pull-right">
@@ -273,18 +266,21 @@ $("#add-places").mappy({
     }
     
     if (newPlace) {
-      var msg = "onSave (" +
-      "name: '" + newPlace.name +
-      "', street: '" + newPlace.street +
-      "', area: '" + newPlace.area +
-      "', town: '" + newPlace.town +
-      "', postcode: '" + newPlace.postCode + 
-      "', telNo: '" + newPlace.telNo + 
-      "', website: '" + newPlace.website + 
-      "', g+: '" + newPlace.url +
-      "')"
+      var title = "";
+      var msg = 
+        "name: " + newPlace.name +
+        "street: " + newPlace.street + ", " + 
+        newPlace.area + ", " + 
+        newPlace.town + ", " + newPlace.postCode + 
+        "telNo: " + newPlace.telNo + 
+        "website: " + newPlace.website + 
+        "g+: " + newPlace.url
       ;
-      alert(msg);		
+      if (newPlace.markerType == "new")
+        title = "New place added!";
+      else
+        title = "Place saved!";
+      mappy.showMsg(title, msg);
     }
   
     // indicate form was OK and saved
@@ -294,9 +290,16 @@ $("#add-places").mappy({
 								</pre>
 							</div>
 							<p class="lead">
-								There's some noddy validation too, try hitting <em>Save</em>
-								without a <em>Name</em> property.
+								Notice once we've saved a place, we get an <em>Edit</em>
+								button to make changes.
 							</p>
+							<p class="lead">
+								Simply set the <a href="https://github.com/toepoke/mappy/blob/master/README.md#allowadd-bool">allowAdd</a>
+								property to <strong>true</strong> to enable the icon, and an 
+								<a href="https://github.com/toepoke/mappy/blob/master/README.md#onsave">onSave</a>
+								callback to save the new place (and subsequent edits).
+							</p>
+							
 						</div>
 					</div>
 				</div>
@@ -305,83 +308,53 @@ $("#add-places").mappy({
 				<div class="row">
 					 <div class="col-md-10 col-md-offset-1">
 						<div class="portfolio-item">
-							<h3 class="text-center">Editing [Custom] Places</h3>
+							<h3 class="text-center">Deleting Places</h3>
 							<p class="lead">
-								OK, adding new places is pretty cool ... but not very cool if 
-								we can't change the definition afterwards?
+								Completing our <a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">cruddy</a>
+								demos we can <strong>delete</strong> places too.
 							</p>
-							<div id="edit-places" class="small-map"></div>
+							<div id="delete-places" class="small-map"></div>
 							<p class="pull-right">
 								<a class="show-code">show/hide code illustration</a>
 							</p>
 							<div class="clearfix"></div>
 							<div class="code">
 								<pre class="prettyprint lang-js">
-$("#edit-places").mappy({
-  customPlaces: [
-    // City Varieties
-    {
-    autoShow: true,
-    canEdit: true,
-    lat: 53.798823,
-    lng:-1.5426760000000286,
-    //reference: "CoQBfAAAAPw-5BTCS53grSLDwX8rwo5BnWnEWnA72lmOjxdgWg2ODGfC5lLjGyoz428IEaln1vJ6rq1jI96Npzlm-N-wmPH2jdJMGfOLxno_rmgnajAnMPzNzuI8UjexIOdHVZPBPvQGloC-tRhudGeKkbdTT-IWNP5hp4DIl4XOLWuYFOVYEhBxNPxaXZdW9uhKIETXf60hGhTc9yKchnS6oO-6z5XZJkK2ekewYQ",
-    reference: "two",
-    name: "CITY Varieties Music Hall",
-    url: "https://plus.google.com/103655993956272197223/about?hl=en-GB",
-    website: "http://www.cityvarieties.co.uk/",
-    telNo: "0845 644 1881",
-    street: "Swan Street,",
-    town: "Leeds",
-    area: "West Yorkshire",
-    postCode: "LS1 6LW"
-    }
-  ],
-	
-  // Enables edit of custom places (to your web application, not Google Maps!)
-  // ... again the presence of the callback enables the functionality
-  onSave: function(mappy, newPlace) {
-    var missing = [];
+  $("#delete-places").mappy({
+    customPlaces: 
+    [
+      // City Varieties
+      {
+        autoShow: true,
+        canEdit: true,
+        lat: 53.798823,
+        lng:-1.5426760000000286,
+        name: "CITY Varieties Music Hall",
+        url: "https://plus.google.com/103655993956272197223/about?hl=en-GB",
+        website: "http://www.cityvarieties.co.uk/",
+        telNo: "0845 644 1881",
+        street: "Swan Street,",
+        town: "Leeds",
+        area: "West Yorkshire",
+        postCode: "LS1 6LW"
+      }
+    ],
     
-    // detect errors starting at bottom
-    // ... we only have space for one error at a time, so this way we'll report 
-    // ... from the top down
-    if (newPlace.postCode === "") missing.push("postcode");
-    if (newPlace.street === "")   missing.push("street");
-    if (newPlace.name === "")     missing.push("name");
-    
-    // anything missing?
-    if (missing.length > 0) {
-    // return the error message so the callback doesn't progress
-    return "Required: " + missing.join();
+    // Allows the user to delete a "custom" place they've previously 
+    // ... added
+    onDelete: function(mappy, placeToDelete) {
+      var msg = "About to delete " + placeToDelete.name + "\n\nAre you sure?";
+      
+      // confirm delete ... this could be a js confirm if you want confirmation
+      return confirm(msg);
     }
-    
-    if (newPlace) {
-      var msg = "onSave (" +
-      "name: '" + newPlace.name +
-      "', street: '" + newPlace.street +
-      "', area: '" + newPlace.area +
-      "', town: '" + newPlace.town +
-      "', postcode: '" + newPlace.postCode + 
-      "', telNo: '" + newPlace.telNo + 
-      "', website: '" + newPlace.website + 
-      "', g+: '" + newPlace.url +
-      "')"
-      ;
-      alert(msg);		
-    }
-
-    // indicate form was OK and saved
-    return "";
-  }
-			
-});									
+  });
 								</pre>
 							</div>
 							<p class="lead">
-								There's noddy validation here too (indeed the <em>Save</em>
-								for an <em>edit</em> is the same callback as for <em>new</em>
-								places).
+								Enabling <em<>deletes</em> is simply a matter of implementing the
+								<a href="https://github.com/toepoke/mappy/blob/master/README.md#ondelete">onDelete</a>
+								callback and the <strong>Delete</strong> will appear when appropriate.
 							</p>
 						</div>
 					</div>
@@ -411,27 +384,26 @@ $("#search-for-places").mappy({
     initSearch: "Football in Leeds",
     placeholder: "Search ..."
   },
-
+  
   // allow user to select somewhere
   onSelect: function(mappy, details) {
     var msg = 
-      "\nName:\n" + details.name + 
-      "\n\nAddress:\n" + details.street + ", " + details.town + ", " + details.area + ", " + details.postCode +
-      "\n\nwebsite:\n" + details.website +
-      "\n\ng+:\n" + details.url +
-      "\n\nTel:\n" + details.telNo						
-     ;
-    if (details)
-      alert("You picked:\n" + msg);
-    else
-      alert("Details could not be found .. probably no 'reference' property available.");
+      "name: " + details.name +
+      "street: " + details.street + ", " + 
+      details.area + ", " + 
+      details.town + ", " + details.postCode + 
+      "telNo: " + details.telNo + 
+      "website: " + details.website + 
+      "g+: " + details.url
+    ;
+    mappy.showMsg("You selected ...", msg);
     // indicate tip should be closed
     return true;
   },
-
-  // shows additional instructions to the user		
+  
+  // shows additional instructions to the user	
   getHelpWindow: function(mappy) {
-    var html = "" + 
+    var html = 
       "&lt;div class='mappy-help'&gt;" +
         "&lt;h3&gt;Find a venue&lt;/h3&gt;" +
         "&lt;ol&gt;" +
@@ -447,17 +419,24 @@ $("#search-for-places").mappy({
         "&lt;/ol&gt;" +
       "&lt;/div&gt;"
     ;
-    
     return html;
   }
-	
-});								
+  
+});
 								</pre>
 							</div>
 							<p class="lead">
-								Notice that little <em>[?]</em> in the top-right corner of the
-								map?  This brings up some small text telling your users what
-								to do, and it's configurable of course!
+								Searching is enabled through the <a href="https://github.com/toepoke/mappy/blob/master/README.md#searchoptions-object">searchOptions</a>
+								object (you simply flip a flag to enable it).
+								The <strong>More</strong> button returns the 
+								<a href="https://developers.google.com/maps/documentation/javascript/places#PlaceSearchPaging">next 20 hits</a>.
+							</p>
+							<p class="lead">
+								Also notice that little <em>[?]</em> in the top-right corner of the
+								map?  This brings up a window telling your users what
+								to do, and it's <a href="https://github.com/toepoke/mappy/blob/master/README.md#gethelpwindow-string">configurable</a> 
+								of course, and you can have it show 
+								<a href="https://github.com/toepoke/mappy/blob/master/README.md#showhelponload-bool">straight away</a>.
 							</p>
 						</div>
 					</div>
@@ -488,7 +467,7 @@ $("#search-for-places").mappy({
 							... added advantage of <em>full window mode</em> is you don't even
 							need a <em>DIV</em> as a placeholder for the map!
 						</p>
-						<a href="examples/examples.js">see fullWindowExample function</a>
+						<a href="https://github.com/toepoke/mappy/blob/master/examples/06-full-example.js">see 06-full-example.js</a>
 					</div>
 				</div>
 			</div>
@@ -559,12 +538,12 @@ $("#search-for-places").mappy({
 		<script src="mappy.js"></script>
 		
 		<!-- Examples JavaScript -->
-		<script src="examples/full-example.js"></script>
 		<script src="examples/01-custom-places-example.js"></script>
 		<script src="examples/02-place-picker-example.js"></script>
 		<script src="examples/03-add-places-example.js"></script>
-		<script src="examples/04-edit-places-example.js"></script>
+		<script src="examples/04-delete-places-example.js"></script>
 		<script src="examples/05-search-for-places-example.js"></script>
+		<script src="examples/06-full-example.js"></script>
 		
 		
 		

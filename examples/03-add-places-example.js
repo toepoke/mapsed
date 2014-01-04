@@ -23,18 +23,21 @@ function runExample1() {
 			}
 			
 			if (newPlace) {
-				var msg = "onSave (" +
-				"name: '" + newPlace.name +
-				"', street: '" + newPlace.street +
-				"', area: '" + newPlace.area +
-				"', town: '" + newPlace.town +
-				"', postcode: '" + newPlace.postCode + 
-				"', telNo: '" + newPlace.telNo + 
-				"', website: '" + newPlace.website + 
-				"', g+: '" + newPlace.url +
-				"')"
+				var title = "";
+				var msg = 
+					"name: " + newPlace.name +
+					"<br/>street: " + newPlace.street + ", " + 
+						newPlace.area + ", " + 
+						newPlace.town + ", " + newPlace.postCode + 
+					"<br/>telNo: " + newPlace.telNo + 
+					"<br/>website: " + newPlace.website + 
+					"<br/>g+: " + newPlace.url
 				;
-				alert(msg);		
+				if (newPlace.markerType == "new")
+					title = "New place added!";
+				else
+					title = "Place saved!";
+				mappy.showMsg(title, msg);
 			}
 		
 			// indicate form was OK and saved

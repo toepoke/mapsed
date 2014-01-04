@@ -1,6 +1,13 @@
-var _myWin = null;
+
+// 
+// Map style to use when loading the map
+//
 var _avocadoStyle = [{"featureType":"water","elementType":"geometry","stylers":[{"visibility":"on"},{"color":"#aee2e0"}]},{"featureType":"landscape","elementType":"geometry.fill","stylers":[{"color":"#abce83"}]},{"featureType":"poi","elementType":"geometry.fill","stylers":[{"color":"#769E72"}]},{"featureType":"poi","elementType":"labels.text.fill","stylers":[{"color":"#7B8758"}]},{"featureType":"poi","elementType":"labels.text.stroke","stylers":[{"color":"#EBF4A4"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"visibility":"simplified"},{"color":"#8dab68"}]},{"featureType":"road","elementType":"geometry.fill","stylers":[{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels.text.fill","stylers":[{"color":"#5B5B3F"}]},{"featureType":"road","elementType":"labels.text.stroke","stylers":[{"color":"#ABCE83"}]},{"featureType":"road","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#A4C67D"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#9BBF72"}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"color":"#EBF4A4"}]},{"featureType":"transit","stylers":[{"visibility":"off"}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"visibility":"on"},{"color":"#87ae79"}]},{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#7f2200"},{"visibility":"off"}]},{"featureType":"administrative","elementType":"labels.text.stroke","stylers":[{"color":"#ffffff"},{"visibility":"on"},{"weight":4.1}]},{"featureType":"administrative","elementType":"labels.text.fill","stylers":[{"color":"#495421"}]},{"featureType":"administrative.neighborhood","elementType":"labels","stylers":[{"visibility":"off"}]}];
 
+//
+// Some custom themes, outlinging how additional controls can be added
+// ... in this example there's a SELECT dropdown list with themes that can be picked
+//
 var _snazzyMaps = [
 	{
 		"name": "Avocado",
@@ -19,56 +26,41 @@ var _snazzyMaps = [
 		"theme":
 			[{"featureType":"water","stylers":[{"color":"#46bcec"},{"visibility":"on"}]},{"featureType":"landscape","stylers":[{"color":"#f2f2f2"}]},{"featureType":"road","stylers":[{"saturation":-100},{"lightness":45}]},{"featureType":"road.highway","stylers":[{"visibility":"simplified"}]},{"featureType":"road.arterial","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"administrative","elementType":"labels.text.fill","stylers":[{"color":"#444444"}]},{"featureType":"transit","stylers":[{"visibility":"off"}]},{"featureType":"poi","stylers":[{"visibility":"off"}]}]
 	}
-
 ];
 
+// Some custom places to show when loading the full map, again to illustrate how it's done
 var _places = [
-	// North Bar, Leeds
-	{
-		// "canEdit" flags that the user can edit the contents of this place
-		// once the user has finished editing you will get the "onEditOK" event
-		// 
-		autoShow: false,
-		canEdit: true,
-		lat: 53.796592,
-		lng: -1.543926,
-		// "reference" should be a unique reference in "your system"
-		// If the user "selects" this place, this is used to map back to these details
-		//reference: "one",
-		name: "The Former Bond Street Shopping Centre",
-		street: "Albion Street,",
-		town: "Leeds",
-		area: "West Yorkshire"
-	},
 	// City Varieties
 	{
+		// Flag this place should be shown as tooltip once the map has finished loading
 		autoShow: true,
+		// "canEdit" flags that the user can edit the contents of this place
+		// once the user has finished editing you will get the "onEditOK" event
 		canEdit: true,
 		lat: 53.798823,
 		lng:-1.5426760000000286,
+		// The "reference" is a Google Places reference string 
+		// This is used to query Google Places for the details of the marker
+		// Useful if you only want to store references rather than a whole place object in your database
+		// Note: Google Places CANNOT be edited, only CUSTOM places can (see next place below)
 		reference: "CoQBfAAAAPw-5BTCS53grSLDwX8rwo5BnWnEWnA72lmOjxdgWg2ODGfC5lLjGyoz428IEaln1vJ6rq1jI96Npzlm-N-wmPH2jdJMGfOLxno_rmgnajAnMPzNzuI8UjexIOdHVZPBPvQGloC-tRhudGeKkbdTT-IWNP5hp4DIl4XOLWuYFOVYEhBxNPxaXZdW9uhKIETXf60hGhTc9yKchnS6oO-6z5XZJkK2ekewYQ",
-		//reference: "two",
-		name: "CITY Varieties Music Hall",
-		url: "https://plus.google.com/103655993956272197223/about?hl=en-GB",
-		website: "http://www.cityvarieties.co.uk/",
-		telNo: "0845 644 1881",
-		street: "Swan Street,",
-		town: "Leeds",
-		area: "West Yorkshire",
-		postCode: "LS1 6LW"
 	},
-	// No info
+	// Random made up CUSTOM place
 	{
-		autoShow: false,
-		canEdit: false,
+		// Flag this place can edited (tooltip has an "Edit" button)
+		// Once editing has completed a callback is fired so you can save the details to your DB
+		canEdit: true,
 		lat: 53.79,
 		lng: -1.59,
-		//reference: "three",
 		name: "Somewhere",
-		street: "Over the rainbow,"
+		street: "Over the rainbow, Up high way"
 	}
 ];
 
+
+//
+// Theme dropdown change event code, applies the selected theme
+//
 function onThemeChange(me, mappy) {
 	var themeName = me.val(),
 			themeJSON = ""
@@ -86,9 +78,35 @@ function onThemeChange(me, mappy) {
 
 } // onThemeChange
 
+
+// 
+// Helper method for displaying the details of a place in this demo.
+// 
+function getPlaceHtml(details) {
+	var html = 
+		"Location:&nbsp;&nbsp;" + details.lat + " / " + details.lng + "<br/><br/>" +
+		"Name:&nbsp;&nbsp;" + details.name + "<br/><br/>" +
+		"Address:&nbsp;&nbsp;" + details.street + 
+			", " + details.town + 
+			", " + details.area + 
+			", " + details.postCode + 
+			"<br/><br/>" +
+		"website:&nbsp;&nbsp;<a href='" + details.website + "'>website</a><br/>" +
+		"g+&nbsp;&nbsp;<a href='" + details.url + "'>google+ page</a><br/>" +
+		"Tel:&nbsp;&nbsp;" + details.telNo
+	return html;
+}
+
+
+//
+// Builds up the mappy object for the demo, wires up default options and
+// event handlers.
+// There's quite a lot here as we're illustrating pretty much everything.
+// Don't be put off ... you won't need anywhere near this level ... probably :oD
+// 
 function fullWindowExample() {
 
-	_myWin = $.fn.mappy({
+	$.fn.mappy({
 		// Map initialisation options to pass onto Google Maps
 		mapOptions: {
 			zoom: 15,
@@ -112,18 +130,10 @@ function fullWindowExample() {
 		// ... note the presence of the callback is 
 		// ... all that's required to enable selection
 		onSelect: function(mappy, details) {
-			var msg = 
-				"\nLocation: " + details.lat + " / " + details.lng +
-				"\n\nName:\n" + details.name + 
-				"\n\nAddress:\n" + details.street + ", " + details.town + ", " + details.area + ", " + details.postCode +
-				"\n\nwebsite:\n" + details.website +
-				"\n\ng+:\n" + details.url +
-				"\n\nTel:\n" + details.telNo						
-			;
-			if (details)
-				alert("You picked:\n" + msg);
-			else
-				alert("Details could not be found .. probably no 'reference' property available.");
+			var msg = getPlaceHtml(details);
+			
+			mappy.showMsg("You selected", msg);
+				
 			// indicate tip should be closed
 			return true;
 		},
@@ -147,18 +157,9 @@ function fullWindowExample() {
 			}
 			
 			if (newPlace) {
-				var msg = "onSave (" +
-					"name: '" + newPlace.name +
-					"', street: '" + newPlace.street +
-					"', area: '" + newPlace.area +
-					"', town: '" + newPlace.town +
-					"', postcode: '" + newPlace.postCode + 
-					"', telNo: '" + newPlace.telNo + 
-					"', website: '" + newPlace.website + 
-					"', g+: '" + newPlace.url +
-					"')"
-				;
-				alert(msg);		
+				var msg = getPlaceHtml(newPlace);
+
+				mappy.showMsg("Place saved!", msg);
 			}
 
 			// indicate form was OK and saved
@@ -168,8 +169,9 @@ function fullWindowExample() {
 		// Allows the user to delete a "custom" place they've previously 
 		// ... added
 		onDelete: function(mappy, placeToDelete) {
-			var msg = "Are you sure you want to delete '" + placeToDelete.name + "'";
-			
+			var msg = "About to delete " + placeToDelete.name + "\n\nAre you sure?";
+
+			// confirm delete ... this could be a js confirm if you want confirmation
 			return confirm(msg);
 		},
               		
@@ -197,7 +199,7 @@ function fullWindowExample() {
 			};
 		},
 				
-		// shows additional instructions to the user		
+		// shows additional instructions to the user
 		getHelpWindow: function(mappy) {
 			var html = 
 				"<div class='mappy-help'>" +
@@ -218,7 +220,9 @@ function fullWindowExample() {
 
 			return html;
 		},
-				
+		showHelpOnLoad: true,
+
+		// Callback for when the user tries to load the map
 		onClose: function(mappy) {
 			var closeMap = confirm("Close map?");
 
@@ -226,6 +230,8 @@ function fullWindowExample() {
 			return closeMap;
 		},
 		
+		// Fired once the mappy object has initialised, but before the map 
+		// has been drawn.  If you wish to add custom controls, this is where to do it
 		onPreInit: function(mappy) {
 			var html = "",
 					$select = null,
@@ -249,15 +255,19 @@ function fullWindowExample() {
 			
 			
 			// add warning about problems with POI being turn off with custom maps
-			html = "<div><p>Please note that POI cannot be turned off when using styled maps.</p></div>";
+			html = 
+				"<div>" + 
+					"<p>Please note that POI cannot be turned off when using styled maps.</p>" + 
+				"</div>"
+			;
 			mappy.addMapControl(html, google.maps.ControlPosition.BOTTOM_LEFT);
 		},
 		
+		// Fired once the map has completed loading
 		onInit: function(mappy) {
 			
 		}
-		
-		
+
 	});
 
 }
