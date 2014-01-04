@@ -298,7 +298,7 @@ button.mappy-more-button[disabled] {
 				opacity: 0.8;
 				border-radius: 5px 5px 0 0;
 			}			
-			.mappy-modal-close {
+			.mappy-modal-content button {
 				padding: 5px 10px;
 				background: #c0392b;
 				border: none;
@@ -306,10 +306,11 @@ button.mappy-more-button[disabled] {
 				letter-spacing: 1px;
 				text-transform: uppercase;
 				border-radius: 2px;
-				text-align: right;
 				cursor: pointer;
 				display: block;
 				margin: 30px auto 0px auto;
+				float: none;
+				opacity: 1;
 			}
 			:hover.mappy-modal-close {
 				background-color: #A5281B;

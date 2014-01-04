@@ -9,7 +9,13 @@
  *
  * Compressed with:
  *   - http://closure-compiler.appspot.com/
- * 
+ *
+ * TODO:
+ * Change "customPlaces" to "showOnLoad"
+ *   - then change the docs and code to talk about "google" places (with reference)
+ *     and "custom" places with streets, etc
+ * Also add a "confirmDelete" flag that does the confirmation for us before firing
+ *     "onDelete", so we only callback the user when we know they've said "OK"
 */
 
 (function () {
@@ -240,38 +246,32 @@
 
 		} // closeMap
 		
-		
 		/// <summary>
 		/// Displays a modal message over the top of the map
 		/// </summary>
-		this.showMsg = function(title, msg) {
+		this.showMsg = function(title, msg, callback) {
 			var $modal = null,
-					html = ""
+					html = "",
+					buttons = ""
 			;
 			
 			$modal = _mapContainer.find(".mappy-modal");
 			
 			if ($modal.length > 0) {
-				// already been added, just update what's there
-				$modal
-					.find("h3")
-						.text(title)
-					.end()
-					.find(".mappy-modal-message")
-						.text(msg)
-					.end()
-					.fadeIn()
-				;
-				return;
+				// usually we'd just re-use it, but we need to change basically 
+				// everything (include the callback)
+				$modal.remove();
 			}
-		
+			
 			html = 
 				"<div class='mappy-modal'>" + 
 					"<div class='mappy-modal-content'>" + 
 						"<h3>" + title + "</h3>" + 
 						"<div>" +
-							"<div class='mappy-modal-message'>" + msg + "</div>" +
-							"<button class='mappy-modal-close'>Close</button>" + 
+							"<div class='mappy-modal-message'>" + 
+								msg + 
+							"</div>" +
+							"<button class='close'>OK</button>" + 
 						"</div>" + 
 					"</div>" + 
 				"</div>"
@@ -279,11 +279,18 @@
 			
 			$modal = $(html).appendTo(_mapContainer);
 			$modal
-				.find(".mappy-modal-close")
-					.on("click", function() { $modal.fadeOut(); })
+				.find("button")
+					.on("click", function() { 
+						var $btn = $(this);
+						
+						$modal.fadeOut(); 
+						if (callback)
+							callback($btn);
+					})
 					.end()
 				.fadeIn()
 			;
+
 		} // showMsg
 				
 				
@@ -382,7 +389,8 @@
 			jQuery.extend(marker.details, place);
 			
 			// once an object has been edited successfully it becomes a normal editable "custom" object
-			marker.markerType = "custom";
+			//marker.markerType = marker.details.markerType = "custom";
+			root.find(".mappy-marker-type").val("custom");
 			
 			// editing complete, go back to the "Select" mode
 			marker.showTooltip(false/*inRwMode*/);
@@ -1337,102 +1345,6 @@
 
 		
 		/// <summary>
-		/// Constructor
-		/// </summary>
-		var ctor = function() {
-			var containerId = null;
-
-			// Set up Google API namespace references
-			gm = google.maps;
-			gp = google.maps.places;
-
-			containerId = _mapContainer.attr("id");
-			_gMap = new gm.Map( 
-				document.getElementById(containerId), 
-				settings.mapOptions
-			);
-			if (settings.disablePoi) {
-				// Turns off Points-of-view 
-				// ... (i.e. the default Google clicks you usually get in Google Maps)
-				_plugIn.disablePointsOfInterest();
-			}
-			_placesApi = new gp.PlacesService(_gMap);
-			_instance = _plugInInstances++;
-			
-			if (settings.onSelect) {
-				_mapContainer.on("click", "button.mappy-select-button", 
-					onPlaceSelect
-				);
-			}
-			if (settings.onSave) {
-				_mapContainer.on("click", "button.mappy-save-button", 
-					onPlaceSave
-				);
-				// only allow edit if the user can actually save the result!
-				_mapContainer.on("click", "button.mappy-edit-button", 
-					onPlaceEdit
-				);
-			}
-			if (settings.onDelete) {
-				_mapContainer.on("click", "button.mappy-delete-button", 
-					onPlaceDelete
-				);
-			}
-			
-			
-			if (settings.searchOptions.enabled) {
-				addSearch();
-			}
-			if (_fullWin || settings.onClose) {
-				addCloseButton();
-			}
-			if (settings.customPlaces != null) {
-				addCustomPlaces();
-			}
-			if (settings.getHelpWindow) {
-				addHelpButton();
-			}
-			if (settings.allowAdd) {
-				addNewPlaceButton();
-			}
-			if (settings.onPreInit) {
-				settings.onPreInit(_plugIn);
-			}
-			
-			
-			gm.event.addListener(_gMap, "tilesloaded", function(evt) {
-				// tiles_loaded event is still too early to initialise the map
-				// so give it another second to finish up before we initialise ourselves
-				if (_hasMapInitFired)
-					// already wired up
-					return;
-
-				gmMapLoaded();
-				
-				// flag it's been done
-				_hasMapInitFired = true;
-				
-				if (settings.onInit) {
-					settings.onInit(_plugIn);
-				}
-			});
-			
-			var so = settings.searchOptions;
-			if (so.enabled && so.initSearch && so.initSearch.length > 0) {
-				doSearch(so.initSearch);
-			}
-
-			if (!_areBoundsSet) {
-				// Boundary hasn't been set (by adding a custom place for instance)
-				// ... so apply the zoom and center (otherwise GM won't know where to draw it's map! and you'll just get a grey box)
-				_gMap.setZoom(settings.mapOptions.zoom);
-				_gMap.setCenter(settings.mapOptions.center);
-			}
-			
-		} // ctor
-		
-		
-		/// <summary>
 		/// Performs a search on the map for the given search string, drawing
 		/// the results on the map
 		/// </summary>
@@ -1540,7 +1452,108 @@
 		//
 		// Initialisers
 		//
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		var ctor = function() {
+			var containerId = null;
+
+			// Set up Google API namespace references
+			gm = google.maps;
+			gp = google.maps.places;
+
+			containerId = _mapContainer.attr("id");
+			_gMap = new gm.Map( 
+				document.getElementById(containerId), 
+				settings.mapOptions
+			);
+			if (settings.disablePoi) {
+				// Turns off Points-of-view 
+				// ... (i.e. the default Google clicks you usually get in Google Maps)
+				_plugIn.disablePointsOfInterest();
+			}
+			_placesApi = new gp.PlacesService(_gMap);
+			_instance = _plugInInstances++;
+			
+			if (settings.onSelect) {
+				_mapContainer.on("click", "button.mappy-select-button", 
+					onPlaceSelect
+				);
+			}
+			if (settings.onSave) {
+				_mapContainer.on("click", "button.mappy-save-button", 
+					onPlaceSave
+				);
+				// only allow edit if the user can actually save the result!
+				_mapContainer.on("click", "button.mappy-edit-button", 
+					onPlaceEdit
+				);
+			}
+			if (settings.onDelete) {
+				_mapContainer.on("click", "button.mappy-delete-button", 
+					onPlaceDelete
+				);
+			}
+			
+			
+			if (settings.searchOptions.enabled) {
+				addSearch();
+			}
+			if (_fullWin || settings.onClose) {
+				addCloseButton();
+			}
+			if (settings.customPlaces != null) {
+				addCustomPlaces();
+			}
+			if (settings.getHelpWindow) {
+				addHelpButton();
+			}
+			if (settings.allowAdd) {
+				addNewPlaceButton();
+			}
+			if (settings.onPreInit) {
+				settings.onPreInit(_plugIn);
+			}
+			
+			
+			gm.event.addListener(_gMap, "tilesloaded", function(evt) {
+				// tiles_loaded event is still too early to initialise the map
+				// so give it another second to finish up before we initialise ourselves
+				if (_hasMapInitFired)
+					// already wired up
+					return;
+
+				gmMapLoaded();
 				
+				// flag it's been done
+				_hasMapInitFired = true;
+				
+				if (settings.onInit) {
+					settings.onInit(_plugIn);
+				}
+			});
+			
+			var so = settings.searchOptions;
+			if (so.enabled && so.initSearch && so.initSearch.length > 0) {
+				doSearch(so.initSearch);
+			}
+
+			if (!_areBoundsSet) {
+				// Boundary hasn't been set (by adding a custom place for instance)
+				// ... so apply the zoom and center (otherwise GM won't know where to draw it's map! and you'll just get a grey box)
+				_gMap.setZoom(settings.mapOptions.zoom);
+				_gMap.setCenter(settings.mapOptions.center);
+			}
+
+			var plugger = 'plugin_' + _plugInName;
+			if (!_mapContainer.data(plugger)) {
+				_mapContainer.data(plugger, _plugIn);
+			}
+			
+		} // ctor
+		
+						
 		// Selector entry point
 		this.each(function () {
 			_mapContainer = $(this);
@@ -1560,6 +1573,7 @@
 			}
 			// flag we're in full window mode
 			_fullWin = true;
+			
 			ctor();				
 		}
 		
