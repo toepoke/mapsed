@@ -48,6 +48,8 @@ Places an "add place" icon (+) in the top-right of the map which allows the user
 
 The *onSave* callback (see below) must be implemented to capture the place being added so it can be saved.
 
+[See add places example](examples/03-add-places-example.js)
+
 ### searchOptions *(object)*
 
 *searchOptions* is a JavaScript object (i.e. a child object) for defining how search functionality should be added to the map:
