@@ -266,6 +266,55 @@ button.mappy-more-button[disabled] {
 		background-color: #ccc;
 	}
 	
+	/* modal message support */
+	.mappy-modal {
+		position: fixed;
+		top: 25%;
+		left: 25%;
+		width: 50%;
+		max-width: 630px;
+		min-width: 320px;
+		z-index: 2000;
+		height: auto;
+		font-family: "Calibri", "Arial";
+		display: none;
+	}
+		.mappy-modal-content {
+			color: #fff;
+			background: #e74c3c;
+			border-radius: 5px;
+		}
+			.mappy-modal-content > div {
+				padding: 10px;
+				min-height: 100px;
+			}
+			.mappy-modal-content h3 {
+				text-align: center;
+				padding: 10px;
+				margin: 0;
+				background-color: #BD4236;
+				font-weight: 300;
+				font-size: x-large;
+				opacity: 0.8;
+				border-radius: 5px 5px 0 0;
+			}			
+			.mappy-modal-close {
+				padding: 5px 10px;
+				background: #c0392b;
+				border: none;
+				color: #fff;
+				letter-spacing: 1px;
+				text-transform: uppercase;
+				border-radius: 2px;
+				text-align: right;
+				cursor: pointer;
+				display: block;
+				margin: 30px auto 0px auto;
+			}
+			:hover.mappy-modal-close {
+				background-color: #A5281B;
+			}
+
 	
 	
 	

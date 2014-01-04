@@ -239,6 +239,52 @@
 			_fullWin = false;
 
 		} // closeMap
+		
+		
+		/// <summary>
+		/// Displays a modal message over the top of the map
+		/// </summary>
+		this.showMsg = function(title, msg) {
+			var $modal = null,
+					html = ""
+			;
+			
+			$modal = _mapContainer.find(".mappy-modal");
+			
+			if ($modal.length > 0) {
+				// already been added, just update what's there
+				$modal
+					.find("h3")
+						.text(title)
+					.end()
+					.find(".mappy-modal-message")
+						.text(msg)
+					.end()
+					.fadeIn()
+				;
+				return;
+			}
+		
+			html = 
+				"<div class='mappy-modal'>" + 
+					"<div class='mappy-modal-content'>" + 
+						"<h3>" + title + "</h3>" + 
+						"<div>" +
+							"<div class='mappy-modal-message'>" + msg + "</div>" +
+							"<button class='mappy-modal-close'>Close</button>" + 
+						"</div>" + 
+					"</div>" + 
+				"</div>"
+			;
+			
+			$modal = $(html).appendTo(_mapContainer);
+			$modal
+				.find(".mappy-modal-close")
+					.on("click", function() { $modal.fadeOut(); })
+					.end()
+				.fadeIn()
+			;
+		} // showMsg
 				
 				
 		//
@@ -400,6 +446,11 @@
 					clearMarkers(); 
 			}
 			_firstSearch = false;
+			
+			if (status == "ZERO_RESULTS") {
+				// nothing to see here
+				_plugIn.showMsg("No results", "Your search returned no results.");
+			}
 			
 			// For each place, get the icon, place name, and location.
 			var bounds = new gm.LatLngBounds();
@@ -622,10 +673,17 @@
 			var settings = _plugIn.getSettings();
 
 			if (settings.onSelect || settings.onSave || settings.onDelete) {
-				var showSelect = settings.onSelect != null,
-						showSave = (settings.onSave != null && model.canEdit),
-						showDelete = (
-							settings.onDelete != null && model.canEdit 
+				var showSelect,showSave,showDelete,canEdit;
+
+				canEdit = model.canEdit;
+				// however if it's a google marker we can't, so ignore what the input says!
+				if (model.markerType == "google")
+					canEdit = false;
+				
+				showSelect = settings.onSelect != null;
+				showSave = (settings.onSave != null && canEdit);
+				showDelete = (
+							settings.onDelete != null && canEdit 
 							// can only delete markers we created!
 							&& model.markerType == "custom"
 						)
@@ -1257,10 +1315,19 @@
 			
 			for (var i=0; i < settings.customPlaces.length; i++) {
 				var p = settings.customPlaces[i],
-						pos = new gm.LatLng(p.lat, p.lng)
+						pos = new gm.LatLng(p.lat, p.lng),
+						markerType = ""
 				;
 				
-				addMarker(p, pos, "custom", bounds);
+				if (p.reference && p.reference.length > 0) {
+					// we'll get the details from Google
+					markerType = "google";
+				} else {
+					// coming from our own DB
+					markerType = "custom";
+				}
+				
+				addMarker(p, pos, markerType, bounds);				
 			}
 				
 			// we done?
