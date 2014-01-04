@@ -36,7 +36,11 @@ This object is passed onto the Google Maps initialisation, thereby allowing the 
 
 ### disablePoi *(bool)*
 
-On the Google Map places of interest (POI) can be clicked.  This is the normal behaviour on a Google Map.  Sometimes you may not want to distract your users with POI that isn't part of your audience's concerns.  For instance my website - [my website](http://toepoke.co.uk/) - is geared towards 5-a-side football, so showing locations of cinemas isn't of interest.
+On a map, Google adds places of interest hotspots that can be clicked.  These might point to a local park or a cinema and bring up details about that *place*.
+
+Ordinarily this is quite useful, however if it's outside the concern of your audience you may not wish to distract them.  For instance [our audience](http://toepoke.co.uk/) is concerned with football venues, so cinemas aren't of interest to them at that time.
+
+The **disablePoi** setting turns off these point of interest hotspots.  However POI cannot be turned off with [styled maps](https://developers.google.com/maps/documentation/javascript/styling).
 
 ### allowAdd *(bool)*
 
