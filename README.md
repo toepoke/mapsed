@@ -60,8 +60,13 @@ Placeholder text to be added to the search textbox.
 
 A search string to pre-populate the search textbox with.  This is executed when the map is loaded and shows the results straight away.
 
+[See search places example](examples/05-search-for-places-example.js)
+
 ### showHelpOnLoad *(bool)*
 
+Displays the help instructions when the map is first opened (see [getHelpWindowString](#gethelpwindow-string) to discover how to set the content).
+
+[See full-window example](examples/06-full-window.js)
 
 ## Events / Callbacks
 
@@ -69,9 +74,13 @@ A search string to pre-populate the search textbox with.  This is executed when 
 
 Fired when the **Select** button is clicked in a place window.
 
+[See place picker example](examples/02-place-picker-example.js)
+
 ### onSave
 
 Fired when the **Save** button is clicked in a place window (after adding or editing a place).
+
+[See add places example](examples/03-add-places-example.js)
 
 ### onDelete
 
@@ -81,12 +90,15 @@ This expects a boolean to be returned:
 * true - indicates the delete operation should complete.
 * false - indicates the delete operation should be cancelled.
 
+[See delete places example](examples/04-delete-places-example.js)
+
 ### getHelpWindow *(string)*
 
 If the *getHelpWindow* method is specified, it should return a string of HTML with the help content to display.
 
 The act of coding the method will add the help icon (?) to the controls buttons in the top-right of the map.
 
+[See full-window example](examples/06-full-window.js)
 
 ## Dependencies
 jQuery (10.2 used in development)
