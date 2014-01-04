@@ -125,7 +125,7 @@
 		font-weight: 300;
 		text-overflow: ellipsis;
 
-		margin-top: 16px;
+		margin-top: 28px;
 		height: 32px;
 		border: 1px solid #fff;
 		outline: none;
@@ -206,7 +206,7 @@ button.mappy-search-button, button.mappy-more-button {
 	padding: 7px 20px;
 	font-size: 15px;
 	margin-left: 1%;
-	margin-top: 16px;
+	margin-top: 28px;
 	line-height: 1.3;
 }
 button.mappy-more-button[disabled] {
