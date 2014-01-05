@@ -32,6 +32,7 @@ A **custom** place is a place only your system knows about.  You know the addres
 ```JavaScript
 // Random made up CUSTOM place
 {
+  userData: 99,
   lat: 53.79,
   lng:-1.5426760000000286,
   name: "Somewhere",
@@ -121,13 +122,20 @@ As part of the callback *mappy* typically passes the data for the place the even
   <tr><td>lat</td><td>Latitude position of the place.</td></tr>
   <tr><td>lng</td><td>Longitude position of the place.</td></tr>
   <tr><td>reference</td><td>Unique reference to a place in the Google Places database (this is provided by Google), see also <a href="#google-place">Google Place</a></td></tr>
+  <tr><td>userData</td><td>
+    Some unique identifier to link a marker on the map with a database entity (e.g. primary key).<br/>
+    For <strong>new</strong> places this will be empty and should be populated by the <a href="#onSave">onSave callback</a>.<br/><br/>
+
+    <i>A place may have both the <strong>userData</strong> property and the <strong>reference</strong> property populated.  Typically this would be because you're using the <strong>userData</strong> field to lookup the <a href="#google-place"><strong>google place</strong></a> <strong>reference</strong> from your database.</i>
+    
+  </td></tr>
   <tr>
   <td>markerType</td>
   <td>
   Specifies what mode the marker for the place is in.  Can be:
   <table>
     <tr><td><strong>new</strong></td><td>
-      Place has just been created via the [+] icon.  Once saved, this is changed to 		      <strong>custom</custom>
+      Place has just been created via the [+] icon.  Once saved, this is changed to <strong>custom</custom>.
     </td></tr>
     <tr><td><strong>custom</strong></td><td>
       Place is derived from <i>your</i> database, <u>not</u> Google.
