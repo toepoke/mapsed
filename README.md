@@ -107,11 +107,66 @@ Flags that when a user *deletes* a place (activated by the [onDelete](#onDelete)
 
 [See delete places example](examples/04-delete-places-example.js)
 
+## Place Model
+
+When a given *action* ocurrs (when a place is [selected](#onSelect) for example) a [callback](#events--callbacks) is fired so your application can deal with the event.  
+
+As part of the callback *mappy* typically passes the data for the place the event was fired for.  For convenience we'll call this the *model* and it will look like this:
+
+<table>
+  <tr>
+    <th>Property</th><th>Description</th>
+  </tr>
+  <tr><td>canEdit</td><td>Flags this an <strong>editable</strong> place, i.e. when it's clicked on the map it has an <strong>edit</strong> button.</td></tr>
+  <tr><td>lat</td><td>Latitude position of the place.</td></tr>
+  <tr><td>lng</td><td>Longitude position of the place.</td></tr>
+  <tr><td>reference</td><td>Unique reference to a place in the Google Places database (this is provided by Google), see also <a href="#google-place">Google Place</a></td></tr>
+  <tr>
+  <td>markerType</td>
+  <td>
+  Specifies what mode the marker for the place is in.  Can be:
+  <table>
+    <tr><td><strong>new</strong></td><td>
+      Place has just been created via the [+] icon.  Once saved, this is changed to 		      <strong>custom</custom>
+    </td></tr>
+    <tr><td><strong>custom</strong></td><td>
+      Place is derived from <i>your</i> database, <u>not</u> Google.
+    </td></tr>
+    <tr><td><strong>google</strong></td><td>
+      Place is dervied from the Google Places API (has a <a href="#google-place">reference</a> property).
+    </td></tr>
+  </table>
+  </td>
+  </tr>
+  <tr><td>name</td><td>Name of the place (e.g. City Varieties).</td></tr>
+  <tr><td>street</td><td>Street the place is on.</td></tr>
+  <tr><td>town</td><td>Town the place is in, e.g. Leeds.</td></tr>
+  <tr><td>area</td><td>Area the place is in, e.g. West Yorkshire.</td></tr>
+  <tr><td>postCode</td><td>Postcode/zipcode of the place, e.g. LS1 6LW</td></tr>
+  <tr><td>telNo</td><td>Telephone number of the place.</td></tr>
+  <tr><td>website</td><td>Website address of the place.</td></tr>
+  <tr><td>url</td><td>Google+ page url</td></tr>
+</table>
+
+
 ## Events / Callbacks
 
 ### onSelect
 
 Fired when the **Select** button is clicked in a place window.
+
+Callback method signature:
+<table>
+<tr><th>Parameter</th><th>Description</th></tr>
+<tr>
+<td>mappy</td>
+<td>Reference to the <strong>mappy</strong> object so you can call into the plug-in, e.g. <strong>mappy.showMsg("title", "some message")</strong> will show a modal message on the map</td>
+</tr>
+<tr>
+<td>details</td>
+<td>Place details, see <a href="#place-model">Place Model</a> for full details</td>
+</tr>
+</table>
 
 [See place picker example](examples/02-place-picker-example.js)
 
@@ -119,15 +174,44 @@ Fired when the **Select** button is clicked in a place window.
 
 Fired when the **Save** button is clicked in a place window (after adding or editing a place).
 
+Callback method signature:
+<table>
+<tr><th>Parameter</th><th>Description</th></tr>
+<tr>
+<td>mappy</td>
+<td>Reference to the <strong>mappy</strong> object so you can call into the plug-in, e.g. <strong>mappy.showMsg("title", "some message")</strong> will show a modal message on the map</td>
+</tr>
+<tr>
+<td>details</td>
+<td>Place details, see <a href="#place-model">Place Model</a> for full details</td>
+</tr>
+</table>
+
 [See add places example](examples/03-add-places-example.js)
 
 ### onDelete
 
-Fired when the **Delete** button is clicked in a place window.  This gives you the chance to cancel the delete operation if you wish.
+Fired when the **Delete** button is clicked in a place window.  If [confirmDelete](#confirm-delete) is enabled the user is prompted for confirmation first.
 
-This expects a boolean to be returned:
-* true - indicates the delete operation should complete.
-* false - indicates the delete operation should be cancelled.
+Callback method signature:
+<table>
+<tr><th>Parameter</th><th>Description</th></tr>
+<tr>
+<td>mappy</td>
+<td>Reference to the <strong>mappy</strong> object so you can call into the plug-in, e.g. <strong>mappy.showMsg("title", "some message")</strong> will show a modal message on the map</td>
+</tr>
+<tr>
+<td>details</td>
+<td>Place details, see <a href="#place-model">Place Model</a> for full details</td>
+</tr>
+<tr>
+<td>Return (bool)</td>
+<td>
+The <strong>onDelete</strong> callback expectes a <strong>boolean</strong> value to be returned.  If <i>your</i> delete operation is successful return <strong>true</strong>, otherwise return <strong>false</strong>.
+<br/><br/>
+If <i>your</i> callback returns <strong>false</strong> the map marker remains on the map -  which is what you want :-)
+</td>
+</table>
 
 [See delete places example](examples/04-delete-places-example.js)
 
