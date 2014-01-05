@@ -105,6 +105,8 @@ Displays the help instructions when the map is first opened (see [getHelpWindowS
 
 Flags that when a user *deletes* a place (activated by the [onDelete](#onDelete) callback) they are asked to confirm the action *before* the [onDelete](#onDelete) callback is issued.
 
+[See delete places example](examples/04-delete-places-example.js)
+
 ## Events / Callbacks
 
 ### onSelect
