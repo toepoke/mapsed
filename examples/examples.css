@@ -1,7 +1,9 @@
 
 .small-map {
-	width: 100%;
+	width: 90%;
 	height: 400px;
+	margin: 0 auto 15px auto;
+	box-shadow: 10px 10px 15px 0px #ccc;	
 }
 .map-container {
 	margin: 20px;

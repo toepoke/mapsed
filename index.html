@@ -111,12 +111,12 @@
 								<p class="lead">
 									Here we're illustrating loading places from our own database,
 									and telling <em>mappy</em> what places to draw
-									(via the <a href="https://github.com/toepoke/mappy/blob/master/README.md#showOnLoad-array">showOnLoad</a>
+									(via the <a href="https://github.com/toepoke/mappy/blob/master/README.md#showonload-array">showOnLoad</a>
 									array).
 								</p>
 								<p class="lead">
-									One stores a lookup to a <a href="https://developers.google.com/places/documentation/details#PlaceDetailsRequests">Google Place reference</a>,
-									the other stores the whole object.
+									The top marker stores a lookup to a <a href="https://github.com/toepoke/mappy/blob/master/README.md#google-place">Google Place reference</a>,
+									the bottom one stores a <a href="https://github.com/toepoke/mappy/blob/master/README.md#custom-place">custom place</a> object.
 								</p>
 								<div id="custom-places" class="small-map"></div>
 								<p class="pull-right">
@@ -194,7 +194,7 @@ $("#place-picker").mappy({
   },
   
   showOnLoad: 
-	[
+  [
     // City Varieties
     {
       // flag that this place should have the tooltip shown when the map is first loaded
@@ -368,7 +368,7 @@ $("#add-places").mappy({
 							<p class="lead">
 								You can also ask the user to 
 								<a href="https://github.com/toepoke/mappy/blob/master/README.md#confirmdelete-bool">confirm the delete</a>							
-								before you actually do it.
+								before they actually do it.
 							</p>
 						</div>
 					</div>
