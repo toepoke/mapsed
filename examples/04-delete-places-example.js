@@ -21,11 +21,20 @@ function runExample4() {
 		// Allows the user to delete a "custom" place they've previously 
 		// ... added
 		onDelete: function(mappy, placeToDelete) {
-			var msg = "About to delete " + placeToDelete.name + "\n\nAre you sure?";
-
-			// confirm delete ... this could be a js confirm if you want confirmation
-			return confirm(msg);
-		}
+			mappy.showMsg(
+				"YOUR DELETE CODE HERE",
+				"<strong>" + placeToDelete.name + "</strong> has been removed."
+			);
+			
+			// here would be code your application to do the actual delete
+			
+			// return true to confirm it was deleted OK and remove marker from the map
+			// return false if the delete failed
+			return true;
+		},
+		
+		// Flag that we want the user to confirm the delete before we actually do it
+		confirmDelete: true
 				
 	});
 	

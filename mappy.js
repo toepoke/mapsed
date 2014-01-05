@@ -10,12 +10,6 @@
  * Compressed with:
  *   - http://closure-compiler.appspot.com/
  *
- * TODO:
- * Change "customPlaces" to "showOnLoad"
- *   - then change the docs and code to talk about "google" places (with reference)
- *     and "custom" places with streets, etc
- * Also add a "confirmDelete" flag that does the confirmation for us before firing
- *     "onDelete", so we only callback the user when we know they've said "OK"
 */
 
 (function () {
@@ -122,6 +116,10 @@
 			// prototype: function(mappy, details)
 			//  return true to confirm delete, false abandons the delete
 			onDelete: null,
+			
+			// Flags that the user is asked for confirmation if they try and
+			// delete a place
+			confirmDelete: false,
 
 			// Event fires when user clicks the "X" button (only in full window mode)
 			// prototype: function(mappy)
@@ -246,53 +244,31 @@
 
 		} // closeMap
 		
+
 		/// <summary>
 		/// Displays a modal message over the top of the map
+		/// title - text to appear in the title bar
+		/// msg - text to appear as the main message
+		/// callback - callback function to call when OK is clicked
 		/// </summary>
 		this.showMsg = function(title, msg, callback) {
-			var $modal = null,
-					html = "",
-					buttons = ""
-			;
-			
-			$modal = _mapContainer.find(".mappy-modal");
-			
-			if ($modal.length > 0) {
-				// usually we'd just re-use it, but we need to change basically 
-				// everything (include the callback)
-				$modal.remove();
-			}
-			
-			html = 
-				"<div class='mappy-modal'>" + 
-					"<div class='mappy-modal-content'>" + 
-						"<h3>" + title + "</h3>" + 
-						"<div>" +
-							"<div class='mappy-modal-message'>" + 
-								msg + 
-							"</div>" +
-							"<button class='close'>OK</button>" + 
-						"</div>" + 
-					"</div>" + 
-				"</div>"
-			;
-			
-			$modal = $(html).appendTo(_mapContainer);
-			$modal
-				.find("button")
-					.on("click", function() { 
-						var $btn = $(this);
-						
-						$modal.fadeOut(); 
-						if (callback)
-							callback($btn);
-					})
-					.end()
-				.fadeIn()
-			;
+			buildMsg(title, msg, false/*doConfirm*/, "", callback);
+		}
+		
 
-		} // showMsg
-				
+		/// <summary>
+		/// Displays a modal confirmation over the top of the map, prompting
+		/// the user to "confirm" _some_ action
+		/// title - text to appear in the title bar
+		/// msg - text to appear as the main message
+		/// prompt - text to appear next to the action buttons
+		/// callback - callback function to call when OK is clicked
+		///            Note the callback is ONLY called when OK is clicked
+		/// </summary>
+		this.confirmMsg = function(title, msg, prompt, callback) {
+			buildMsg(title, msg, true/*doConfirm*/, prompt, callback);
+		}
+		
 				
 		//
 		// MAPPY EVENT HANDLERS
@@ -304,9 +280,9 @@
 		/// Internal event handler when the "Select" button is clicked
 		/// - Builds the model and forwards onto the callback for confirmation
 		/// </summary>
-		function onPlaceSelect() {
-			var $root = $(this).parents(".mappy-root");
-			var $vw = $(this).parents(".mappy-view");
+		function onPlaceSelect(element) {
+			var $root = element.parents(".mappy-root");
+			var $vw = element.parents(".mappy-view");
 			var model = getViewModel($vw);
 		
 			if (settings.onSelect(_plugIn, model)) {
@@ -320,8 +296,8 @@
 		/// Internal event handler when the "Edit" button is clicked
 		/// - Swaps the tooltip to edit mode, prompting for data entry
 		/// </summary>
-		function onPlaceEdit() {
-			var $root = $(this).parents(".mappy-root");
+		function onPlaceEdit(element) {
+			var $root = element.parents(".mappy-root");
 			var lat = $root.find(".mappy-lat").val();
 			var lng = $root.find(".mappy-lng").val();
 			
@@ -341,8 +317,8 @@
 		/// Internal event handler when the "Delete" button is clicked
 		/// - Builds the model and forwards onto the callback for confirmation.
 		/// </summary>
-		function onPlaceDelete() {
-			var $root = $(this).parents(".mappy-root");
+		function onPlaceDelete(element) {
+			var $root = element.parents(".mappy-root");
 			var $vw = $root.find(".mappy-view");
 			var model = getViewModel($vw);
 			
@@ -364,8 +340,8 @@
 		/// - Should the validation fail (callback returns error messages) the edit dialog
 		///   will remain for the user to resolve the errors
 		/// </summary>
-		function onPlaceSave() {
-			var root = $(this).parents(".mappy-root");
+		function onPlaceSave(element) {
+			var root = element.parents(".mappy-root");
 			var $rw = root.find(".mappy-edit");
 			var errors = "";
 			var place = getViewModel($rw);
@@ -550,6 +526,78 @@
 		// PRIVATE METHODS
 		//
 		//		
+
+		/// <summary>
+		/// Helper for building up a modal message on the screen.
+		/// title - text for the title bar
+		/// msg - message text to appear
+		/// doConfirm - internal flag tell us whether we're building an "alert" or a "confirm"
+		/// prompt - text to appear next to the action buttons
+		/// callback - callback for when Yes/OK is clicked.  
+		///            Note the callback is _NOT_ called if "cancel" is pressed.
+		/// </summary>
+		function buildMsg(title, msg, doConfirm, prompt, callback) {
+			var $modal = null,
+					html = "",
+					buttons = ""
+			;
+			
+			// protect from undefined
+			title = title || "";
+			msg = msg || "";
+			
+			$modal = _mapContainer.find(".mappy-modal");
+			
+			if ($modal.length > 0) {
+				// usually we'd just re-use it, but we need to change basically 
+				// everything (include the callback)
+				$modal.remove();
+			}
+
+			buttons += "<div class='mappy-modal-button-bar'>";
+				if (prompt && prompt.length > 0) {
+					buttons += "<p class='prompt'>" + prompt + "</p>";
+				}
+				buttons += "<div class='mappy-modal-buttons'>";
+				if (doConfirm) {
+					buttons += "<button class='ok'>OK</button>";
+					buttons += "<button class='cancel'>Cancel</button>";
+				} else {
+					buttons += "<button class='close'>OK</button>";
+				}
+				buttons += "</div>";
+			buttons += "</div>";
+			
+			html = 
+				"<div class='mappy-modal'>" + 
+					"<h3>" + title + "</h3>" + 
+					"<div>" +
+						"<div class='mappy-modal-message'>" + 
+							msg + 
+						"</div>" +
+						buttons +
+					"</div>" + 
+				"</div>"
+			;
+			
+			$modal = $(html).appendTo(_mapContainer);
+			$modal
+				.find("button")
+					.on("click", function() { 
+						var $btn = $(this);
+						$modal.fadeOut(); 
+						if (!$btn.hasClass("cancel")) {
+							// only call the callback if we haven't cancelled
+							if (callback)
+								callback($btn);
+						}
+					})
+					.end()
+				.fadeIn()
+			;
+
+		} // showMsg
+
 		
 		/// <summary>
 		/// Convenience function to add a new marker onto a map
@@ -1478,21 +1526,47 @@
 			
 			if (settings.onSelect) {
 				_mapContainer.on("click", "button.mappy-select-button", 
-					onPlaceSelect
+					function() {
+						var element = $(this);
+						onPlaceSelect(element);
+					}					
 				);
 			}
 			if (settings.onSave) {
 				_mapContainer.on("click", "button.mappy-save-button", 
-					onPlaceSave
+					function() {
+						var element = $(this);
+						onPlaceSave(element);
+					}					
 				);
 				// only allow edit if the user can actually save the result!
 				_mapContainer.on("click", "button.mappy-edit-button", 
-					onPlaceEdit
+					function() {
+						var element = $(this);
+						onPlaceEdit(element);
+					}					
 				);
 			}
 			if (settings.onDelete) {
-				_mapContainer.on("click", "button.mappy-delete-button", 
-					onPlaceDelete
+				_mapContainer.on("click", "button.mappy-delete-button",
+					function() {
+						var element = $(this);
+						
+						if (settings.confirmDelete) {
+							var $vw = element.parents(".mappy-view");
+							var model = getViewModel($vw);
+							var msg = "<strong>" + model.name + "</strong> will be deleted."
+							_plugIn.confirmMsg("Confirm Delete", msg, 
+								"Are you sure?",
+								// callback only fired if "Yes" is selected
+								function() {
+									onPlaceDelete(element);
+								}
+							);
+						} else {
+							onPlaceDelete(element);
+						}
+					}
 				);
 			}
 			

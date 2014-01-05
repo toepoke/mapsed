@@ -278,17 +278,16 @@ button.mappy-more-button[disabled] {
 		height: auto;
 		font-family: "Calibri", "Arial";
 		display: none;
+		background: #e74c3c;
+		border-radius: 5px;
+		color: #fff;
 	}
-		.mappy-modal-content {
-			color: #fff;
-			background: #e74c3c;
-			border-radius: 5px;
+		.mappy-modal {
 		}
-			.mappy-modal-content > div {
-				padding: 10px;
-				min-height: 100px;
+			.mappy-modal > div {
+				margin: 10px;
 			}
-			.mappy-modal-content h3 {
+			.mappy-modal h3 {
 				text-align: center;
 				padding: 10px;
 				margin: 0;
@@ -298,23 +297,38 @@ button.mappy-more-button[disabled] {
 				opacity: 0.8;
 				border-radius: 5px 5px 0 0;
 			}			
-			.mappy-modal-content button {
-				padding: 5px 10px;
-				background: #c0392b;
-				border: none;
-				color: #fff;
-				letter-spacing: 1px;
-				text-transform: uppercase;
-				border-radius: 2px;
-				cursor: pointer;
-				display: block;
-				margin: 30px auto 0px auto;
-				float: none;
-				opacity: 1;
+			.mappy-modal-message {			
 			}
-			:hover.mappy-modal-close {
-				background-color: #A5281B;
+			.mappy-modal-button-bar {
+				margin-top: 20px;
 			}
+			.mappy-modal-button-bar::after {
+				clear: both;
+				content: " ";
+			}
+				.mappy-modal-button-bar .prompt {
+					float: left;
+					margin: 0;
+				}	
+				.mappy-modal-buttons {
+					display: block;
+					float: right;
+					margin-bottom: 20px;
+				}
+					.mappy-modal button {
+						padding: 5px 10px;
+						background: #c0392b;
+						border: none;
+						color: #fff;
+						letter-spacing: 1px;
+						text-transform: uppercase;
+						border-radius: 2px;
+						cursor: pointer;
+						opacity: 1;
+					}
+					.mappy-modal button:hover {
+						background-color: #A5281B;
+					}
 
 	
 	

@@ -343,11 +343,20 @@ $("#add-places").mappy({
     // Allows the user to delete a "custom" place they've previously 
     // ... added
     onDelete: function(mappy, placeToDelete) {
-      var msg = "About to delete " + placeToDelete.name + "\n\nAre you sure?";
+      mappy.showMsg(
+        "YOUR DELETE CODE HERE",
+        "&lt;strong&gt;" + placeToDelete.name + "&lt;/strong&gt; has been removed."
+      );
       
-      // confirm delete ... this could be a js confirm if you want confirmation
-      return confirm(msg);
-    }
+      // here would be code your application to do the actual delete
+      
+      // return true to confirm it was deleted OK and remove marker from the map
+      // return false if the delete failed
+      return true;
+    },
+		
+    // Flag that we want the user to confirm the delete before we actually do it 
+    confirmDelete: true		
   });
 								</pre>
 							</div>
@@ -355,6 +364,11 @@ $("#add-places").mappy({
 								Enabling <em<>deletes</em> is simply a matter of implementing the
 								<a href="https://github.com/toepoke/mappy/blob/master/README.md#ondelete">onDelete</a>
 								callback and the <strong>Delete</strong> button will appear when appropriate.
+							</p>
+							<p class="lead">
+								You can also ask the user to 
+								<a href="https://github.com/toepoke/mappy/blob/master/README.md#confirmdelete-bool">confirm the delete</a>							
+								before you actually do it.
 							</p>
 						</div>
 					</div>
@@ -521,7 +535,7 @@ $("#search-for-places").mappy({
 							<a href="#top"><i class="fa fa-circle-arrow-up scroll fa-4x"></i></a>
 						</div>
 						<hr>
-						<p>Required by necessity, built by <a href="http://toepoke.co.uk?mappy=3">toepoke.co.uk</a></p>
+						<p>Required by <a href="https://developers.google.com/maps/documentation/localsearch/">necessity</a>, built by <a href="http://toepoke.co.uk?mappy=3">toepoke.co.uk</a></p>
 						<p>Lovely template provided by <a href="http://startbootstrap.com/stylish-portfolio">start Bootstrap</a></p>
 					</div>
 				</div>
