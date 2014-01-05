@@ -53,7 +53,8 @@ var _places = [
 		lat: 53.79,
 		lng: -1.59,
 		name: "Somewhere",
-		street: "Over the rainbow, Up high way"
+		street: "Over the rainbow, Up high way",
+		userData: 99
 	}
 ];
 
@@ -84,6 +85,7 @@ function onThemeChange(me, mappy) {
 // 
 function getPlaceHtml(details) {
 	var html = 
+		"UserData:&nbsp;&nbsp;" + details.userData + "<br/><br/>" + 
 		"Location:&nbsp;&nbsp;" + details.lat + " / " + details.lng + "<br/><br/>" +
 		"Name:&nbsp;&nbsp;" + details.name + "<br/><br/>" +
 		"Address:&nbsp;&nbsp;" + details.street + 
@@ -104,8 +106,9 @@ function getPlaceHtml(details) {
 // There's quite a lot here as we're illustrating pretty much everything.
 // Don't be put off ... you won't need anywhere near this level ... probably :oD
 // 
-function fullWindowExample() {
-
+function fullWindowExample(e) {
+	e.preventDefault();
+	
 	$.fn.mappy({
 		// Map initialisation options to pass onto Google Maps
 		mapOptions: {
@@ -157,8 +160,11 @@ function fullWindowExample() {
 			}
 			
 			if (newPlace) {
+				if (newPlace.markerType == "new") {
+					// simulate a primary key being save to a db
+					newPlace.userData = parseInt(Math.random() * 100000);
+				}
 				var msg = getPlaceHtml(newPlace);
-
 				mappy.showMsg("YOUR SAVE CODE HERE!", msg);
 			}
 

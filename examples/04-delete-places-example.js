@@ -14,7 +14,8 @@ function runExample4() {
 				street: "Swan Street,",
 				town: "Leeds",
 				area: "West Yorkshire",
-				postCode: "LS1 6LW"
+				postCode: "LS1 6LW",
+				userData: 99
 			}
 		],
 		
@@ -23,7 +24,7 @@ function runExample4() {
 		onDelete: function(mappy, placeToDelete) {
 			mappy.showMsg(
 				"YOUR DELETE CODE HERE",
-				"<strong>" + placeToDelete.name + "</strong> has been removed."
+				"<strong>" + placeToDelete.name + "(" + placeToDelete.userData + ")</strong> has been removed."
 			);
 			
 			// here would be code your application to do the actual delete

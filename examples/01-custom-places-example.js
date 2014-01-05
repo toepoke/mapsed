@@ -19,7 +19,8 @@ function runExample3() {
 				lat: 53.79,
 				lng:-1.5426760000000286,
 				name: "Somewhere",
-				street: "Over the rainbow, Up high way"
+				street: "Over the rainbow, Up high way",
+				userData: 99
 			}
 
 		]

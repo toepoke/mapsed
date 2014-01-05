@@ -107,7 +107,7 @@
 			onSelect: null,
 			
 			// Allows new places to be edited
-			// prototype: function(mappy, marker, newPlace)
+			// prototype: function(mappy, newPlace)
 			//   return a error message string if you're not happy with what's been entered
 			//   return an empty string to confirm it's been saved
 			onSave: null,
@@ -365,8 +365,9 @@
 			jQuery.extend(marker.details, place);
 			
 			// once an object has been edited successfully it becomes a normal editable "custom" object
-			//marker.markerType = marker.details.markerType = "custom";
 			root.find(".mappy-marker-type").val("custom");
+			// also need to save back the userData (which may have changed, but is outside the view)
+			root.find(".mappy-user-data").val(place.userData);
 			
 			// editing complete, go back to the "Select" mode
 			marker.showTooltip(false/*inRwMode*/);
@@ -1077,6 +1078,7 @@
 				isLoaded: (type != "google"),
 				lat: latLng.lat(),
 				lng: latLng.lng(),
+				userData: "",
 				reference: "",
 				name: "",
 				street: "",
@@ -1117,6 +1119,7 @@
 					"<input type='hidden' class='mappy-lng' value='" + forMarker.position.lng() + "' />" + 
 					"<input type='hidden' class='mappy-can-edit' value='" + d.canEdit + "' />" + 
 					"<input type='hidden' class='mappy-reference' value='" + d.reference + "' />" + 
+					"<input type='hidden' class='mappy-user-data' value='" + d.userData + "' />" + 
 					"<input type='hidden' class='mappy-marker-type' value='" + forMarker.markerType + "' />" +
 					getViewTemplate() + 
 					getEditTemplate() + 
@@ -1305,7 +1308,8 @@
 				lat: $root.find(".mappy-lat").val(),
 				lng: $root.find(".mappy-lng").val(),
 				reference: $root.find(".mappy-reference").val(),
-				markerType: $root.find(".mappy-marker-type").val()
+				markerType: $root.find(".mappy-marker-type").val(),
+				userData: $root.find(".mappy-user-data").val()
 			};
 			
 			if ($vw.hasClass("mappy-view")) {
@@ -1346,6 +1350,7 @@
 			if (!place.canEdit) place.canEdit = false;
 			if (!place.lat) place.lat = 0;
 			if (!place.lng) place.lng = 0;
+			if (!place.userData) place.userData = "";
 			if (!place.name) place.name = "";
 			if (!place.street) place.street = "";
 			if (!place.town) place.town = "";

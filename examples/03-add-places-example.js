@@ -23,9 +23,15 @@ function runExample1() {
 			}
 			
 			if (newPlace) {
+				if (newPlace.markerType == "new") {
+					// simulate a primary key being save to a db
+					newPlace.userData = parseInt(Math.random() * 100000);
+				}
+
 				var title = "";
 				var msg = 
-					"name: " + newPlace.name +
+					"userData: " + newPlace.userData + 
+					"<br/>name: " + newPlace.name +
 					"<br/>street: " + newPlace.street + ", " + 
 						newPlace.area + ", " + 
 						newPlace.town + ", " + newPlace.postCode + 
