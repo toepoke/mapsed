@@ -21,12 +21,39 @@ Demos at http://mappy.apphb.com
 
 ### showOnLoad *(array)*
 
-An array JSON objects defining places should should be displayed whe the map is first loaded.
+An array of JSON objects that define a set of markers to display when the map is first loaded.
 
-Each element of the array details a place that should be loaded.  These can be detailed in two ways:
+Each element of the array details a place that should be loaded.  An element can either be a **Custom** place or a **Google** place.
 
-* reference property: mappy.js will then load the details via the Google Places API
-* address properties: If no "reference" property is expressed the address properties (street, name, town, etc) are used.
+#### Custom Place
+
+A **custom** place is a place only your system knows about.  You know the address details, lat/lng coordinates, etc.  So you have to tell **mappy.js** what they are.  The following is a **custom** example:
+
+```JavaScript
+// Random made up CUSTOM place
+{
+  lat: 53.79,
+  lng:-1.5426760000000286,
+  name: "Somewhere",
+  street: "Over the rainbow, Up high way"
+}
+```
+
+#### Google Place
+
+A ***Google*** place is one derived from the Google Places database.  Google returns (and mappy.js in turn tells you) [a unique **reference** for a place](https://developers.google.com/places/documentation/search#PlaceSearchResults).  The following is a **Google** place example:
+
+```JavaScript
+{
+  lat: 53.798823,
+  lng:-1.5426760000000286,
+  reference: "CoQBfAAAAPw-5BTCS53grSLDwX8rwo5BnWnEWnA72lmOjxdgWg2ODGfC5lLjGyoz428IEaln1vJ6rq1jI96Npzlm-N-wmPH2jdJMGfOLxno_rmgnajAnMPzNzuI8UjexIOdHVZPBPvQGloC-tRhudGeKkbdTT-IWNP5hp4DIl4XOLWuYFOVYEhBxNPxaXZdW9uhKIETXf60hGhTc9yKchnS6oO-6z5XZJkK2ekewYQ"
+}
+```
+
+**Mappy.js** uses the **reference token** to ask Google for the details (so rather than storing the full info in your database, you just store the **reference**).
+
+The lat/lng coordinates still need to be given to the plugin as it only asks Google for details when a marker is clicked upon (i.e. it queries as required) so it needs to know where the marker should be placed on the map.
 
 [See custom places example](examples/01-custom-places-example.js)
 
