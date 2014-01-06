@@ -100,7 +100,7 @@ A search string to pre-populate the search textbox with.  This is executed when 
 
 Adds a <i>find geo position</i> button to the top left of the map, which when clicked moves the location of the map to the GEO position of the device.
 
-[See full-window example](examples/06-full-window.js)
+[See full-window example](examples/06-full-example.js)
 
 ### findGeoOnLoad *(bool)*
 
@@ -115,7 +115,7 @@ This is because the GEO position may be different to where the [showOnLoad](#sho
 
 Displays the help instructions when the map is first opened (see [getHelpWindowString](#gethelpwindow-string) to discover how to set the content).
 
-[See full-window example](examples/06-full-window.js)
+[See full-window example](examples/06-full-example.js)
 
 ### confirmDelete *(bool)*
 
@@ -244,7 +244,7 @@ If the *getHelpWindow* method is specified, it should return a string of HTML wi
 
 The act of coding the method will add the help icon (?) to the controls buttons in the top-right of the map.
 
-[See full-window example](examples/06-full-window.js)
+[See full-window example](examples/06-full-example.js)
 
 ## Dependencies
 jQuery (10.2 used in development)
