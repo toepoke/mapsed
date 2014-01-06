@@ -96,6 +96,21 @@ A search string to pre-populate the search textbox with.  This is executed when 
 
 [See search places example](examples/05-search-for-places-example.js)
 
+### allowGeo *(bool)*
+
+Adds a <i>find geo position</i> button to the top left of the map, which when clicked moves the location of the map to the GEO position of the device.
+
+[See full-window example](examples/06-full-window.js)
+
+### findGeoOnLoad *(bool)*
+
+When the map is first loaded the centre of the map is set to the GEO location position of the device.
+
+<i>
+If [showOnLoad](#showonload-array) is populated with places, the <strong>findGeoOnLoad</strong> settings is ignored.
+This is because the GEO position may be different to where the [showOnLoad](#showonload-array) places are located and the user wouldn't see them.
+</i>
+
 ### showHelpOnLoad *(bool)*
 
 Displays the help instructions when the map is first opened (see [getHelpWindowString](#gethelpwindow-string) to discover how to set the content).
@@ -110,7 +125,7 @@ Flags that when a user *deletes* a place (activated by the [onDelete](#onDelete)
 
 ## Place Model
 
-When a given *action* ocurrs (when a place is [selected](#onSelect) for example) a [callback](#events--callbacks) is fired so your application can deal with the event.  
+When a given *action* occurs (when a place is [selected](#onSelect) for example) a [callback](#events--callbacks) is fired so your application can deal with the event.  
 
 As part of the callback *mappy* typically passes the data for the place the event was fired for.  For convenience we'll call this the *model* and it will look like this:
 
@@ -215,7 +230,7 @@ Callback method signature:
 <tr>
 <td>Return (bool)</td>
 <td>
-The <strong>onDelete</strong> callback expectes a <strong>boolean</strong> value to be returned.  If <i>your</i> delete operation is successful return <strong>true</strong>, otherwise return <strong>false</strong>.
+The <strong>onDelete</strong> callback expects a <strong>boolean</strong> value to be returned.  If <i>your</i> delete operation is successful return <strong>true</strong>, otherwise return <strong>false</strong>.
 <br/><br/>
 If <i>your</i> callback returns <strong>false</strong> the map marker remains on the map -  which is what you want :-)
 </td>

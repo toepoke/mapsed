@@ -6,6 +6,9 @@ function runExample5() {
 			initSearch: "Football in Leeds",
 			placeholder: "Search ..."
 		},
+		
+		// Turn on geo location button
+		allowGeo: true,
 
 		// allow user to select somewhere
 		onSelect: function(mappy, details) {

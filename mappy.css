@@ -215,7 +215,23 @@ button.mappy-more-button[disabled] {
 	color: silver;
 	cursor: auto;	/*so it doesn't look clickable*/
 }
-
+button.mappy-geo-button {
+	margin-top: 28px;
+	margin-left: -10px;
+	height: 32px;
+	font-size: 20px;
+	color: #B60000;
+	padding: 0 7px;
+	background-color: #fff;
+	border: none;
+	border-radius: 0 2px 2px 0;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+	cursor: pointer;
+}
+button.mappy-geo-button.is-active {
+	color: #0024B6;
+	font-weight: 300;
+}
 
 /*
 * Full window styles (just for making the generated div overlay)

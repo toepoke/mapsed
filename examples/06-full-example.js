@@ -113,18 +113,22 @@ function fullWindowExample(e) {
 		// Map initialisation options to pass onto Google Maps
 		mapOptions: {
 			zoom: 15,
+			center: new google.maps.LatLng(51.501364 , -0.14189),
 			styles: _avocadoStyle	// see variables.js
 		},
 
 		// Adds a predictive search box
 		searchOptions: {
 			enabled: true,
-			initSearch: "Football in Leeds",
-			placeholder: "Search ..."
+			//initSearch: "Football in Leeds",
+			placeholder: "Search for \"5aside\" ..."
 		},
+		
+		// Turn geo button on
+		allowGeo: true,		
 
 		// Emulate places being loaded from a db
-		showOnLoad: _places,	// see variables.js
+		showOnLoad: _places,
 		
 		// Adds the "+" button to the control bar at the top right of the map
 		allowAdd: true,
@@ -289,6 +293,10 @@ $(document).ready(function() {
 	// wire up examples
 	
 	// wire up full window example
-	$("#show-full-window").on("click", fullWindowExample);
+	$("#show-full-window")
+		.on("click", fullWindowExample)
+		//.trigger("click")
+	;
+	
 });
 

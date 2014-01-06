@@ -48,6 +48,7 @@
 				_helpDlg = null,          // Reference to the help dialog that is toggled by the help button
 				_closeBtn = null,         // Reference to the close button (only used in full-window mode)
 				_addBtn = null,           // Reference to the add button ([+])
+				_geoBtn = null,           // Reference to the Geo location button [(*)]
 				gm = null,                // Short cut reference to the Google Maps namespace (this is initialised in the constructor to give the Google API time to load on the page)
 				gp = null                 // Short cut reference to the Google Places namespace (this is initialised in the constructor to give the Google API time to load on the page)
 		;
@@ -131,7 +132,17 @@
 			getHelpWindow: null,
 			
 			// show the help dialog when the map is loaded
-			showHelpOnLoad: false
+			showHelpOnLoad: false,
+			
+			// Adds a GEO location button onto the map which is used to set the 
+			// centre of the map according to the user's GEO location position
+			allowGeo: false,
+			
+			// Flags that mappy should place the centre of the map where the user's
+			// GEO location position is.
+			// Note: This is ignored if "showOnLoad" property is populated as there is 
+			//       a risk the places won't be shown on the map
+			findGeoOnLoad: false
 				
 		}, options || {});
 		
@@ -184,10 +195,6 @@
 			
 			// create a jQuery object out of the markup
 			$html = $(markUp);
-			
-			// add the styling class to make it look consistent with the rest of the controls
-			if (!$html.hasClass("mappy-control-button"))
-				$html.addClass("mappy-control-button");
 			
 			// add control into the DOM 
 			// ... (as part of the map container as the control is "owned" by the map)
@@ -267,6 +274,30 @@
 		/// </summary>
 		this.confirmMsg = function(title, msg, prompt, callback) {
 			buildMsg(title, msg, true/*doConfirm*/, prompt, callback);
+		}
+		
+		
+		/// <summary>
+		///
+		/// </summary>
+		this.setMapCentreByGeo = function() {
+			if (!navigator.geolocation)
+				// GEO location not supported
+				return;
+				
+			navigator.geolocation.getCurrentPosition(
+				function(geoPos) {
+					var pos = new gm.LatLng(geoPos.coords.latitude, geoPos.coords.longitude);
+					
+					_gMap.setCenter(pos);
+					
+					// change geo button to show it's now active
+					_geoBtn.addClass("is-active");
+				},
+				function(err) {
+					_plugIn.showMsg("GEO Position", err.message);
+				}
+			);
 		}
 		
 				
@@ -412,6 +443,14 @@
 				}
 			}
 
+			// if Geo location is enabled, find the location
+			// ... note we don't use Geo on load if there are custom places to
+			// ... show - otherwise there's a [high] risk we won't see the places
+			// ... because they're looking somewhere else
+			if (settings.findGeoOnLoad && !settings.showOnLoad) {
+				_plugIn.setMapCentreByGeo();
+			}
+			
 		} // gmMapLoaded
 
 
@@ -515,6 +554,7 @@
 			var bounds = _gMap.getBounds();
 			if (bounds) {
 				_gmSearchBox.setBounds(bounds);
+				console.log("bounds changed");
 			}
 			
 			// Boundary has been set, so don't set the zoom/center
@@ -825,15 +865,24 @@
 			// and again for when they zoom in/out
 			gm.event.addListener(_gMap, "bounds_changed", gmBoundsChanged);
 			
-			_searchBtn = createControlButton("Go", gm.ControlPosition.TOP_LEFT, "mappy-search-button", function(evt) {
-				evt.preventDefault();
-				var searchFor = _searchBox.val();
-				doSearch(searchFor);
-			});
+			_searchBtn = createControlButton(
+				"Go", gm.ControlPosition.TOP_LEFT, 
+				"mappy-search-button mappy-control-button", 
+				function(evt) {
+					evt.preventDefault();
+					var searchFor = _searchBox.val();
+					doSearch(searchFor);
+				}
+			);
 			
 			// For handling additional results, note there is not event handlers as this is]
 			// ... driven from the first set of search results we get back from Google
-			_moreBtn = createControlButton("More|There are more results available ...", gm.ControlPosition.TOP_LEFT, "mappy-more-button", null);
+			_moreBtn = createControlButton(
+				"More|There are more results available ...", 
+				gm.ControlPosition.TOP_LEFT, 
+				"mappy-more-button mappy-control-button", 
+				null
+			);
 		} // addSearch
 		
 		
@@ -877,7 +926,10 @@
 			
 			}; // onAddEvent
 			
-			_addBtn = createControlButton("+|Add a place", gm.ControlPosition.TOP_RIGHT, "mappy-add-button", 
+			_addBtn = createControlButton(
+				"+|Add a place", 
+				gm.ControlPosition.TOP_RIGHT, 
+				"mappy-add-button mappy-control-button", 
 				onAddEvent
 			);
 			
@@ -915,7 +967,10 @@
 					// nothing to do, leave map in place as it was					
 			};
 				
-			_closeBtn = createControlButton("X|Close map", gm.ControlPosition.TOP_RIGHT, "mappy-close-button", 
+			_closeBtn = createControlButton(
+				"&times;|Close map", 
+				gm.ControlPosition.TOP_RIGHT, 
+				"mappy-close-button mappy-control-button", 
 				onCloseEvent
 			);
 			// With lightbox type functionality, it's traditional to let the ESCape key close it too
@@ -929,6 +984,28 @@
 		
 		
 		/// <summary>
+		/// 
+		/// </summary>
+		function addGeoLocationButton() {
+			if (_geoBtn)
+				// already added
+				return;
+				
+			var onClickEvent = function(evt) {
+				_plugIn.setMapCentreByGeo();
+			};
+			
+			_geoBtn = createControlButton(
+				"&otimes;|Centre map based on your location", 
+				gm.ControlPosition.TOP_LEFT,
+				"mappy-geo-button",
+				onClickEvent
+			);
+			
+		} // addGeoLocationButton
+		
+		
+		/// <summary>
 		/// Places a help (?) icon at the top right of the map, allowing
 		/// instructions to be added to the end user of the map
 		/// </summary>
@@ -937,7 +1014,10 @@
 				// already done
 				return;
 			
-			_helpBtn = createControlButton("?|Show help", gm.ControlPosition.TOP_RIGHT, "mappy-help-button", 
+			_helpBtn = createControlButton(
+				"?|Show help", 
+				gm.ControlPosition.TOP_RIGHT, 
+				"mappy-help-button mappy-control-button", 
 				function(evt) {
 					evt.preventDefault();
 					
@@ -1402,9 +1482,15 @@
 		/// the results on the map
 		/// </summary>
 		function doSearch(searchFor) {
+			var boundary = _gMap.getBounds();
+			
+			// reset the result page count (as we're starting afresh with a new search)
 			_pageNum = 0;
+			
 			var request = {
-				query: searchFor
+				query: searchFor,
+				// limit to search to boundary of the map screen
+				bounds: boundary
 			};
 			_placesApi.textSearch(request, gmPlaceSelected);
 		
@@ -1575,7 +1661,11 @@
 				);
 			}
 			
-			
+
+			// position geo before the search bar (works better me thinks)
+			if (settings.allowGeo) {
+				addGeoLocationButton();
+			}
 			if (settings.searchOptions.enabled) {
 				addSearch();
 			}
