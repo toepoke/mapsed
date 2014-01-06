@@ -256,7 +256,7 @@ function fullWindowExample(e) {
 			;
 			
 			// build up the theme picker
-			html += "<select id='themePicker' title='Pick an alternative map style...'>";
+			html += "<select id='themePicker' title='Pick an alternative map style...' class='mappy-control-button'>";
 			for (var i=0; i < _snazzyMaps.length; i++) {
 				var theme = _snazzyMaps[i];
 				html += "<option value='" + theme.name + "'>" + theme.name + "</option>";
