@@ -28,6 +28,16 @@
 		var DEFAULT_CENTER = new google.maps.LatLng(53.798823, -1.5426760000000286);
 		var DEFAULT_ZOOM = 10;
 		
+		var BUTTONS = {
+			// labels and tooltips for the various buttons (anything after the pipe(|) is the tooltip)
+			Go:        "Go",
+			More:      "More|There are more results available ...",
+			AddPlace:  "+|Add a place",
+			CloseMap:  "&times;|Close map",
+			Geo:       "&otimes;|Centre map based on your location",
+			Help:      "?|Show help"			
+		};
+		
 		// private plug-in variables
 		var _plugIn = this,           // Reference back to the "mappy" plug-in instance
 				_searchBox = null,        // Search box that appears on the map 
@@ -866,7 +876,7 @@
 			gm.event.addListener(_gMap, "bounds_changed", gmBoundsChanged);
 			
 			_searchBtn = createControlButton(
-				"Go", gm.ControlPosition.TOP_LEFT, 
+				BUTTONS.Go, gm.ControlPosition.TOP_LEFT, 
 				"mappy-search-button mappy-control-button", 
 				function(evt) {
 					evt.preventDefault();
@@ -878,11 +888,13 @@
 			// For handling additional results, note there is not event handlers as this is]
 			// ... driven from the first set of search results we get back from Google
 			_moreBtn = createControlButton(
-				"More|There are more results available ...", 
+				BUTTONS.More, 
 				gm.ControlPosition.TOP_LEFT, 
 				"mappy-more-button mappy-control-button", 
 				null
 			);
+			// Should be disabled to start with
+			_moreBtn[0].disabled = true;
 		} // addSearch
 		
 		
@@ -927,7 +939,7 @@
 			}; // onAddEvent
 			
 			_addBtn = createControlButton(
-				"+|Add a place", 
+				BUTTONS.AddPlace, 
 				gm.ControlPosition.TOP_RIGHT, 
 				"mappy-add-button mappy-control-button", 
 				onAddEvent
@@ -968,7 +980,7 @@
 			};
 				
 			_closeBtn = createControlButton(
-				"&times;|Close map", 
+				BUTTONS.CloseMap, 
 				gm.ControlPosition.TOP_RIGHT, 
 				"mappy-close-button mappy-control-button", 
 				onCloseEvent
@@ -996,7 +1008,7 @@
 			};
 			
 			_geoBtn = createControlButton(
-				"&otimes;|Centre map based on your location", 
+				BUTTONS.Geo, 
 				gm.ControlPosition.TOP_LEFT,
 				"mappy-geo-button",
 				onClickEvent
@@ -1015,7 +1027,7 @@
 				return;
 			
 			_helpBtn = createControlButton(
-				"?|Show help", 
+				BUTTONS.Help, 
 				gm.ControlPosition.TOP_RIGHT, 
 				"mappy-help-button mappy-control-button", 
 				function(evt) {
