@@ -119,13 +119,13 @@ Displays the help instructions when the map is first opened (see [getHelpWindowS
 
 ### confirmDelete *(bool)*
 
-Flags that when a user *deletes* a place (activated by the [onDelete](#onDelete) callback) they are asked to confirm the action *before* the [onDelete](#onDelete) callback is issued.
+Flags that when a user *deletes* a place (activated by the [onDelete](#ondelete) callback) they are asked to confirm the action *before* the [onDelete](#ondelete) callback is issued.
 
 [See delete places example](examples/04-delete-places-example.js)
 
 ## Place Model
 
-When a given *action* occurs (when a place is [selected](#onSelect) for example) a [callback](#events--callbacks) is fired so your application can deal with the event.  
+When a given *action* occurs (when a place is [selected](#onselect) for example) a [callback](#events--callbacks) is fired so your application can deal with the event.  
 
 As part of the callback *mappy* typically passes the data for the place the event was fired for.  For convenience we'll call this the *model* and it will look like this:
 
@@ -139,7 +139,7 @@ As part of the callback *mappy* typically passes the data for the place the even
   <tr><td>reference</td><td>Unique reference to a place in the Google Places database (this is provided by Google), see also <a href="#google-place">Google Place</a></td></tr>
   <tr><td>userData</td><td>
     Some unique identifier to link a marker on the map with a database entity (e.g. primary key).<br/>
-    For <strong>new</strong> places this will be empty and should be populated by the <a href="#onSave">onSave callback</a>.<br/><br/>
+    For <strong>new</strong> places this will be empty and should be populated by the <a href="#onsave">onSave callback</a>.<br/><br/>
 
     <i>A place may have both the <strong>userData</strong> property and the <strong>reference</strong> property populated.  Typically this would be because you're using the <strong>userData</strong> field to lookup the <a href="#google-place"><strong>google place</strong></a> <strong>reference</strong> from your database.</i>
     
@@ -214,7 +214,7 @@ Callback method signature:
 
 ### onDelete
 
-Fired when the **Delete** button is clicked in a place window.  If [confirmDelete](#confirm-delete) is enabled the user is prompted for confirmation first.
+Fired when the **Delete** button is clicked in a place window.  If [confirmDelete](#confirmdelete-bool) is enabled the user is prompted for confirmation first.
 
 Callback method signature:
 <table>
