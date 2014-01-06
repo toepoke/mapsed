@@ -564,7 +564,6 @@
 			var bounds = _gMap.getBounds();
 			if (bounds) {
 				_gmSearchBox.setBounds(bounds);
-				console.log("bounds changed");
 			}
 			
 			// Boundary has been set, so don't set the zoom/center
