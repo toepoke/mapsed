@@ -5,6 +5,7 @@
 	.mappy-container {
 		width: 100%;
 		min-width: 200px;
+		max-width: 350px;
 		font-family: "Calibri", "Arial";
 		color: #000;
 		/* Fixes problem with scrollbars appearing the first time a tooltip is used on a marker */
