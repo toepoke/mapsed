@@ -1465,8 +1465,17 @@
 			
 			clearMarkers();
 			
-			for (var i=0; i < settings.showOnLoad.length; i++) {
-				var p = settings.showOnLoad[i],
+			// "showOnLoad" can be specified as an array or a single object, so if it's the
+			// latter, we'll use the former
+			var places = [];
+			
+			if ($.isArray(settings.showOnLoad))
+				places = settings.showOnLoad;
+			else 
+				places.push(settings.showOnLoad);
+			
+			for (var i=0; i < places.length; i++) {
+				var p = places[i],
 						pos = new gm.LatLng(p.lat, p.lng),
 						markerType = ""
 				;

@@ -25,6 +25,8 @@ An array of JSON objects that define a set of markers to display when the map is
 
 Each element of the array details a place that should be loaded.  An element can either be a **Custom** place or a **Google** place.
 
+Note that **showOnLoad** will also accept just one place object, rather than an array (useful if you only want to show one place on your map).
+
 #### Custom Place
 
 A **custom** place is a place only your system knows about.  You know the address details, lat/lng coordinates, etc.  So you have to tell **mappy.js** what they are.  The following is a **custom** example:

@@ -20,7 +20,6 @@ function runExample2() {
 		},
 		
 		showOnLoad: 
-		[
 			// City Varieties
 			{
 				// flag that this place should have the tooltip shown when the map is first loaded
@@ -29,7 +28,6 @@ function runExample2() {
 				lng:-1.5426760000000286,
 				reference: "CoQBfAAAAPw-5BTCS53grSLDwX8rwo5BnWnEWnA72lmOjxdgWg2ODGfC5lLjGyoz428IEaln1vJ6rq1jI96Npzlm-N-wmPH2jdJMGfOLxno_rmgnajAnMPzNzuI8UjexIOdHVZPBPvQGloC-tRhudGeKkbdTT-IWNP5hp4DIl4XOLWuYFOVYEhBxNPxaXZdW9uhKIETXf60hGhTc9yKchnS6oO-6z5XZJkK2ekewYQ"
 			}
-		]
 		
 	});
 }
