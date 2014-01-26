@@ -115,7 +115,7 @@
 				// Performs a search when geo-location is activated.  This can be either 
 				// on load (see "findGeoOnLoad" option) or when the Geo location button is clicked
 				// {POSITION} is replaced with the detected Geo location position
-				// "geoSearch" supercedes any "initSearch" specified (if the user enables Geo location for the map)
+				// "geoSearch" supersedes any "initSearch" specified (if the user enables Geo location for the map)
 				geoSearch: "5aside football near {POSITION}"
 			},
 
@@ -298,7 +298,7 @@
 		/// </summary>
 		this.setMapCentreByGeo = function () {
 			if (!navigator.geolocation)
-			// GEO location not supported
+				// GEO location not supported
 				return;
 
 			navigator.geolocation.getCurrentPosition(
@@ -310,13 +310,17 @@
 					// change geo button to show it's now active
 					_geoBtn.addClass("is-active");
 
-					// first time map has been loaded, so apply any inital search
+					// first time map has been loaded, so apply any initial search
 					var so = settings.searchOptions;
 					if (so && so.geoSearch && so.geoSearch.length > 0) {
 						var newLocation = pos.toUrlValue();
 						var search = so.geoSearch.replace("{POSITION}", newLocation);
 
 						doSearch(search);
+					}
+					
+					if (so && settings.showOnLoad) {
+						addInitialPlaces();
 					}
 				},
 				function (err) {
@@ -468,11 +472,7 @@
 				}
 			}
 
-			// if Geo location is enabled, find the location
-			// ... note we don't use Geo on load if there are custom places to
-			// ... show - otherwise there's a [high] risk we won't see the places
-			// ... because they're looking somewhere else
-			if (settings.findGeoOnLoad && !settings.showOnLoad) {
+			if (settings.findGeoOnLoad) {
 				_plugIn.setMapCentreByGeo();
 			}
 
