@@ -294,7 +294,11 @@
 
 
 		/// <summary>
-		///
+		/// Moves the map location to the centre of the geo-location of the user
+		/// If custom places are defined, these are also added.
+		/// Note: Custom places are only added when the map is first loaded
+		/// If the user clicks the geo-button the custom places aren't added as the "geoSearch"
+		/// takes priority, overwriting the "showOnLoad" places (due to order of the callbacks)
 		/// </summary>
 		this.setMapCentreByGeo = function () {
 			if (!navigator.geolocation)
@@ -1010,7 +1014,8 @@
 
 
 		/// <summary>
-		/// 
+		/// Adds a geo location button to the map, which the user can click to set their
+		/// location based on their geo-location.
 		/// </summary>
 		function addGeoLocationButton() {
 			if (_geoBtn)
