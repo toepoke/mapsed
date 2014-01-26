@@ -7,22 +7,17 @@ var _geoPlace = {
 
 // Some custom places to show when loading the full map, again to illustrate how it's done
 var _places = [
+	// Random made up CUSTOM place
 	{
-		// Buckingham Palace, London
+		// Flag this place can edited (tooltip has an "Edit" button)
+		// Once editing has completed a callback is fired so you can save the details to your DB
 		autoShow: true,
-		lat: 51.501, 
-		lng: -0.142,
-		reference: "CoQBcgAAAF_T0RxbSJXxr_mMPT5axiHj-I3YgOaAf-VG743aipYjqg5ngQ1j_hlopifKvUJ5_jLjDBbqrrU7_Fm97G38g6rWz_B4qJqnotfudUeett4GDijBbFTsgFavFZV-MAyX5igeGMJMH-FFvdD8wsty2RcIfQqbiFyfzeukAxNk6CPzEhB18RgHTLn7rPMVAoMARcSMGhR9Kn1UiOQ8bMVzeJiTC7wLmUx4UA"
-	}
-	// Sydney Opera House
-	,
-	{
-		autoShow: true,
-		lat: -33.85687,
-		lng: 151.21528,
-		reference: "CoQBdAAAAJIkomAzEkx1f0DZL-wYHDR3p5tTBACdKCI0QswwM8tO8GUWdI_7W0dF7E4uvOD_tvJiJ8yEG1K4_Woflhizsbj5GgmQ4mPovX7pPPjMGH7Yu0pzWzq8_G2MzPKeIzA2XqR_xu8Y2kUby0b4F1NcRVtvNbFS9dVHMW9PPA23zwDREhBtrSpyC9Cg_zeXxmcCH9ujGhQLo7l5BVBiCT4EP7WgHrwLtYxFsw"
-	}
-	
+		lat: 53.79,
+		lng: -1.59,
+		name: "Somewhere",
+		street: "Over the rainbow, Up high way",
+		userData: 99
+	}	
 ];
 
 
@@ -52,9 +47,9 @@ function getPlaceHtml(details) {
 // There's quite a lot here as we're illustrating pretty much everything.
 // Don't be put off ... you won't need anywhere near this level ... probably :oD
 // 
-function fullWindowExample(e) {
+function showMap(e) {
 
-	$.fn.mappy({
+	$("#myMap").mappy({
 		// Map initialisation options to pass onto Google Maps
 		mapOptions: {
 			zoom: 15,
@@ -65,7 +60,8 @@ function fullWindowExample(e) {
 		searchOptions: {
 			enabled: true,
 			//initSearch: "Football in Leeds",
-			placeholder: "Search for \"5aside\" ..."
+			placeholder: "Search for \"5aside\" ...",
+			geoSearch: "Businesses near {POSITION}"
 		},
 		
 		// Turn geo button on
@@ -100,7 +96,7 @@ $(document).ready(function() {
 	// 2: If the browser doesn't support geo, we still have a map
 	// 3: If the user decides they don't want to enable geo, they still have a fallback map to play with
 	
-	fullWindowExample();
+	showMap();
 	
 	if (navigator.geolocation) {
 		// cool, geo is supported by the browser
@@ -117,7 +113,7 @@ $(document).ready(function() {
 				// add additional place to our places array we'll showOnLoad
 				_places.push(geoPlace);
 				// and show the map
-				fullWindowExample();
+				showMap();
 			},
 			function (err) {
 				// user probably denied us geo access
