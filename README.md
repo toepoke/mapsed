@@ -96,6 +96,12 @@ Placeholder text to be added to the search textbox.
 
 A search string to pre-populate the search textbox with.  This is executed when the map is loaded and shows the results straight away.
 
+### geoSearch *(string)*
+
+Specifies a search to be made when location is based on geo-location position.  This can be when the map is first loaded (#findGeoOnLoad-bool) or when the geo-location button is clicked (#allowgeo-bool).
+
+This search is executed instead of the (#initsearch-string).  Rational being the geo-search needs to be relative to the lat/lng co-ordinates.  For example setting the *geoSearch* string to "Business near {POSITION}" the {POSITION} wildcard is replaced with the lat/lng co-ordinates of the user.
+
 [See search places example](examples/05-search-for-places-example.js)
 
 ### allowGeo *(bool)*
