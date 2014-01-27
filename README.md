@@ -66,12 +66,28 @@ The *getMarkerImage* callback is fired when a marker is added to the map.  It ex
 
 The method signature for the callback is *getMarkerImage(mappy, markerType, title)*, where:
 
-*mappy (object)* - the plug-in calling the method
-*markerType (string)* - the type of marker being added to the map, this can be:
-  *new* - New marker is being added by user (via the "+" button - see [allowAdd](#allowadd-bool))
-  *google* - Marker being added was derived from the Google Places API
-  *custom* - Marker being added was derived from the application database, i.e. derived from the [showOnLoad](#showonload-array) array.
-*title (bool)* - title attribute of the marker (useful for tracking which marker in an showOnLoad is being drawn).
+<table>
+  <tr>
+    <th>Parameter</th><th>Description</th>
+  </tr>
+  <tr>
+    <td>*mappy (object)*</td>
+    <td>The plug-in calling the method</td>
+  </tr>
+  <tr>
+    <td>*markerType (string)*</td>
+    <td>
+    	The type of marker being added to the map, this can be:<br/>
+    	*new* - New marker is being added by user (via the "+" button - see [allowAdd](#allowadd-bool))<br/>
+    	*google* - Marker being added was derived from the Google Places API<br/>
+    	*custom* - Marker being added was derived from the application database, i.e. derived from the [showOnLoad](#showonload-array) array.
+    </td>
+  </tr>
+  <tr>
+    <td>*title (bool)*</td>
+    <td>title attribute of the marker (useful for tracking which marker in an showOnLoad is being drawn).</td>
+  </tr>
+ </table>
 
 [See full-window example](examples/06-full-example.js)
 
