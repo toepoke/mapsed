@@ -71,23 +71,24 @@ The method signature for the callback is *getMarkerImage(mappy, markerType, titl
     <th>Parameter</th><th>Description</th>
   </tr>
   <tr>
-    <td>*mappy (object)*</td>
+    <td><strong>mappy</strong> (object)</td>
     <td>The plug-in calling the method</td>
   </tr>
   <tr>
-    <td>*markerType (string)*</td>
+    <td><strong>markerType</strong> (string)</td>
     <td>
     	The type of marker being added to the map, this can be:<br/>
-    	*new* - New marker is being added by user (via the "+" button - see [allowAdd](#allowadd-bool))<br/>
+    	*new* - New marker is being added by user (via the "+" button - see allowAdd)<br/>
     	*google* - Marker being added was derived from the Google Places API<br/>
-    	*custom* - Marker being added was derived from the application database, i.e. derived from the [showOnLoad](#showonload-array) array.
+    	*custom* - Marker being added was derived from the application database, i.e. derived from the showOnLoad array.
     </td>
   </tr>
   <tr>
-    <td>*title (bool)*</td>
+    <td><strong>mappy</strong> (bool)</td>
     <td>title attribute of the marker (useful for tracking which marker in an showOnLoad is being drawn).</td>
   </tr>
- </table>
+</table>
+ 
 
 [See full-window example](examples/06-full-example.js)
 
