@@ -60,6 +60,20 @@ The lat/lng coordinates still need to be given to the plugin as it only asks Goo
 
 [See custom places example](examples/01-custom-places-example.js)
 
+### getMarkerImage *(function)*
+
+The *getMarkerImage* callback is fired when a marker is added to the map.  It expects a Google Icon object to be returned (see https://developers.google.com/maps/documentation/javascript/reference#Icon).
+
+The method signature for the callback is *getMarkerImage(mappy, markerType)*, where:
+
+*mappy (object)* - the plug-in calling the method
+*markerType (string)* - the type of marker being added to the map, this can be:
+  *new* - New marker is being added by user (via the "+" button - see [allowAdd](#allowadd-bool))
+  *google* - Marker being added was derived from the Google Places API
+  *custom* - Marker being added was derived from the application database, i.e. derived from the [showOnLoad](#showonload-array) array.
+
+[See full-window example](examples/06-full-example.js)
+
 ### mapOptions *(object)*
 
 This object is passed onto the Google Maps initialisation, thereby allowing the map to be initialised with further parameters.
