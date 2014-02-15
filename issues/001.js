@@ -1,9 +1,4 @@
 
-var _geoPlace = {
-	autoShow: true,
-	name: "Where I am!"
-};
-
 
 // Some custom places to show when loading the full map, again to illustrate how it's done
 var _places = [
@@ -70,6 +65,18 @@ function showMap(e) {
 
 		// Emulate places being loaded from a db
 		showOnLoad: _places,
+		
+		getMarkerImage: function(mappy, markerType, title) {
+			if (title === "Here I am!") {
+				return {
+					url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%8A%95|fff999|000000|",
+					size: new google.maps.Size(21, 34)					
+				};
+			}
+			
+			// not fussed about the others, just use the default
+			return null;
+		},
 
 		// Enables place selection
 		// ... note the presence of the callback is 

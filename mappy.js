@@ -142,6 +142,20 @@
 			// prototype: function(mappy)
 			// 	return true to close the map, false keeps it open
 			onClose: null,
+			
+			// Callback for getting the [image] URL to use for a marker
+			// Parameter "markerType" is passed, indicating the type of marker, this can be
+			// prototype: function(mappy, markerType, title)
+			// Parameters:
+			//   mappy: Reference to the mappy plugin
+			//   markerType: The type of marker being added to the map:
+			//      "new" = Marker created using the "+" button to add a new place
+			//      "google" = Marker is being added from a Google Places place
+			//      "custom" = Marker is being added from application database (via "showOnLoad" array)
+			//   title: Title attribute of the marker
+			// Returns:
+			//   Google Icon object (see https://developers.google.com/maps/documentation/javascript/reference#Icon)
+			getMarkerImage: null,			
 
 			// Adds a help button to give further instructions to the end user
 			// prototype: function()
@@ -1167,7 +1181,7 @@
 			var image = null;
 
 			if (settings.getMarkerImage) {
-				image = settings.getMarkerImage(_plugIn, type);
+				image = settings.getMarkerImage(_plugIn, type, title);
 			}
 
 			var marker = new gm.Marker({

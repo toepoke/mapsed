@@ -193,7 +193,7 @@ function fullWindowExample(e) {
 		},
               		
 		// Custom marker images
-		getMarkerImage: function(mappy, markerType) {
+		getMarkerImage: function(mappy, markerType, title) {
 			var imageUrl = "";
 			
 			if (markerType == "custom")
