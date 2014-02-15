@@ -3,7 +3,7 @@
 /*
  * Developed by : www.toepoke.co.uk
  *
- * If you redistribute this file, please keep this section in place.
+ * If you redistribute this file, please keep this section in place
  *
  * License: Same as jQuery - see http://jquery.org/license
  *
