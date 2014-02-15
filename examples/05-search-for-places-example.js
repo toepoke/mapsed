@@ -1,5 +1,5 @@
 function runExample5() {
-	$("#search-for-places").mappy({
+    $("#search-for-places").mapsed({
 		// Adds a predictive search box
 		searchOptions: {
 			enabled: true,
@@ -11,7 +11,7 @@ function runExample5() {
 		allowGeo: true,
 
 		// allow user to select somewhere
-		onSelect: function(mappy, details) {
+		onSelect: function(m, details) {
 			var msg = 
 				"name: " + details.name +
 				"<br/>street: " + details.street + ", " + 
@@ -21,15 +21,15 @@ function runExample5() {
 				"<br/>website: " + details.website + 
 				"<br/>g+: " + details.url
 			;
-			mappy.showMsg("You selected ...", msg);
-				// indicate tip should be closed
+			m.showMsg("You selected ...", msg);
+			// indicate tip should be closed
 			return true;
 		},
 		
 		// shows additional instructions to the user	
-		getHelpWindow: function(mappy) {
+		getHelpWindow: function(m) {
 			var html = 
-				"<div class='mappy-help'>" +
+				"<div class='mapsed-help'>" +
 					"<h3>Find a venue</h3>" +
 					"<ol>" +
 						"<li>Simply use the <strong>search</strong> box to find a venue in your area.</li>" +

@@ -1,5 +1,5 @@
 function runExample3() {
-	$("#custom-places").mappy({
+    $("#custom-places").mapsed({
 		showOnLoad: 	
 		[
 			// City Varieties

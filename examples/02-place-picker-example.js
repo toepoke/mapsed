@@ -1,7 +1,7 @@
 function runExample2() {
-	$("#place-picker").mappy({
+    $("#place-picker").mapsed({
 		// allow user to select somewhere
-		onSelect: function(mappy, details) {
+		onSelect: function(m, details) {
 			var msg = 
 				"Name: " + details.name + 
 				"<br/>Address: " + 
@@ -13,7 +13,7 @@ function runExample2() {
 				"<br/>g+: " + details.url +
 				"<br/>Tel: " + details.telNo						
 			;
-			mappy.showMsg("Place selected!", msg);
+			m.showMsg("Place selected!", msg);
 			
 			// indicate tip should be closed
 			return true;

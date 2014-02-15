@@ -1,8 +1,8 @@
-# mappy.js
+# mapsed.js
 
 On **[my website](http://toepoke.co.uk/)** I needed to be able to select places on a map.  
 
-I couldn't find anything that fully did what I was after so I built mappy (besides I need the JavaScript practice!).
+I couldn't find anything that fully did what I was after so I built mapsed (besides I need the JavaScript practice!).
 
 In short it provides the following:
 
@@ -15,7 +15,7 @@ In short it provides the following:
 * Works with multiple maps on the same page
 
 ## Demos
-Demos at http://mappy.apphb.com
+Demos at http://mapsed.apphb.com
 
 ## Settings
 
@@ -29,7 +29,7 @@ Note that **showOnLoad** will also accept just one place object, rather than an 
 
 #### Custom Place
 
-A **custom** place is a place only your system knows about.  You know the address details, lat/lng coordinates, etc.  So you have to tell **mappy.js** what they are.  The following is a **custom** example:
+A **custom** place is a place only your system knows about.  You know the address details, lat/lng coordinates, etc.  So you have to tell **mapsed.js** what they are.  The following is a **custom** example:
 
 ```JavaScript
 // Random made up CUSTOM place
@@ -44,7 +44,7 @@ A **custom** place is a place only your system knows about.  You know the addres
 
 #### Google Place
 
-A ***Google*** place is one derived from the Google Places database.  Google returns (and mappy.js in turn tells you) [a unique **reference** for a place](https://developers.google.com/places/documentation/search#PlaceSearchResults).  The following is a **Google** place example:
+A ***Google*** place is one derived from the Google Places database.  Google returns (and mapsed.js in turn tells you) [a unique **reference** for a place](https://developers.google.com/places/documentation/search#PlaceSearchResults).  The following is a **Google** place example:
 
 ```JavaScript
 {
@@ -54,7 +54,7 @@ A ***Google*** place is one derived from the Google Places database.  Google ret
 }
 ```
 
-**Mappy.js** uses the **reference token** to ask Google for the details (so rather than storing the full info in your database, you just store the **reference**).
+**mapsed.js** uses the **reference token** to ask Google for the details (so rather than storing the full info in your database, you just store the **reference**).
 
 The lat/lng coordinates still need to be given to the plugin as it only asks Google for details when a marker is clicked upon (i.e. it queries as required) so it needs to know where the marker should be placed on the map.
 
@@ -64,14 +64,14 @@ The lat/lng coordinates still need to be given to the plugin as it only asks Goo
 
 The *getMarkerImage* callback is fired when a marker is added to the map.  It expects a Google Icon object to be returned (see https://developers.google.com/maps/documentation/javascript/reference#Icon).
 
-The method signature for the callback is *getMarkerImage(mappy, markerType, title)*, where:
+The method signature for the callback is *getMarkerImage(mapsed, markerType, title)*, where:
 
 <table>
   <tr>
     <th>Parameter</th><th>Description</th>
   </tr>
   <tr>
-    <td><strong>mappy</strong> (object)</td>
+    <td><strong>mapsed</strong> (object)</td>
     <td>The plug-in calling the method</td>
   </tr>
   <tr>
@@ -84,7 +84,7 @@ The method signature for the callback is *getMarkerImage(mappy, markerType, titl
     </td>
   </tr>
   <tr>
-    <td><strong>mappy</strong> (bool)</td>
+    <td><strong>mapsed</strong> (bool)</td>
     <td>title attribute of the marker (useful for tracking which marker in an showOnLoad is being drawn).</td>
   </tr>
 </table>
@@ -167,7 +167,7 @@ Flags that when a user *deletes* a place (activated by the [onDelete](#ondelete)
 
 When a given *action* occurs (when a place is [selected](#onselect) for example) a [callback](#events--callbacks) is fired so your application can deal with the event.  
 
-As part of the callback *mappy* typically passes the data for the place the event was fired for.  For convenience we'll call this the *model* and it will look like this:
+As part of the callback *mapsed* typically passes the data for the place the event was fired for.  For convenience we'll call this the *model* and it will look like this:
 
 <table>
   <tr>
@@ -222,8 +222,8 @@ Callback method signature:
 <table>
 <tr><th>Parameter</th><th>Description</th></tr>
 <tr>
-<td>mappy</td>
-<td>Reference to the <strong>mappy</strong> object so you can call into the plug-in, e.g. <strong>mappy.showMsg("title", "some message")</strong> will show a modal message on the map</td>
+<td>mapsed</td>
+<td>Reference to the <strong>mapsed</strong> object so you can call into the plug-in, e.g. <strong>mapsed.showMsg("title", "some message")</strong> will show a modal message on the map</td>
 </tr>
 <tr>
 <td>details</td>
@@ -241,8 +241,8 @@ Callback method signature:
 <table>
 <tr><th>Parameter</th><th>Description</th></tr>
 <tr>
-<td>mappy</td>
-<td>Reference to the <strong>mappy</strong> object so you can call into the plug-in, e.g. <strong>mappy.showMsg("title", "some message")</strong> will show a modal message on the map</td>
+<td>mapsed</td>
+<td>Reference to the <strong>mapsed</strong> object so you can call into the plug-in, e.g. <strong>mapsed.showMsg("title", "some message")</strong> will show a modal message on the map</td>
 </tr>
 <tr>
 <td>details</td>
@@ -260,8 +260,8 @@ Callback method signature:
 <table>
 <tr><th>Parameter</th><th>Description</th></tr>
 <tr>
-<td>mappy</td>
-<td>Reference to the <strong>mappy</strong> object so you can call into the plug-in, e.g. <strong>mappy.showMsg("title", "some message")</strong> will show a modal message on the map</td>
+<td>mapsed</td>
+<td>Reference to the <strong>mapsed</strong> object so you can call into the plug-in, e.g. <strong>mapsed.showMsg("title", "some message")</strong> will show a modal message on the map</td>
 </tr>
 <tr>
 <td>details</td>
@@ -293,7 +293,7 @@ Google Places library (v3)
 
 ## Source code
 The source code is knocked up to satisfy a need.  I'm not advertising it as best practice, but if you think it will benefit you, please feel free to use it.
-mappy.js is released under a ''do what you like with it'' license :-)
+mapsed.js is released under a ''do what you like with it'' license :-)
 
 ## Change Log
 

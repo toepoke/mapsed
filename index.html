@@ -6,13 +6,13 @@
 		<meta name="description" content="">
 		<meta name="author" content="">
 
-		<title>mappy.js - jQuery plug-in for Google Maps and Places API integration</title>
+		<title>mapsed.js - jQuery plug-in for Google Maps and Places API integration</title>
 
 		<!-- Bootstrap core CSS -->
 		<link href="ws/css/bootstrap.css" rel="stylesheet">
 
-		<!-- Core mappy styles -->
-		<link href="mappy.css" rel="stylesheet">
+		<!-- Core mapsed styles -->
+		<link href="mapsed.css" rel="stylesheet">
 
 		<!-- Add custom CSS here -->
 		<link href="ws/css/stylish-portfolio.css" rel="stylesheet">
@@ -23,7 +23,7 @@
 
 	<body>
 		<div class="leader-banner">
-			<a href="http://toepoke.co.uk?mappy=1"><img src="ws/img/leaderboard-banner.gif" alt="Lose the faff, bring back the fun with toepoke.co.uk"></a>
+			<a href="http://toepoke.co.uk?mapsed=1"><img src="ws/img/leaderboard-banner.gif" alt="Lose the faff, bring back the fun with toepoke.co.uk"></a>
 		</div>	
 
 		<!-- Side Menu -->
@@ -31,7 +31,7 @@
 		<div id="sidebar-wrapper">
 			<ul class="sidebar-nav">
 				<a id="menu-close" href="#" class="btn btn-default btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
-				<li class="sidebar-brand"><a href="https://toepoke.co.uk?ref=mappy1">built by toepoke.co.uk</a></li>
+				<li class="sidebar-brand"><a href="https://toepoke.co.uk?ref=mapsed1">built by toepoke.co.uk</a></li>
 				<li><a href="#top">Home</a></li>
 				<li><a href="#about">About</a></li>
 				<li><a href="#examples">Examples</a></li>
@@ -44,7 +44,7 @@
 		<!-- Full Page Image Header Area -->
 		<div id="top" class="header">
 			<div class="vert-text">
-				<h1>Mappy.js!</h1>
+				<h1>Mapsed.js!</h1>
 				<h3>Google <em>maps</em> &amp; <em>places</em> jQuery integration plug-in</h3>
 				<a href="#about" class="btn btn-default btn-lg">Find Out More</a>
 			</div>
@@ -58,17 +58,18 @@
 					<div class="col-md-6 col-md-offset-3 text-center">
 						<h2>Google Map Picker</h2>
 						<p class="lead">
-							On <a href="https://toepoke.co.uk?ref=mappy2">my little website</a> I need to allow users to
+							On <a href="https://toepoke.co.uk?ref=mapsed2">my little website</a> I need to allow users to
 							be able to <em>pick</em> somewhere to play football.
 						</p>
 						<p class="lead">
 							Couldn't really find anything that did what I was after (even
 							<a href="https://mapsengine.google.com/map/">Google Map Engine</a> 
 							didn't quite do it)
-							so I built <em>mappy.js</em>.  
+							so I built <em>mapsed.js</em><br/>
+							(<strong>MAP</strong> <strong>S</strong>elect, <strong>E</strong>dit &amp; <strong>D</strong>elete).  
 						</p>
 						<p class="lead">
-							As well as <em>picking</em> places, you can add/edit ones to integrate with your
+							As well as <em>selecting</em> places, you can add/edit ones to integrate with your
 							own database; check out the examples to see what else it does.
 						</p>
 					</div>
@@ -100,13 +101,13 @@
 							<h3 class="text-center">Loading Places</h3>
 								<p class="lead">
 									Here we're illustrating loading places from our own database,
-									and telling <em>mappy</em> what places to draw
-									(via the <a href="https://github.com/toepoke/mappy/blob/master/README.md#showonload-array">showOnLoad</a>
+									and telling <em>mapsed</em> what places to draw
+									(via the <a href="https://github.com/toepoke/mapsed/blob/master/README.md#showonload-array">showOnLoad</a>
 									array).
 								</p>
 								<p class="lead">
-									The top marker stores a lookup to a <a href="https://github.com/toepoke/mappy/blob/master/README.md#google-place">Google Place reference</a>,
-									the bottom one stores a <a href="https://github.com/toepoke/mappy/blob/master/README.md#custom-place">custom place</a> object.
+									The top marker stores a lookup to a <a href="https://github.com/toepoke/mapsed/blob/master/README.md#google-place">Google Place reference</a>,
+									the bottom one stores a <a href="https://github.com/toepoke/mapsed/blob/master/README.md#custom-place">custom place</a> object.
 								</p>
 								<div id="custom-places" class="small-map"></div>
 								<p class="pull-right">
@@ -115,7 +116,7 @@
 								<div class="clearfix"></div>
 								<div class="code">
 									<pre class="prettyprint lang-js">
-$("#custom-places").mappy({
+$("#custom-places").mapsed({
   showOnLoad:
   [
     // City Varieties
@@ -163,9 +164,9 @@ $("#custom-places").mappy({
 							<div class="clearfix"></div>
 							<div class="code">
 								<pre class="prettyprint lang-js">
-$("#place-picker").mappy({
+$("#place-picker").mapsed({
   // allow user to select somewhere
-  onSelect: function(mappy, details) {
+  onSelect: function(mapsed, details) {
     var msg = 
       "Name: " + details.name + 
       "Address: " + 
@@ -177,7 +178,7 @@ $("#place-picker").mappy({
       "g+: " + details.url +
       "Tel: " + details.telNo						
       ;
-    mappy.showMsg("Place selected!", msg);
+		mapsed.showMsg("Place selected!", msg);
       
     // indicate tip should be closed
     return true;
@@ -197,7 +198,7 @@ $("#place-picker").mappy({
 							</div>
 							<p class="lead">
 								The <em>Select</em> button is turned on simply by implementing 
-								the <a href="https://github.com/toepoke/mappy/blob/master/README.md#onselect">onSelect</a> 
+								the <a href="https://github.com/toepoke/mapsed/blob/master/README.md#onselect">onSelect</a> 
 								callback.
 							</p>
 						</div>
@@ -230,14 +231,14 @@ $("#place-picker").mappy({
 							<div class="clearfix"></div>
 							<div class="code">
 								<pre class="prettyprint lang-js">
-$("#add-places").mappy({
+$("#add-places").mapsed({
 
   // Adds the "+" button to the control bar at the top right of the map
   allowAdd: true,
   
   // Enables edit of custom places (to your web application, not Google Maps!)
   // ... again the presence of the callback enables the functionality
-  onSave: function(mappy, newPlace) {
+  onSave: function(mapsed, newPlace) {
     var missing = [];
     
     // detect errors starting at bottom
@@ -273,7 +274,7 @@ $("#add-places").mappy({
         title = "New place added!";
       else
         title = "Place saved!";
-      mappy.showMsg(title, msg);
+			mapsed.showMsg(title, msg);
     }
   
     // indicate form was OK and saved
@@ -287,9 +288,9 @@ $("#add-places").mappy({
 								button to make changes.
 							</p>
 							<p class="lead">
-								Simply set the <a href="https://github.com/toepoke/mappy/blob/master/README.md#allowadd-bool">allowAdd</a>
+								Simply set the <a href="https://github.com/toepoke/mapsed/blob/master/README.md#allowadd-bool">allowAdd</a>
 								property to <strong>true</strong> to enable the icon, and an 
-								<a href="https://github.com/toepoke/mappy/blob/master/README.md#onsave">onSave</a>
+								<a href="https://github.com/toepoke/mapsed/blob/master/README.md#onsave">onSave</a>
 								callback to save the new place (and subsequent edits).
 							</p>
 							
@@ -313,7 +314,7 @@ $("#add-places").mappy({
 							<div class="clearfix"></div>
 							<div class="code">
 								<pre class="prettyprint lang-js">
-  $("#delete-places").mappy({
+  $("#delete-places").mapsed({
     showOnLoad: 
     [
       // City Varieties
@@ -335,8 +336,8 @@ $("#add-places").mappy({
     
     // Allows the user to delete a "custom" place they've previously 
     // ... added
-    onDelete: function(mappy, placeToDelete) {
-      mappy.showMsg(
+    onDelete: function(mapsed, placeToDelete) {
+			mapsed.showMsg(
         "YOUR DELETE CODE HERE",
         "&lt;strong&gt;" + placeToDelete.name + "&lt;/strong&gt; has been removed."
       );
@@ -355,12 +356,12 @@ $("#add-places").mappy({
 							</div>
 							<p class="lead">
 								Enabling <em<>deletes</em> is simply a matter of implementing the
-								<a href="https://github.com/toepoke/mappy/blob/master/README.md#ondelete">onDelete</a>
+								<a href="https://github.com/toepoke/mapsed/blob/master/README.md#ondelete">onDelete</a>
 								callback and the <strong>Delete</strong> button will appear when appropriate.
 							</p>
 							<p class="lead">
 								You can also ask the user to 
-								<a href="https://github.com/toepoke/mappy/blob/master/README.md#confirmdelete-bool">confirm the delete</a>							
+								<a href="https://github.com/toepoke/mapsed/blob/master/README.md#confirmdelete-bool">confirm the delete</a>							
 								before they actually do it.
 							</p>
 						</div>
@@ -384,7 +385,7 @@ $("#add-places").mappy({
 							<div class="clearfix"></div>
 							<div class="code">
 								<pre class="prettyprint lang-js">
-$("#search-for-places").mappy({
+$("#search-for-places").mapsed({
   // Adds a predictive search box
   searchOptions: {
     enabled: true,
@@ -393,7 +394,7 @@ $("#search-for-places").mappy({
   },
   
   // allow user to select somewhere
-  onSelect: function(mappy, details) {
+  onSelect: function(mapsed, details) {
     var msg = 
       "name: " + details.name +
       "street: " + details.street + ", " + 
@@ -403,15 +404,15 @@ $("#search-for-places").mappy({
       "website: " + details.website + 
       "g+: " + details.url
     ;
-    mappy.showMsg("You selected ...", msg);
+		mapsed.showMsg("You selected ...", msg);
     // indicate tip should be closed
     return true;
   },
   
   // shows additional instructions to the user	
-  getHelpWindow: function(mappy) {
+  getHelpWindow: function(mapsed) {
     var html = 
-      "&lt;div class='mappy-help'&gt;" +
+      "&lt;div class='mapsed-help'&gt;" +
         "&lt;h3&gt;Find a venue&lt;/h3&gt;" +
         "&lt;ol&gt;" +
           "&lt;li&gt;Simply use the &lt;strong&gt;search&lt;/strong&gt; box to find a venue in your area.&lt;/li&gt;" +
@@ -433,7 +434,7 @@ $("#search-for-places").mappy({
 								</pre>
 							</div>
 							<p class="lead">
-								Searching is enabled through the <a href="https://github.com/toepoke/mappy/blob/master/README.md#searchoptions-object">searchOptions</a>
+								Searching is enabled through the <a href="https://github.com/toepoke/mapsed/blob/master/README.md#searchoptions-object">searchOptions</a>
 								object (you simply flip a flag to enable it).
 								The <strong>More</strong> button returns the 
 								<a href="https://developers.google.com/maps/documentation/javascript/places#PlaceSearchPaging">next 20 hits</a>.
@@ -441,13 +442,13 @@ $("#search-for-places").mappy({
 							<p class="lead">
 								Also notice that little <em>[?]</em> in the top-right corner of the
 								map?  This brings up a window telling your users what
-								to do, and it's <a href="https://github.com/toepoke/mappy/blob/master/README.md#gethelpwindow-string">configurable</a> 
+								to do, and it's <a href="https://github.com/toepoke/mapsed/blob/master/README.md#gethelpwindow-string">configurable</a> 
 								of course, and you can have it show 
-								<a href="https://github.com/toepoke/mappy/blob/master/README.md#showhelponload-bool">straight away</a>.
+								<a href="https://github.com/toepoke/mapsed/blob/master/README.md#showhelponload-bool">straight away</a>.
 							</p>
 							<p class="lead">
 								And finally a GEO location icon (&otimes;) has been added to move the map location to that of the 
-								user's device, added simply by setting the <a href="https://github.com/toepoke/mappy/blob/master/README.md#allowgeo-bool">allowGeo</a>
+								user's device, added simply by setting the <a href="https://github.com/toepoke/mapsed/blob/master/README.md#allowgeo-bool">allowGeo</a>
 								setting to <strong>true</strong>.
 							</p>
 						</div>
@@ -480,7 +481,7 @@ $("#search-for-places").mappy({
 							... added advantage of <em>full window mode</em> is you don't even
 							need a <em>DIV</em> as a placeholder for the map!
 						</p>
-						<a href="https://github.com/toepoke/mappy/blob/master/examples/06-full-example.js">see 06-full-example.js</a>
+						<a href="https://github.com/toepoke/mapsed/blob/master/examples/06-full-example.js">see 06-full-example.js</a>
 					</div>
 				</div>
 			</div>
@@ -499,17 +500,17 @@ $("#search-for-places").mappy({
 						</ul>
 						<h2>Codebase</h2>
 						<p>
-							<em>Mappy</em> was build to <a href="https://toepoke.co.uk?mappy=2">fulfil a need</a>.
-							The code is up on <a href="https://github.com/toepoke/mappy">Github</a>.
+							<em>Mapsed</em> was build to <a href="https://toepoke.co.uk?mapsed=2">fulfil a need</a>.
+							The code is up on <a href="https://github.com/toepoke/mapsed">Github</a>.
 							I wouldn't look ... the code's horrible, but the plug-in does the job.
 						</p>
 						<p>
 							Unlike the <a href="http://startbootstrap.com/stylish-portfolio">theme</a>
-							I've used to tell you about <em>mappy</em> which is very nice and clearly build with love.
+							I've used to tell you about <em>mapsed</em> which is very nice and clearly build with love.
 						</p>
 						<h2>License</h2>
 						<p>
-							<em>Mappy</em> is released under a &ldquo;<a href="https://jquery.org/license/">Do what you like with it</a>&rdquo; license.
+							<em>Mapsed</em> is released under a &ldquo;<a href="https://jquery.org/license/">Do what you like with it</a>&rdquo; license.
 						</p>
 					</div>
 				</div>
@@ -525,7 +526,7 @@ $("#search-for-places").mappy({
 				<div class="row">
 					<div class="col-md-6 col-md-offset-3 text-center">
 						<ul class="list-inline">
-							<li><a href="https://github.com/toepoke/mappy"><i class="fa fa-github fa-3x"></i></a></li>
+							<li><a href="https://github.com/toepoke/mapsed"><i class="fa fa-github fa-3x"></i></a></li>
 							<li><a href="https://twitter.com/toepoke_co_uk"><i class="fa fa-twitter fa-3x"></i></a></li>
 							<li><a href="https://plus.google.com/+ToepokeCoUk"><i class="fa fa-google-plus fa-3x"></i></a></li>
 							<li><a href="https://www.facebook.com/lose.the.faff"><i class="fa fa-facebook fa-3x"></i></a></li>
@@ -534,7 +535,7 @@ $("#search-for-places").mappy({
 							<a href="#top"><i class="fa fa-circle-arrow-up scroll fa-4x"></i></a>
 						</div>
 						<hr>
-						<p>Required by <a href="https://developers.google.com/maps/documentation/localsearch/">necessity</a>, built by <a href="http://toepoke.co.uk?mappy=3">toepoke.co.uk</a></p>
+						<p>Required by <a href="https://developers.google.com/maps/documentation/localsearch/">necessity</a>, built by <a href="http://toepoke.co.uk?mapsed=3">toepoke.co.uk</a></p>
 						<p>Lovely template provided by <a href="http://startbootstrap.com/stylish-portfolio">start Bootstrap</a></p>
 						<hr>
 					</div>
@@ -545,7 +546,7 @@ $("#search-for-places").mappy({
 						<div id="disqus_thread"></div>
 						<script type="text/javascript">
 						/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-						var disqus_shortname = 'mappy'; // required: replace example with your forum shortname
+							var disqus_shortname = 'mapsed'; // required: replace example with your forum shortname
 
 						/* * * DON'T EDIT BELOW THIS LINE * * */
 						(function() {
@@ -569,8 +570,8 @@ $("#search-for-places").mappy({
 		<script src="ws/js/jquery-1.10.2.js"></script>
 		<script src="ws/js/bootstrap.js"></script>
 
-		<!-- Mappy JavaScript -->
-		<script src="mappy.js"></script>
+		<!-- Mapsed JavaScript -->
+		<script src="mapsed.js"></script>
 		
 		<!-- Examples JavaScript -->
 		<script src="examples/01-custom-places-example.js"></script>

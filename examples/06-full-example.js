@@ -62,7 +62,7 @@ var _places = [
 //
 // Theme dropdown change event code, applies the selected theme
 //
-function onThemeChange(me, mappy) {
+function onThemeChange(me, mapsed) {
 	var themeName = me.val(),
 			themeJSON = ""
 	;
@@ -72,7 +72,7 @@ function onThemeChange(me, mappy) {
 
 		if (currTheme.name === themeName) {
 			// found it, so apply the theme
-			mappy.getGoogleMap().setOptions({styles: currTheme.theme});
+		    mapsed.getGoogleMap().setOptions({ styles: currTheme.theme });
 			break;
 		}
 	}
@@ -101,7 +101,7 @@ function getPlaceHtml(details) {
 
 
 //
-// Builds up the mappy object for the demo, wires up default options and
+// Builds up the mapsed object for the demo, wires up default options and
 // event handlers.
 // There's quite a lot here as we're illustrating pretty much everything.
 // Don't be put off ... you won't need anywhere near this level ... probably :oD
@@ -109,7 +109,7 @@ function getPlaceHtml(details) {
 function fullWindowExample(e) {
 	e.preventDefault();
 	
-	$.fn.mappy({
+	$.fn.mapsed({
 		// Map initialisation options to pass onto Google Maps
 		mapOptions: {
 			zoom: 15,
@@ -136,10 +136,10 @@ function fullWindowExample(e) {
 		// Enables place selection
 		// ... note the presence of the callback is 
 		// ... all that's required to enable selection
-		onSelect: function(mappy, details) {
+		onSelect: function(m, details) {
 			var msg = getPlaceHtml(details);
 			
-			mappy.showMsg("YOUR SELECTION CODE HERE", msg);
+			m.showMsg("YOUR SELECTION CODE HERE", msg);
 				
 			// indicate tip should be closed
 			return true;
@@ -147,7 +147,7 @@ function fullWindowExample(e) {
 		
 		// Enables edit of new places (to your web application, not Google Maps!)
 		// ... again the presence of the callback enables the functionality
-		onSave: function(mappy, newPlace) {
+		onSave: function(m, newPlace) {
 			var missing = [];
 
 			// detect errors starting at bottom
@@ -169,7 +169,7 @@ function fullWindowExample(e) {
 					newPlace.userData = parseInt(Math.random() * 100000);
 				}
 				var msg = getPlaceHtml(newPlace);
-				mappy.showMsg("YOUR SAVE CODE HERE!", msg);
+				m.showMsg("YOUR SAVE CODE HERE!", msg);
 			}
 
 			// indicate form was OK and saved
@@ -179,8 +179,8 @@ function fullWindowExample(e) {
 		// Allows the user to delete a "custom" place they've previously 
 		// ... added
 		confirmDelete: true,
-		onDelete: function(mappy, placeToDelete) {
-			mappy.showMsg(
+		onDelete: function(m, placeToDelete) {
+			m.showMsg(
 				"YOUR DELETE CODE HERE",
 				"<strong>" + placeToDelete.name + "</strong> has been removed."
 			);
@@ -193,7 +193,7 @@ function fullWindowExample(e) {
 		},
               		
 		// Custom marker images
-		getMarkerImage: function(mappy, markerType, title) {
+		getMarkerImage: function(m, markerType, title) {
 			var imageUrl = "";
 			
 			if (markerType == "custom")
@@ -217,9 +217,9 @@ function fullWindowExample(e) {
 		},
 				
 		// shows additional instructions to the user
-		getHelpWindow: function(mappy) {
+		getHelpWindow: function(m) {
 			var html = 
-				"<div class='mappy-help'>" +
+				"<div class='mapsed-help'>" +
 					"<h3>Find a venue</h3>" +
 					"<ol>" +
 						"<li>Simply use the <strong>search</strong> box to find a venue in your area.</li>" +
@@ -240,34 +240,34 @@ function fullWindowExample(e) {
 		showHelpOnLoad: true,
 
 		// Callback for when the user tries to load the map
-		onClose: function(mappy) {
+		onClose: function(mapsed) {
 			var closeMap = confirm("Close map?");
 
 			// you can cancel the close of the map by returning false
 			return closeMap;
 		},
 		
-		// Fired once the mappy object has initialised, but before the map 
+	    // Fired once the mapsed object has initialised, but before the map 
 		// has been drawn.  If you wish to add custom controls, this is where to do it
-		onPreInit: function(mappy) {
+		onPreInit: function(mapsed) {
 			var html = "",
 					$select = null,
 					$mapContainer = null
 			;
 			
 			// build up the theme picker
-			html += "<select id='themePicker' title='Pick an alternative map style...' class='mappy-control-button'>";
+			html += "<select id='themePicker' title='Pick an alternative map style...' class='mapsed-control-button'>";
 			for (var i=0; i < _snazzyMaps.length; i++) {
 				var theme = _snazzyMaps[i];
 				html += "<option value='" + theme.name + "'>" + theme.name + "</option>";
 			}
 			html += "</select>";
 
-			$select = mappy.addMapControl(html, google.maps.ControlPosition.TOP_RIGHT);
+			$select = mapsed.addMapControl(html, google.maps.ControlPosition.TOP_RIGHT);
 			
 			// wire up the change event to pick a new theme
 			$select.on("change", function() {
-				onThemeChange($(this), mappy);
+			    onThemeChange($(this), mapsed);
 			});
 			
 			
@@ -277,11 +277,11 @@ function fullWindowExample(e) {
 					"<p>Please note that POI cannot be turned off when using styled maps.</p>" + 
 				"</div>"
 			;
-			mappy.addMapControl(html, google.maps.ControlPosition.BOTTOM_LEFT);
+			mapsed.addMapControl(html, google.maps.ControlPosition.BOTTOM_LEFT);
 		},
 		
 		// Fired once the map has completed loading
-		onInit: function(mappy) {
+		onInit: function(m) {
 			
 		}
 

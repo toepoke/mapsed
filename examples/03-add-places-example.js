@@ -1,12 +1,12 @@
 function runExample1() {
-	$("#add-places").mappy({
+    $("#add-places").mapsed({
 
 		// Adds the "+" button to the control bar at the top right of the map
 		allowAdd: true,
 		
 		// Enables edit of custom places (to your web application, not Google Maps!)
 		// ... again the presence of the callback enables the functionality
-		onSave: function(mappy, newPlace) {
+		onSave: function(m, newPlace) {
 			var missing = [];
 			
 			// detect errors starting at bottom
@@ -43,7 +43,7 @@ function runExample1() {
 					title = "New place added!";
 				else
 					title = "Place saved!";
-				mappy.showMsg(title, msg);
+				m.showMsg(title, msg);
 			}
 		
 			// indicate form was OK and saved

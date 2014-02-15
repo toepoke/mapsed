@@ -18,11 +18,11 @@
 
 	// singleton here (same variable across all instances of the plug-in)
 	var _version = '(0.1)',
-			_plugInName = "mappy",
+			_plugInName = "mapsed",
 			_plugInInstances = 1
 	;
 
-	$.fn.mappy = function (options) {
+	$.fn.mapsed = function (options) {
 		// consts
 		// - Somewhere near the City Varieties ...
 		var DEFAULT_CENTER = new google.maps.LatLng(53.798823, -1.5426760000000286);
@@ -39,7 +39,7 @@
 		};
 
 		// private plug-in variables
-		var _plugIn = this,           // Reference back to the "mappy" plug-in instance
+		var _plugIn = this,           // Reference back to the "mapsed" plug-in instance
 				_searchBox = null,        // Search box that appears on the map 
 				_gmSearchBox = null,      // Google (autocompleting) Search box the underlying input text box is twinned with 
 				_searchBtn = null,        // Button to click to confirm search should be applied (not strictly needed (ENTER does the same), but users may be confused if there isn't one!)
@@ -50,7 +50,7 @@
 				_placesApi = null,        // Reference to the Google Places API object
 				_markers = [],            // Set of markers displayed on the map
 				_instance = -1,           // Instance "this" plug-in is managing (so we can support zmultiple maps on the page)
-				_fullWin = false,         // Flags "mappy" is in full-window mode, which means "mappy" created the DIV we're in
+				_fullWin = false,         // Flags "mapsed" is in full-window mode, which means "mapsed" created the DIV we're in
 				_firstSearch = true,      // Used to ensure we don't clear markers when the map is drawn for the first time (so any "showOnLoad" markers aren't cleared)
 				_hasMapInitFired = false, // Used to flag initialisation of the map (after Google Maps API has finished drawing it)
 				_areBoundsSet = false,    // Used to flag that an event has set the boundary (so we don't set the zoom/center manually as GM will calc this for us)
@@ -120,17 +120,17 @@
 			},
 
 			// Event when user clicks the "Select" button
-			// prototype: function(mappy, details)
+			// prototype: function(mapsed, details)
 			onSelect: null,
 
 			// Allows new places to be edited
-			// prototype: function(mappy, newPlace)
+			// prototype: function(mapsed, newPlace)
 			//   return a error message string if you're not happy with what's been entered
 			//   return an empty string to confirm it's been saved
 			onSave: null,
 
 			// Allows the user to delete a "custom" map they've previously added
-			// prototype: function(mappy, details)
+			// prototype: function(mapsed, details)
 			//  return true to confirm delete, false abandons the delete
 			onDelete: null,
 
@@ -139,15 +139,15 @@
 			confirmDelete: false,
 
 			// Event fires when user clicks the "X" button (only in full window mode)
-			// prototype: function(mappy)
+			// prototype: function(mapsed)
 			// 	return true to close the map, false keeps it open
 			onClose: null,
 			
 			// Callback for getting the [image] URL to use for a marker
 			// Parameter "markerType" is passed, indicating the type of marker, this can be
-			// prototype: function(mappy, markerType, title)
+			// prototype: function(mapsed, markerType, title)
 			// Parameters:
-			//   mappy: Reference to the mappy plugin
+			//   mapsed: Reference to the mapsed plugin
 			//   markerType: The type of marker being added to the map:
 			//      "new" = Marker created using the "+" button to add a new place
 			//      "google" = Marker is being added from a Google Places place
@@ -168,7 +168,7 @@
 			// centre of the map according to the user's GEO location position
 			allowGeo: false,
 
-			// Flags that mappy should place the centre of the map where the user's
+			// Flags that mapsed should place the centre of the map where the user's
 			// GEO location position is.
 			// Note: This is ignored if "showOnLoad" property is populated as there is 
 			//       a risk the places won't be shown on the map
@@ -193,7 +193,7 @@
 		/// Gets the underlying Google Map object that was initially
 		/// created
 		/// - useful if you want to play directly with the map to provide
-		///   further functionality outside mappy
+		///   further functionality outside mapsed
 		/// </summary>
 		this.getGoogleMap = function () {
 			return _gMap;
@@ -202,7 +202,7 @@
 
 		/// <summary>
 		/// Usually you'll already know this (it's how you called up 
-		/// the mappy jQuery plugin - however in full-window mode the div is
+		/// the mapsed jQuery plugin - however in full-window mode the div is
 		/// generated, so you'll need this then ... sometimes :-) 
 		/// - see "onPreInit" full-window example.
 		/// </summary>
@@ -349,8 +349,8 @@
 
 
 		//
-		// MAPPY EVENT HANDLERS
-		// - Handlers for mappy events.  Typically these will issue
+		// MAPSED EVENT HANDLERS
+		// - Handlers for mapsed events.  Typically these will issue
 		// callbacks to the calling application (see events in the settings above)
 		//
 
@@ -359,8 +359,8 @@
 		/// - Builds the model and forwards onto the callback for confirmation
 		/// </summary>
 		function onPlaceSelect(element) {
-			var $root = element.parents(".mappy-root");
-			var $vw = element.parents(".mappy-view");
+			var $root = element.parents(".mapsed-root");
+			var $vw = element.parents(".mapsed-view");
 			var model = getViewModel($vw);
 
 			if (settings.onSelect(_plugIn, model)) {
@@ -375,9 +375,9 @@
 		/// - Swaps the tooltip to edit mode, prompting for data entry
 		/// </summary>
 		function onPlaceEdit(element) {
-			var $root = element.parents(".mappy-root");
-			var lat = $root.find(".mappy-lat").val();
-			var lng = $root.find(".mappy-lng").val();
+			var $root = element.parents(".mapsed-root");
+			var lat = $root.find(".mapsed-lat").val();
+			var lng = $root.find(".mapsed-lng").val();
 
 			// find the appropriate marker
 			var marker = findMarker(lat, lng);
@@ -396,8 +396,8 @@
 		/// - Builds the model and forwards onto the callback for confirmation.
 		/// </summary>
 		function onPlaceDelete(element) {
-			var $root = element.parents(".mappy-root");
-			var $vw = $root.find(".mappy-view");
+			var $root = element.parents(".mapsed-root");
+			var $vw = $root.find(".mapsed-view");
 			var model = getViewModel($vw);
 
 			if (settings.onDelete(_plugIn, model)) {
@@ -419,15 +419,15 @@
 		///   will remain for the user to resolve the errors
 		/// </summary>
 		function onPlaceSave(element) {
-			var root = element.parents(".mappy-root");
-			var $rw = root.find(".mappy-edit");
+			var root = element.parents(".mapsed-root");
+			var $rw = root.find(".mapsed-edit");
 			var errors = "";
 			var place = getViewModel($rw);
 
 			// see if the calling code is happy with what's being changed
 			errors = settings.onSave(_plugIn, place);
 
-			var errCtx = $rw.find(".mappy-error");
+			var errCtx = $rw.find(".mapsed-error");
 			if (errors && errors.length > 0) {
 				// not happy, show errors returned
 				errCtx.text(errors);
@@ -443,9 +443,9 @@
 			jQuery.extend(marker.details, place);
 
 			// once an object has been edited successfully it becomes a normal editable "custom" object
-			root.find(".mappy-marker-type").val("custom");
+			root.find(".mapsed-marker-type").val("custom");
 			// also need to save back the userData (which may have changed, but is outside the view)
-			root.find(".mappy-user-data").val(place.userData);
+			root.find(".mapsed-user-data").val(place.userData);
 
 			// editing complete, go back to the "Select" mode
 			marker.showTooltip(false/*inRwMode*/);
@@ -629,7 +629,7 @@
 			title = title || "";
 			msg = msg || "";
 
-			$modal = _mapContainer.find(".mappy-modal");
+			$modal = _mapContainer.find(".mapsed-modal");
 
 			if ($modal.length > 0) {
 				// usually we'd just re-use it, but we need to change basically 
@@ -637,11 +637,11 @@
 				$modal.remove();
 			}
 
-			buttons += "<div class='mappy-modal-button-bar'>";
+			buttons += "<div class='mapsed-modal-button-bar'>";
 			if (prompt && prompt.length > 0) {
 				buttons += "<p class='prompt'>" + prompt + "</p>";
 			}
-			buttons += "<div class='mappy-modal-buttons'>";
+			buttons += "<div class='mapsed-modal-buttons'>";
 			if (doConfirm) {
 				buttons += "<button class='ok'>OK</button>";
 				buttons += "<button class='cancel'>Cancel</button>";
@@ -652,10 +652,10 @@
 			buttons += "</div>";
 
 			html =
-				"<div class='mappy-modal'>" +
+				"<div class='mapsed-modal'>" +
 					"<h3>" + title + "</h3>" +
 					"<div>" +
-						"<div class='mappy-modal-message'>" +
+						"<div class='mapsed-modal-message'>" +
 							msg +
 						"</div>" +
 						buttons +
@@ -780,16 +780,16 @@
 		/// </summary>
 		function hideEmpty(model, $vw) {
 			// and hide bits that aren't relevant (or empty)
-			$vw.find(".mappy-name").parent().toggle(model.name && model.name.length > 0);
-			$vw.find(".mappy-street").toggle(model.street && model.street.length > 0);
-			$vw.find(".mappy-town").toggle(model.town && model.town.length > 0);
-			$vw.find(".mappy-area").toggle(model.area && model.area.length > 0);
-			$vw.find(".mappy-postCode").toggle(model.postCode && model.postCode.length > 0);
+			$vw.find(".mapsed-name").parent().toggle(model.name && model.name.length > 0);
+			$vw.find(".mapsed-street").toggle(model.street && model.street.length > 0);
+			$vw.find(".mapsed-town").toggle(model.town && model.town.length > 0);
+			$vw.find(".mapsed-area").toggle(model.area && model.area.length > 0);
+			$vw.find(".mapsed-postCode").toggle(model.postCode && model.postCode.length > 0);
 
 			// these are a little different as we want them block if they're available (they're a tags)
-			var $telNo = $vw.find(".mappy-telNo"),
-					$ws = $vw.find(".mappy-website"),
-					$url = $vw.find(".mappy-url")
+			var $telNo = $vw.find(".mapsed-telNo"),
+					$ws = $vw.find(".mapsed-website"),
+					$url = $vw.find(".mapsed-url")
 			;
 			if (model.telNo && model.telNo.length > 0) {
 				$telNo.show().css("display", "block");
@@ -807,7 +807,7 @@
 				$url.hide();
 			}
 
-			$vw.find(".mappy-right").toggle(model.photo != null);
+			$vw.find(".mapsed-right").toggle(model.photo != null);
 
 			var settings = _plugIn.getSettings();
 
@@ -828,12 +828,12 @@
 						)
 				;
 
-				$vw.find(".mappy-select-button").toggle(showSelect);
-				$vw.find(".mappy-edit-button").toggle(showSave);
-				$vw.find(".mappy-delete-button").toggle(showDelete);
+				$vw.find(".mapsed-select-button").toggle(showSelect);
+				$vw.find(".mapsed-edit-button").toggle(showSave);
+				$vw.find(".mapsed-delete-button").toggle(showDelete);
 			} else {
 				// neither should be shown, so hide the button container to hide the whole row
-				$vw.find(".mappy-buttons").hide();
+				$vw.find(".mapsed-buttons").hide();
 			}
 
 		} // hideEmpty
@@ -868,7 +868,7 @@
 		/// 	https://developers.google.com/maps/documentation/javascript/examples/places-searchbox
 		/// </summary>
 		function addSearch() {
-			var id = "mappy-search-box-" + _instance;
+			var id = "mapsed-search-box-" + _instance;
 
 			_searchBox = $("#" + id);
 			if (_searchBox.length > 0)
@@ -877,7 +877,7 @@
 
 			// create the "search" box and add to document (in body)
 			var so = settings.searchOptions,
-					html = "<input type='text' id='" + id + "' class='mappy-searchbox' autocomplete='off' "
+					html = "<input type='text' id='" + id + "' class='mapsed-searchbox' autocomplete='off' "
 			;
 			html += "placeholder='";
 			if (so.enabled && so.placeholder)
@@ -909,7 +909,7 @@
 
 			_searchBtn = createControlButton(
 				BUTTONS.Go, gm.ControlPosition.TOP_LEFT,
-				"mappy-search-button mappy-control-button",
+				"mapsed-search-button mapsed-control-button",
 				function (evt) {
 					evt.preventDefault();
 					var searchFor = _searchBox.val();
@@ -922,7 +922,7 @@
 			_moreBtn = createControlButton(
 				BUTTONS.More,
 				gm.ControlPosition.TOP_LEFT,
-				"mappy-more-button mappy-control-button",
+				"mapsed-more-button mapsed-control-button",
 				null
 			);
 			// Should be disabled to start with
@@ -962,8 +962,8 @@
 					currMarker.details.lat = evt.latLng.lat();
 					currMarker.details.lng = evt.latLng.lng();
 					var tip = $(currMarker.tooltip.content);
-					tip.find(".mappy-lat").val(currMarker.details.lat);
-					tip.find(".mappy-lng").val(currMarker.details.lng);
+					tip.find(".mapsed-lat").val(currMarker.details.lat);
+					tip.find(".mapsed-lng").val(currMarker.details.lng);
 				});
 				// for tooltip to be displayed
 				gm.event.trigger(newMarker, "click");
@@ -973,7 +973,7 @@
 			_addBtn = createControlButton(
 				BUTTONS.AddPlace,
 				gm.ControlPosition.TOP_RIGHT,
-				"mappy-add-button mappy-control-button",
+				"mapsed-add-button mapsed-control-button",
 				onAddEvent
 			);
 
@@ -1001,7 +1001,7 @@
 				if (settings.onClose) {
 					closeMap = settings.onClose(_plugIn);
 				}
-				// Only close maps mappy created
+				// Only close maps mapsed created
 				// ... if caller created the DIV, it's up to them to destroy
 				// ... (they may want to hide rather than kill)
 				if (closeMap && _fullWin) {
@@ -1014,7 +1014,7 @@
 			_closeBtn = createControlButton(
 				BUTTONS.CloseMap,
 				gm.ControlPosition.TOP_RIGHT,
-				"mappy-close-button mappy-control-button",
+				"mapsed-close-button mapsed-control-button",
 				onCloseEvent
 			);
 			// With lightbox type functionality, it's traditional to let the ESCape key close it too
@@ -1043,7 +1043,7 @@
 			_geoBtn = createControlButton(
 				BUTTONS.Geo,
 				gm.ControlPosition.TOP_LEFT,
-				"mappy-geo-button",
+				"mapsed-geo-button",
 				onClickEvent
 			);
 
@@ -1062,7 +1062,7 @@
 			_helpBtn = createControlButton(
 				BUTTONS.Help,
 				gm.ControlPosition.TOP_RIGHT,
-				"mappy-help-button mappy-control-button",
+				"mapsed-help-button mapsed-control-button",
 				function (evt) {
 					evt.preventDefault();
 
@@ -1229,7 +1229,7 @@
 		function attachTooltip(forMarker) {
 			if (forMarker.id) {
 				// already created, so return
-				var item = $("#mappy-" + forMarker.id);
+				var item = $("#mapsed-" + forMarker.id);
 				return item;
 			}
 
@@ -1239,13 +1239,13 @@
 			forMarker.id = newId;
 
 			var item = $(
-				"<div id='mappy-" + newId + "' class='mappy-root'>" +
-					"<input type='hidden' class='mappy-lat' value='" + forMarker.position.lat() + "' />" +
-					"<input type='hidden' class='mappy-lng' value='" + forMarker.position.lng() + "' />" +
-					"<input type='hidden' class='mappy-can-edit' value='" + d.canEdit + "' />" +
-					"<input type='hidden' class='mappy-reference' value='" + d.reference + "' />" +
-					"<input type='hidden' class='mappy-user-data' value='" + d.userData + "' />" +
-					"<input type='hidden' class='mappy-marker-type' value='" + forMarker.markerType + "' />" +
+				"<div id='mapsed-" + newId + "' class='mapsed-root'>" +
+					"<input type='hidden' class='mapsed-lat' value='" + forMarker.position.lat() + "' />" +
+					"<input type='hidden' class='mapsed-lng' value='" + forMarker.position.lng() + "' />" +
+					"<input type='hidden' class='mapsed-can-edit' value='" + d.canEdit + "' />" +
+					"<input type='hidden' class='mapsed-reference' value='" + d.reference + "' />" +
+					"<input type='hidden' class='mapsed-user-data' value='" + d.userData + "' />" +
+					"<input type='hidden' class='mapsed-marker-type' value='" + forMarker.markerType + "' />" +
 					getViewTemplate() +
 					getEditTemplate() +
 				"</div>"
@@ -1273,8 +1273,8 @@
 			var tip = marker.tooltip;
 			var model = marker.details;
 			var $ele = $(tip.getContent());
-			var $ro = $ele.find(".mappy-view");
-			var $rw = $ele.find(".mappy-edit");
+			var $ro = $ele.find(".mapsed-view");
+			var $rw = $ele.find(".mapsed-edit");
 			var settings = _plugIn.getSettings();
 
 			// If we're previously got the place details, or it's a "custom" place
@@ -1324,31 +1324,31 @@
 			// tables!, yes I know, I know.  In my defence "proper" CSS 
 			// proved to be too unreliable when used with map tooltips!
 			var html =
-			    "<table class='mappy-container mappy-view'>"
+			    "<table class='mapsed-container mapsed-view'>"
 			  + "<tr><td colspan='2'>"
-			  + "<h1 class='mappy-name' title='{NAME}'>{SHORT_NAME}</h1>"
+			  + "<h1 class='mapsed-name' title='{NAME}'>{SHORT_NAME}</h1>"
 			  + "</td></tr>"
 			  + "<tr>"
-			  + "<td class='mappy-left'>"
+			  + "<td class='mapsed-left'>"
 			  + "<address>"
-			  + "<div class='mappy-street'>{STREET}</div>"
-			  + "<div class='mappy-town'>{TOWN}</div>"
-			  + "<div class='mappy-area'>{AREA}</div>"
-			  + "<div class='mappy-postCode'>{POSTCODE}</div>"
+			  + "<div class='mapsed-street'>{STREET}</div>"
+			  + "<div class='mapsed-town'>{TOWN}</div>"
+			  + "<div class='mapsed-area'>{AREA}</div>"
+			  + "<div class='mapsed-postCode'>{POSTCODE}</div>"
 			  + "</address>"
-			  + "<a class='mappy-telNo' href='tel:{TELNO}'>{TELNO}</a>"
-			  + "<a class='mappy-website' href='{WEBSITE}' title='{WEBSITE}'>website</a>"
-			  + "<a class='mappy-url' href='{GPLUS}' title='{GPLUS}'>g+</a>"
+			  + "<a class='mapsed-telNo' href='tel:{TELNO}'>{TELNO}</a>"
+			  + "<a class='mapsed-website' href='{WEBSITE}' title='{WEBSITE}'>website</a>"
+			  + "<a class='mapsed-url' href='{GPLUS}' title='{GPLUS}'>g+</a>"
 			  + "</td>"
-			  + "<td class='mappy-right'>"
+			  + "<td class='mapsed-right'>"
 			  + "<a href='{GPLUS}'>{IMG src='{PHOTOURL}' /></a>"
 			  + "</td>"
 			  + "</tr>"
-			  + "<tr class='mappy-buttons'>"
+			  + "<tr class='mapsed-buttons'>"
 			  + "<td colspan='2'>"
-			  + "<button class='mappy-select-button'>Select</button>"
-			  + "<button class='mappy-edit-button'>Edit</button>"
-			  + "<button class='mappy-delete-button'>Delete</button>"
+			  + "<button class='mapsed-select-button'>Select</button>"
+			  + "<button class='mapsed-edit-button'>Edit</button>"
+			  + "<button class='mapsed-delete-button'>Delete</button>"
 			  + "</td>"
 			  + "</tr>"
 			  + "</table>"
@@ -1364,56 +1364,56 @@
 		/// </summary>
 		function getEditTemplate() {
 			var html =
-				 "<div class='mappy-container mappy-address-entry mappy-edit'>"
+				 "<div class='mapsed-container mapsed-address-entry mapsed-edit'>"
 				+ "<h1>Place details:</h1>"
 				+ "<ul>"
 				+ "<li>"
 				+ "<label>Name"
-				+ "<input class='mappy-name' type='text' placeholder='e.g. Bob sandwich shop' value='{NAME}' />"
+				+ "<input class='mapsed-name' type='text' placeholder='e.g. Bob sandwich shop' value='{NAME}' />"
 				+ "</label>"
 				+ "</li>"
 				+ "<li>"
 				+ "<label>Street"
-				+ "<input class='mappy-street' type='text' placeholder='e.g. 3 Hemington place' value='{STREET}' />"
+				+ "<input class='mapsed-street' type='text' placeholder='e.g. 3 Hemington place' value='{STREET}' />"
 				+ "</label>"
 				+ "</li>"
 				+ "<li>"
 				+ "<label>Town"
-				+ "<input class='mappy-town' type='text' placeholder='e.g. Leeds' value='{TOWN}' />"
+				+ "<input class='mapsed-town' type='text' placeholder='e.g. Leeds' value='{TOWN}' />"
 				+ "</label>"
 				+ "</li>"
 				+ "<li>"
 				+ "<label>Area"
-				+ "<input class='mappy-area' type='text' placeholder='e.g. West Yorkshire' value='{AREA}' />"
+				+ "<input class='mapsed-area' type='text' placeholder='e.g. West Yorkshire' value='{AREA}' />"
 				+ "</label>"
 				+ "</li>"
 				+ "<li>"
 				+ "<label>Postcode"
-				+ "<input class='mappy-postCode' type='text' value='{POSTCODE}' />"
+				+ "<input class='mapsed-postCode' type='text' value='{POSTCODE}' />"
 				+ "</label>"
 				+ "</li>"
 				+ "<li>"
 				+ "<label>Tel No"
-				+ "<input class='mappy-telNo' type='telephone' placeholder='contact telephone number' value='{TELNO}' />"
+				+ "<input class='mapsed-telNo' type='telephone' placeholder='contact telephone number' value='{TELNO}' />"
 				+ "</label>"
 				+ "</li>"
 				+ "<li>"
 				+ "<label>website"
-				+ "<input class='mappy-website' type='url' placeholder='e.g. https://toepoke.co.uk' value='{WEBSITE}' />"
+				+ "<input class='mapsed-website' type='url' placeholder='e.g. https://toepoke.co.uk' value='{WEBSITE}' />"
 				+ "</label>"
 				+ "</li>"
 				+ "<li>"
 				+ "<label>g+ url"
-				+ "<input class='mappy-url' type='url' placeholder='e.g. https://plus.google.com/+ToepokeCoUk‎' value='{GPLUS}' />"
+				+ "<input class='mapsed-url' type='url' placeholder='e.g. https://plus.google.com/+ToepokeCoUk‎' value='{GPLUS}' />"
 				+ "</label>"
 				+ "</li>"
 				+ "</ul>"
-				+ "<div class='mappy-buttons'>"
-				+ "<button class='mappy-save-button'>Save</button>"
+				+ "<div class='mapsed-buttons'>"
+				+ "<button class='mapsed-save-button'>Save</button>"
 			// placeholder for error messages
-				+ "<span class='mappy-error'>&nbsp;</span>"
+				+ "<span class='mapsed-error'>&nbsp;</span>"
 				+ "</div>"
-				+ "</div>"  // mappy-address-entry
+				+ "</div>"  // mapsed-address-entry
 			;
 
 			return html;
@@ -1427,38 +1427,38 @@
 		/// works out which is appropriate
 		/// </summary>
 		function getViewModel($vw) {
-			var $root = $vw.parents(".mappy-root");
+			var $root = $vw.parents(".mapsed-root");
 			var model = {
-				canEdit: ($root.find(".mappy-can-edit").val() === "true"),
-				lat: $root.find(".mappy-lat").val(),
-				lng: $root.find(".mappy-lng").val(),
-				reference: $root.find(".mappy-reference").val(),
-				markerType: $root.find(".mappy-marker-type").val(),
-				userData: $root.find(".mappy-user-data").val()
+				canEdit: ($root.find(".mapsed-can-edit").val() === "true"),
+				lat: $root.find(".mapsed-lat").val(),
+				lng: $root.find(".mapsed-lng").val(),
+				reference: $root.find(".mapsed-reference").val(),
+				markerType: $root.find(".mapsed-marker-type").val(),
+				userData: $root.find(".mapsed-user-data").val()
 			};
 
-			if ($vw.hasClass("mappy-view")) {
+			if ($vw.hasClass("mapsed-view")) {
 				// select view
 				// for "name" => title has full length version
-				model.name = $vw.find(".mappy-name").attr("title");
-				model.street = $vw.find(".mappy-street").html();
-				model.town = $vw.find(".mappy-town").html();
-				model.area = $vw.find(".mappy-area").html();
-				model.postCode = $vw.find(".mappy-postCode").html();
-				model.telNo = $vw.find(".mappy-telNo").html();
-				model.website = $vw.find(".mappy-website").attr("href");
-				model.url = $vw.find(".mappy-url").attr("href");
+				model.name = $vw.find(".mapsed-name").attr("title");
+				model.street = $vw.find(".mapsed-street").html();
+				model.town = $vw.find(".mapsed-town").html();
+				model.area = $vw.find(".mapsed-area").html();
+				model.postCode = $vw.find(".mapsed-postCode").html();
+				model.telNo = $vw.find(".mapsed-telNo").html();
+				model.website = $vw.find(".mapsed-website").attr("href");
+				model.url = $vw.find(".mapsed-url").attr("href");
 
 			} else {
 				// editor view
-				model.name = $vw.find(".mappy-name").val();
-				model.street = $vw.find(".mappy-street").val();
-				model.town = $vw.find(".mappy-town").val();
-				model.area = $vw.find(".mappy-area").val();
-				model.postCode = $vw.find(".mappy-postCode").val();
-				model.telNo = $vw.find(".mappy-telNo").val();
-				model.website = $vw.find(".mappy-website").val();
-				model.url = $vw.find(".mappy-url").val();
+				model.name = $vw.find(".mapsed-name").val();
+				model.street = $vw.find(".mapsed-street").val();
+				model.town = $vw.find(".mapsed-town").val();
+				model.area = $vw.find(".mapsed-area").val();
+				model.postCode = $vw.find(".mapsed-postCode").val();
+				model.telNo = $vw.find(".mapsed-telNo").val();
+				model.website = $vw.find(".mapsed-website").val();
+				model.url = $vw.find(".mapsed-url").val();
 			}
 			// make sure we aren't returning "undefined" somewhere 
 			// ... which can happen if we're in a view that doesn't have a telNo for instance
@@ -1679,7 +1679,7 @@
 			_instance = _plugInInstances++;
 
 			if (settings.onSelect) {
-				_mapContainer.on("click", "button.mappy-select-button",
+				_mapContainer.on("click", "button.mapsed-select-button",
 					function () {
 						var element = $(this);
 						onPlaceSelect(element);
@@ -1687,14 +1687,14 @@
 				);
 			}
 			if (settings.onSave) {
-				_mapContainer.on("click", "button.mappy-save-button",
+				_mapContainer.on("click", "button.mapsed-save-button",
 					function () {
 						var element = $(this);
 						onPlaceSave(element);
 					}
 				);
 				// only allow edit if the user can actually save the result!
-				_mapContainer.on("click", "button.mappy-edit-button",
+				_mapContainer.on("click", "button.mapsed-edit-button",
 					function () {
 						var element = $(this);
 						onPlaceEdit(element);
@@ -1702,12 +1702,12 @@
 				);
 			}
 			if (settings.onDelete) {
-				_mapContainer.on("click", "button.mappy-delete-button",
+				_mapContainer.on("click", "button.mapsed-delete-button",
 					function () {
 						var element = $(this);
 
 						if (settings.confirmDelete) {
-							var $vw = element.parents(".mappy-view");
+							var $vw = element.parents(".mapsed-view");
 							var model = getViewModel($vw);
 							var msg = "<strong>" + model.name + "</strong> will be deleted."
 							_plugIn.confirmMsg("Confirm Delete", msg,
@@ -1796,11 +1796,11 @@
 
 		// Full screen entry point
 		if (!this.length) {
-			var mapId = "mappy-full-window",
+			var mapId = "mapsed-full-window",
 					_mapContainer = $("#" + mapId)	// see if we've already added one
 			;
 			if (!_mapContainer.length) {
-				_mapContainer = $("<div id='mappy-full-window' class='mappy-full-window'></div>");
+				_mapContainer = $("<div id='mapsed-full-window' class='mapsed-full-window'></div>");
 				_mapContainer.appendTo("body");
 			}
 			// flag we're in full window mode

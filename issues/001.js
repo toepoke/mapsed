@@ -37,14 +37,14 @@ function getPlaceHtml(details) {
 
 
 //
-// Builds up the mappy object for the demo, wires up default options and
+// Builds up the mapsed object for the demo, wires up default options and
 // event handlers.
 // There's quite a lot here as we're illustrating pretty much everything.
 // Don't be put off ... you won't need anywhere near this level ... probably :oD
 // 
 function showMap(e) {
 
-	$("#myMap").mappy({
+	$("#myMap").mapsed({
 		// Map initialisation options to pass onto Google Maps
 		mapOptions: {
 			zoom: 15,
@@ -66,7 +66,7 @@ function showMap(e) {
 		// Emulate places being loaded from a db
 		showOnLoad: _places,
 		
-		getMarkerImage: function(mappy, markerType, title) {
+		getMarkerImage: function(m, markerType, title) {
 			if (title === "Here I am!") {
 				return {
 					url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%8A%95|fff999|000000|",
@@ -81,10 +81,10 @@ function showMap(e) {
 		// Enables place selection
 		// ... note the presence of the callback is 
 		// ... all that's required to enable selection
-		onSelect: function(mappy, details) {
+		onSelect: function(m, details) {
 			var msg = getPlaceHtml(details);
 			
-			mappy.showMsg("YOUR SELECTION CODE HERE", msg);
+			m.showMsg("YOUR SELECTION CODE HERE", msg);
 				
 			// indicate tip should be closed
 			return true;

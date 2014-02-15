@@ -1,5 +1,5 @@
 function runExample4() {
-	$("#delete-places").mappy({
+    $("#delete-places").mapsed({
 		showOnLoad: [
 			// City Varieties
 			{
@@ -21,8 +21,8 @@ function runExample4() {
 		
 		// Allows the user to delete a "custom" place they've previously 
 		// ... added
-		onDelete: function(mappy, placeToDelete) {
-			mappy.showMsg(
+		onDelete: function(m, placeToDelete) {
+			m.showMsg(
 				"YOUR DELETE CODE HERE",
 				"<strong>" + placeToDelete.name + "(" + placeToDelete.userData + ")</strong> has been removed."
 			);

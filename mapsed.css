@@ -2,7 +2,7 @@
 /*
  * Core styles (you always need these)
 */
-	.mappy-container {
+	.mapsed-container {
 		width: 100%;
 		min-width: 200px;
 		max-width: 350px;
@@ -12,12 +12,12 @@
 		line-height: 1; 
 	}
 	
-	.mappy-address-entry { 
+	.mapsed-address-entry { 
 		/* edit dialog needs to be a bit bigger */
 		min-width: 300px;
 	}
 	
-	.mappy-container {
+	.mapsed-container {
 		width: 95%;
 		margin: 3px;
 	}
@@ -25,7 +25,7 @@
 /*
  * ToolTip styles (you probably always need these)
 */
-	.mappy-container h1, .mappy-help h3 {
+	.mapsed-container h1, .mapsed-help h3 {
 		font-family: Calibri, Arial;
 		font-size: medium;
 		background-color: #eee;
@@ -33,67 +33,67 @@
 		border-radius: 5px;
 		padding-left: 5px;
 	}
-	.mappy-container h1 {
+	.mapsed-container h1 {
 		margin-top: 0px;
 		margin-bottom: 10px;
 	}
-	.mappy-view h1 {
+	.mapsed-view h1 {
 		cursor: help;
 	}
 
 
 	/* container for address details, phone, etc */
-	.mappy-left {
+	.mapsed-left {
 		vertical-align: top;
 	}
 
-		.mappy-left address {
+		.mapsed-left address {
 			font-size: small;
 			margin-bottom: 10px;
 		}
 		
-		.mappy-left a {
+		.mapsed-left a {
 			font-size: small;
 			color: #428bca;
 		}
-		.mappy-left a:hover, .mappy-left a:focus {
+		.mapsed-left a:hover, .mapsed-left a:focus {
 			color: #2a6496;
 			text-decoration: underline;
 		}
 
-	.mappy-right {
+	.mapsed-right {
 		/* where the photo and select appears */
 		margin: 0;
 		padding: 0;
 		vertical-align: top;
 	}
 	
-	.mappy-right img {
+	.mapsed-right img {
 		/* In case there's a "select" button underneath the photo image*/
 		margin-bottom: 10px;	
 		float: right;		
 	}
 	
 	/* container for address data entry */
-	.mappy-address-entry {			
+	.mapsed-address-entry {			
 	}
-		.mappy-address-entry ul {
+		.mapsed-address-entry ul {
 			list-style-type: none;	
 			margin: 0 5px 0 5px;
 			padding: 0;
 		}
-		.mappy-address-entry ul li {
+		.mapsed-address-entry ul li {
 			margin: 5px 0px;
 		}
-		.mappy-address-entry .mappy-save-button {
+		.mapsed-address-entry .mapsed-save-button {
 		}
-		.mappy-address-entry label {
+		.mapsed-address-entry label {
 			width: 100%;
 			display: inline-block;
 			float: left;
 		}
 		
-		.mappy-address-entry label input {
+		.mapsed-address-entry label input {
 			display: inline-block;
 			width: 70%;	
 			float: right;
@@ -102,14 +102,14 @@
 			border: solid 1px #ddd;
 			border-radius: 2px;
 		}
-		.mappy-address-entry label, .mappy-address-entry label input {
+		.mapsed-address-entry label, .mapsed-address-entry label input {
 			/* force vertical alignment */
 			height: 20px;
 			line-height: 20px;
 			margin-bottom: 5px;
 		}
 	
-	.mappy-view .mappy-website, .mappy-view .mappy-url {
+	.mapsed-view .mapsed-website, .mapsed-view .mapsed-url {
 		
 	}
 
@@ -117,7 +117,7 @@
 /*
 * Search styles (see "showSearch" property)
 */
-	input.mappy-searchbox {
+	input.mapsed-searchbox {
 		background-color: #fff;
 		padding: 0 11px 0 13px;
 		width: 50%;
@@ -135,7 +135,7 @@
 		box-sizing: border-box;
 		-moz-box-sizing: border-box;
 	}
-	input.mappy-searchbox:focus {
+	input.mapsed-searchbox:focus {
 		border-color: #4d90fe;
 		background-color: #fff;
 	}		
@@ -144,10 +144,10 @@
 /*
 * Select styles, see "showSelect" property.
 */
-	.mappy-select-container {
+	.mapsed-select-container {
 		clear: both;
 	}
-	button.mappy-select-button {
+	button.mapsed-select-button {
 
 	}
 
@@ -155,7 +155,7 @@
 /*
 * Custom map control styles
 */
-.mappy-control-button {
+.mapsed-control-button {
 
 	border: solid 1px #888;
 	border-radius: 2px;
@@ -174,15 +174,15 @@
 	cursor: pointer;
 }
 
-:hover.mappy-control-button {
+:hover.mapsed-control-button {
 	background-color: #ddd;
 }
 
-button.mappy-select-button, 
-button.mappy-edit-button, 
-button.mappy-save-button, 
-button.mappy-delete-button, 
-button.mappy-search-button, button.mappy-more-button {
+button.mapsed-select-button, 
+button.mapsed-edit-button, 
+button.mapsed-save-button, 
+button.mapsed-delete-button, 
+button.mapsed-search-button, button.mapsed-more-button {
 	color: #fff;
 
 	padding: 5px 7px;
@@ -197,12 +197,12 @@ button.mappy-search-button, button.mappy-more-button {
 	box-shadow: 0 2px 6px rgba(0,0,0,0.3);
 	cursor: pointer;
 }
-.mappy-error {
+.mapsed-error {
 	color: #880000;
 	margin-left: 10px;
 }
 
-button.mappy-search-button, button.mappy-more-button {
+button.mapsed-search-button, button.mapsed-more-button {
 	/* search button is a little bit different to the other button controls */
 	padding: 7px 20px;
 	font-size: 15px;
@@ -210,13 +210,13 @@ button.mappy-search-button, button.mappy-more-button {
 	margin-top: 28px;
 	line-height: 1.3;
 }
-button.mappy-more-button[disabled] {
+button.mapsed-more-button[disabled] {
 	background-image: -webkit-linear-gradient(top,#f5f9ff,#e9e9e9);
 	background-color: #d8d8d8;
 	color: silver;
 	cursor: auto;	/*so it doesn't look clickable*/
 }
-button.mappy-geo-button {
+button.mapsed-geo-button {
 	margin-top: 28px;
 	margin-left: -10px;
 	height: 32px;
@@ -229,7 +229,7 @@ button.mappy-geo-button {
 	box-shadow: 0 2px 6px rgba(0,0,0,0.3);
 	cursor: pointer;
 }
-button.mappy-geo-button.is-active {
+button.mapsed-geo-button.is-active {
 	color: #0024B6;
 	font-weight: 300;
 }
@@ -237,7 +237,7 @@ button.mappy-geo-button.is-active {
 /*
 * Full window styles (just for making the generated div overlay)
 */
-	.mappy-full-window {
+	.mapsed-full-window {
 		position: fixed !important;
 		top: 0; bottom: 0;
 		left: 0; right: 0;
@@ -248,7 +248,7 @@ button.mappy-geo-button.is-active {
 /*
 * Help dialog styles
 */
-	.mappy-help {
+	.mapsed-help {
 		margin: 0;
 		right: 10px;
 		padding: 5px;
@@ -260,31 +260,31 @@ button.mappy-geo-button.is-active {
 		color: #000;
 	}
 
-	.mappy-help  h3 {
+	.mapsed-help  h3 {
 		margin: 0;
 	}
 	
-	.mappy-help ol {
+	.mapsed-help ol {
 		padding-left: 25px;
 	}
-	.mappy-help ol li, .mappy-help ul li {
+	.mapsed-help ol li, .mapsed-help ul li {
 		color: #000;
 		background-color: #fff;
 		margin: initial;
 		font-size: small;
 	}
-	.mappy-help ol li {
+	.mapsed-help ol li {
 		list-style-type: decimal;
 	}
-	.mappy-help ul li {
+	.mapsed-help ul li {
 		list-style-type: disc;
 	}
-	.mappy-help-button.open {
+	.mapsed-help-button.open {
 		background-color: #ccc;
 	}
 	
 	/* modal message support */
-	.mappy-modal {
+	.mapsed-modal {
 		position: fixed;
 		top: 25%;
 		left: 25%;
@@ -299,12 +299,12 @@ button.mappy-geo-button.is-active {
 		border-radius: 5px;
 		color: #fff;
 	}
-		.mappy-modal {
+		.mapsed-modal {
 		}
-			.mappy-modal > div {
+			.mapsed-modal > div {
 				margin: 10px;
 			}
-			.mappy-modal h3 {
+			.mapsed-modal h3 {
 				text-align: center;
 				padding: 10px;
 				margin: 0;
@@ -314,25 +314,25 @@ button.mappy-geo-button.is-active {
 				opacity: 0.8;
 				border-radius: 5px 5px 0 0;
 			}			
-			.mappy-modal-message {			
+			.mapsed-modal-message {			
 			}
-			.mappy-modal-button-bar {
+			.mapsed-modal-button-bar {
 				margin-top: 20px;
 			}
-			.mappy-modal-button-bar::after {
+			.mapsed-modal-button-bar::after {
 				clear: both;
 				content: " ";
 			}
-				.mappy-modal-button-bar .prompt {
+				.mapsed-modal-button-bar .prompt {
 					float: left;
 					margin: 0;
 				}	
-				.mappy-modal-buttons {
+				.mapsed-modal-buttons {
 					display: block;
 					float: right;
 					margin-bottom: 20px;
 				}
-					.mappy-modal button {
+					.mapsed-modal button {
 						padding: 5px 10px;
 						background: #c0392b;
 						border: none;
@@ -343,7 +343,7 @@ button.mappy-geo-button.is-active {
 						cursor: pointer;
 						opacity: 1;
 					}
-					.mappy-modal button:hover {
+					.mapsed-modal button:hover {
 						background-color: #A5281B;
 					}
 
