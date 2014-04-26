@@ -3,8 +3,8 @@ function runExample5() {
 		// Adds a predictive search box
 		searchOptions: {
 			enabled: true,
-			initSearch: "Football in Leeds",
-			geoSearch: "Badminton near {POSITION}",
+			//initSearch: "Football in Leeds",
+			geoSearch: "Hotels near {POSITION}",
 			placeholder: "Search ..."
 		},
 		
