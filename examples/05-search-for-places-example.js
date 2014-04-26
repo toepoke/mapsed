@@ -10,7 +10,7 @@ function runExample5() {
 		
 		// Turn on geo location button
 		allowGeo: true,
-		findGeoOnLoad = true,
+		findGeoOnLoad: true,
 
 		// allow user to select somewhere
 		onSelect: function(m, details) {
