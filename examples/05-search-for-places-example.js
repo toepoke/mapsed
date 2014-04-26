@@ -4,6 +4,7 @@ function runExample5() {
 		searchOptions: {
 			enabled: true,
 			initSearch: "Football in Leeds",
+			geoSearch: "Badminton near {POSITION}",
 			placeholder: "Search ..."
 		},
 		
