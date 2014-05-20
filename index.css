@@ -8,3 +8,6 @@ body {
 	cursor: pointer;
 }
 
+.call-to-action.small {
+	padding: 10px 0;
+}
