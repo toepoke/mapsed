@@ -278,6 +278,20 @@ If <i>your</i> callback returns <strong>false</strong> the map marker remains on
 
 [See delete places example](examples/04-delete-places-example.js)
 
+### onAdd
+
+Custom method called when the user clicks the "add place" icon (+).  Allows the place details to be populated if required.
+
+Once your code has resolved the place details the *showAddDialog* method must be called for the dialog to be shown on the map (this is necessary as you'll need to do an ajax lookup to find your address details, this allows execution to continue in *mapsed*).
+
+[See full-window example](examples/06-full-example.js)
+
+### showAddDialog *(method)*
+
+Once a new place has been resolved, use *showAddDialog* to have *mapsed* show the resulting dialog.
+
+[See full-window example](examples/06-full-example.js)
+
 ### getHelpWindow *(string)*
 
 If the *getHelpWindow* method is specified, it should return a string of HTML with the help content to display.

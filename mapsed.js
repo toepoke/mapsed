@@ -292,6 +292,15 @@
 			buildMsg(title, msg, false/*doConfirm*/, "", callback);
 		}
 
+		/// <summary>
+		/// Displays the "Add" dialog once the calling application
+		/// has resolved what should be displayed for the new marker
+		/// </summary>
+		this.showAddDialog = function(marker) {
+			// new places can always be edited
+			marker.showTooltip(true/*inRwMode*/);
+		}
+
 
 		/// <summary>
 		/// Displays a modal confirmation over the top of the map, prompting
@@ -389,6 +398,49 @@
 			marker.showTooltip(true/*inRwMode*/);
 
 		} // onPlaceEdit
+		
+		
+		/// <summary>
+		/// Internal event handler when the "Add" button is clicked
+		/// </summary>
+		function onPlaceAdd(evt) {
+			evt.preventDefault();
+
+			var centre = _gMap.getCenter();
+			var bounds = new gm.LatLngBounds();
+			var newMarker = createMarker("New place", centre, true/*draggable*/, "new");
+			attachTooltip(newMarker);
+
+			_markers.push(newMarker);
+			bounds.extend(centre);
+
+			gm.event.addListener(newMarker, "click", function (evt) {
+				var currMarker = this;
+				closeTooltips();
+				
+				if (settings.onAdd) {
+					var root = $(currMarker.tooltip.content);
+					settings.onAdd(_plugIn, currMarker);
+					// tooltip will be shown via 
+				} else {
+					// new places can always be edited
+					currMarker.showTooltip(true/*inRwMode*/);
+				}				
+			});
+			
+			gm.event.addListener(newMarker, "dragend", function (evt) {
+				var currMarker = this;
+				// only time when lat/lng can change!
+				currMarker.details.lat = evt.latLng.lat();
+				currMarker.details.lng = evt.latLng.lng();
+				var tip = $(currMarker.tooltip.content);
+				tip.find(".mapsed-lat").val(currMarker.details.lat);
+				tip.find(".mapsed-lng").val(currMarker.details.lng);
+			});
+			// for tooltip to be displayed
+			gm.event.trigger(newMarker, "click");
+
+		} // onPlaceAdd
 
 
 		/// <summary>
@@ -939,44 +991,12 @@
 			// already done
 				return;
 
-			var onAddEvent = function (evt) {
-				evt.preventDefault();
-
-				var centre = _gMap.getCenter();
-				var bounds = new gm.LatLngBounds();
-				var newMarker = createMarker("New place", centre, true/*draggable*/, "new");
-				attachTooltip(newMarker);
-
-				_markers.push(newMarker);
-				bounds.extend(centre);
-
-				gm.event.addListener(newMarker, "click", function () {
-					var currMarker = this;
-					closeTooltips();
-					// new places can always be edited
-					currMarker.showTooltip(true/*inRwMode*/);
-				});
-				gm.event.addListener(newMarker, "dragend", function (evt) {
-					var currMarker = this;
-					// only time when lat/lng can change!
-					currMarker.details.lat = evt.latLng.lat();
-					currMarker.details.lng = evt.latLng.lng();
-					var tip = $(currMarker.tooltip.content);
-					tip.find(".mapsed-lat").val(currMarker.details.lat);
-					tip.find(".mapsed-lng").val(currMarker.details.lng);
-				});
-				// for tooltip to be displayed
-				gm.event.trigger(newMarker, "click");
-
-			}; // onAddEvent
-
 			_addBtn = createControlButton(
 				BUTTONS.AddPlace,
 				gm.ControlPosition.TOP_RIGHT,
 				"mapsed-add-button mapsed-control-button",
-				onAddEvent
+				onPlaceAdd
 			);
-
 
 		} // addNewPlaceButton
 

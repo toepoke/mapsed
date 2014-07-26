@@ -133,6 +133,26 @@ function fullWindowExample(e) {
 		// Adds the "+" button to the control bar at the top right of the map
 		allowAdd: true,
 
+		// Illustrating custom behaviour
+		// ... changing the added marker to have _some_data_
+		onAdd: function(m, marker) {
+			// use a timeout to emulate an ajax lookup
+			// note marker has "lat" and "lng" properties to use for querying google maps
+			setTimeout(function() {
+				marker.details.name = "Test name";
+				marker.details.street = "Test street";
+				marker.details.town = "Test town";
+				marker.details.area = "Test area";
+				marker.details.postCode = "Test postcode";
+				marker.details.telNo = "Test telNo";
+				marker.details.website = "example.com";
+				marker.details.url = "http://example.com";
+				
+				// pass control back to mapsed
+				m.showAddDialog(marker);
+			}, 2000);
+		},		
+
 		// Enables place selection
 		// ... note the presence of the callback is 
 		// ... all that's required to enable selection
