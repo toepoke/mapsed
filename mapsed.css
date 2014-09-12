@@ -126,7 +126,6 @@
 		font-weight: 300;
 		text-overflow: ellipsis;
 
-		margin-top: 28px;
 		height: 32px;
 		border: 1px solid #fff;
 		outline: none;
@@ -164,19 +163,30 @@
 	-webkit-box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
 	padding: 1px 6px;
 	font-family: Calibri, Arial;
-	font-size: 12px;
+	font-size: 22px;
 	color: #000;
 	text-decoration: none;
 	font-weight: 400;
 	
 	margin-right: 3px;
-	margin-top: 5px;
 	cursor: pointer;
 }
+
+.gm-style-mtc > div {
+	/* Map/Satellite */
+	font-size: 22px !important;
+	padding: 3px 6px !important;
+}
+
 
 :hover.mapsed-control-button {
 	background-color: #ddd;
 }
+button.mapsed-geo-button {
+	/* GEO is a little bit different - purely because of the content icon */
+	padding: 1px 3px;
+}
+
 
 button.mapsed-select-button, 
 button.mapsed-edit-button, 
@@ -188,8 +198,7 @@ button.mapsed-search-button, button.mapsed-more-button {
 	padding: 5px 7px;
 
 	font-weight: bold;
-	margin: 5px 0 0 5px;
-	
+
 	background-image: -webkit-linear-gradient(top,#4d90fe,#4787ed);
 	background-color: #4d90fe;
 	border: none;
@@ -206,8 +215,6 @@ button.mapsed-search-button, button.mapsed-more-button {
 	/* search button is a little bit different to the other button controls */
 	padding: 7px 20px;
 	font-size: 15px;
-	margin-left: 1%;
-	margin-top: 28px;
 	line-height: 1.3;
 }
 button.mapsed-more-button[disabled] {
@@ -217,16 +224,7 @@ button.mapsed-more-button[disabled] {
 	cursor: auto;	/*so it doesn't look clickable*/
 }
 button.mapsed-geo-button {
-	margin-top: 28px;
-	margin-left: -10px;
-	height: 32px;
-	font-size: 20px;
 	color: #B60000;
-	padding: 0 7px;
-	background-color: #fff;
-	border: none;
-	border-radius: 0 2px 2px 0;
-	box-shadow: 0 2px 6px rgba(0,0,0,0.3);
 	cursor: pointer;
 }
 button.mapsed-geo-button.is-active {
@@ -258,6 +256,7 @@ button.mapsed-geo-button.is-active {
 		box-shadow: 2px 2px 2px #aaa;
 		min-width: 250px;
 		color: #000;
+		cursor: pointer;
 	}
 
 	.mapsed-help  h3 {
@@ -347,7 +346,103 @@ button.mapsed-geo-button.is-active {
 						background-color: #A5281B;
 					}
 
+/* button positions - important is required as it gets overridden by Google Maps API */
+input.mapsed-searchbox, button.mapsed-search-button, button.mapsed-more-button {
+	top: 26px !important; 
+}
+button.mapsed-geo-button {
 	
+}
+input.mapsed-searchbox {
+	left: 90px !important;
+	width: 440px !important;
+}
+button.mapsed-search-button {
+	left: 540px !important;
+}
+button.mapsed-more-button {
+	left: 605px !important;
+}
+#themePicker, button.mapsed-add-button, button.mapsed-help-button, button.mapsed-add-button, button.mapsed-close-button, button.mapsed-geo-button {
+	top: 4px !important;
+}
+
+
+	/* mobile overrides */
+	@media 
+		/* Smartphones (portrait) ----------- */
+		only screen 
+		and (min-device-width : 320px)
+		and (max-device-width : 480px) {
+
+		.gm-style-mtc > div, .mapsed-control-button {
+			font-size: 20px !important;
+			padding: 10px 5px !important;
+			top: 1px !important;
+		}
+		.mapsed-control-button {
+			/* slightly bigger for our buttons over the google Map/Satellite */
+			padding: 8px 15px !important;
+		}
+		button.mapsed-geo-button {
+			/* GEO is a little bit different - purely because of the content icon */
+			font-size: 26px !important;
+			padding: 4px 10px !important;
+		}
+
+
 	
+		input.mapsed-searchbox, button.mapsed-search-button, button.mapsed-more-button {
+			height: 50px;
+			font-size: 20px !important;
+		}
+		.input.mapsed-searchbox {
+			padding: 0px 12px !important;			
+		}
+		button.mapsed-search-button {
+			padding: 0px 10px !important;			
+		}
+		button.mapsed-more-button {
+			padding: 0px 10px !important;			
+		}
+
 	
-	
+		/* positions */
+		#themePicker, button.mapsed-add-button, button.mapsed-help-button, button.mapsed-add-button, button.mapsed-close-button, button.mapsed-geo-button {
+			top: 6px !important;
+		}
+		input.mapsed-searchbox, button.mapsed-search-button, button.mapsed-more-button {
+			top: 57px !important; 
+		}
+		input.mapsed-searchbox {
+			left: 33px !important;
+			width: 229px !important;
+		}
+		button.mapsed-search-button {
+			left: 265px !important;
+		}
+		button.mapsed-more-button {
+			left: 311px !important;
+		}
+		#themePicker, button.mapsed-add-button, button.mapsed-help-button, button.mapsed-add-button, button.mapsed-close-button, button.mapsed-geo-button {
+		}
+
+		.mapsed-help {
+			width: 80% !important;
+			left: 10% !important;
+		}
+		.mapsed-help li {
+			margin-left: 10px !important;
+		}
+		.mapsed-help p, .mapsed-help li {
+			font-size: 20px !important;
+			line-height: 1.2;
+		}
+		.mapsed-help h3 {
+			font-size: 30px !important;
+		}
+
+
+	}
+
+

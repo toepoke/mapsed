@@ -1062,8 +1062,8 @@
 
 			_geoBtn = createControlButton(
 				BUTTONS.Geo,
-				gm.ControlPosition.TOP_LEFT,
-				"mapsed-geo-button",
+				gm.ControlPosition.TOP_RIGHT,
+				"mapsed-geo-button mapsed-control-button",
 				onClickEvent
 			);
 
@@ -1093,7 +1093,10 @@
 			);
 
 			var helpHtml = settings.getHelpWindow();
-			_helpDlg = $(helpHtml).appendTo(_mapContainer);
+			_helpDlg = $(helpHtml).appendTo(_mapContainer).click(function() {
+				$(this).fadeOut();
+				_helpBtn.toggleClass("open");
+			});
 			_helpDlg.fadeOut();
 
 		} // addHelpButton
