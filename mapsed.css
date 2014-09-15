@@ -161,9 +161,9 @@
 	background-color: #fff;
 	box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
 	-webkit-box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
-	padding: 1px 6px;
+	padding: 2px 7px;
 	font-family: Calibri, Arial;
-	font-size: 22px;
+	font-size: 16px;
 	color: #000;
 	text-decoration: none;
 	font-weight: 400;
@@ -171,20 +171,20 @@
 	margin-right: 3px;
 	cursor: pointer;
 }
+button.mapsed-geo-button {
+	/* GEO is a little bit different - purely because of the content icon */
+	padding: 2px 5px;
+}
 
 .gm-style-mtc > div {
 	/* Map/Satellite */
-	font-size: 22px !important;
+	font-size: 12px !important;
 	padding: 3px 6px !important;
 }
 
 
 :hover.mapsed-control-button {
 	background-color: #ddd;
-}
-button.mapsed-geo-button {
-	/* GEO is a little bit different - purely because of the content icon */
-	padding: 1px 3px;
 }
 
 
@@ -363,7 +363,7 @@ button.mapsed-search-button {
 button.mapsed-more-button {
 	left: 605px !important;
 }
-#themePicker, button.mapsed-add-button, button.mapsed-help-button, button.mapsed-add-button, button.mapsed-close-button, button.mapsed-geo-button {
+.mapsed-control-button {
 	top: 4px !important;
 }
 
@@ -375,19 +375,22 @@ button.mapsed-more-button {
 		and (min-device-width : 320px)
 		and (max-device-width : 480px) {
 
-		.gm-style-mtc > div, .mapsed-control-button {
-			font-size: 20px !important;
+		.gm-style-mtc > div {
+			font-size: 22px !important;
 			padding: 10px 5px !important;
 			top: 1px !important;
 		}
+
 		.mapsed-control-button {
 			/* slightly bigger for our buttons over the google Map/Satellite */
-			padding: 8px 15px !important;
+			padding: 7px 18px !important;
+			font-size: 30px;
+			top: 1px !important;
 		}
 		button.mapsed-geo-button {
 			/* GEO is a little bit different - purely because of the content icon */
-			font-size: 26px !important;
-			padding: 4px 10px !important;
+			font-size: 30px !important;
+			padding: 7px 13px !important;
 		}
 
 
@@ -428,8 +431,8 @@ button.mapsed-more-button {
 		}
 
 		.mapsed-help {
-			width: 80% !important;
-			left: 10% !important;
+			width: 50% !important;
+			right: 10% !important;
 		}
 		.mapsed-help li {
 			margin-left: 10px !important;
