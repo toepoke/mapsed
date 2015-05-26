@@ -44,6 +44,8 @@ var _places = [
 		// Useful if you only want to store references rather than a whole place object in your database
 		// Note: Google Places CANNOT be edited, only CUSTOM places can (see next place below)
 		reference: "CoQBfAAAAPw-5BTCS53grSLDwX8rwo5BnWnEWnA72lmOjxdgWg2ODGfC5lLjGyoz428IEaln1vJ6rq1jI96Npzlm-N-wmPH2jdJMGfOLxno_rmgnajAnMPzNzuI8UjexIOdHVZPBPvQGloC-tRhudGeKkbdTT-IWNP5hp4DIl4XOLWuYFOVYEhBxNPxaXZdW9uhKIETXf60hGhTc9yKchnS6oO-6z5XZJkK2ekewYQ",
+		addInfo: 
+			"<p>Ordering drinks for the <br/>interval is an idea!</p>" 
 	},
 	// Random made up CUSTOM place
 	{

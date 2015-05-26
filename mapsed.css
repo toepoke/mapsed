@@ -61,17 +61,27 @@
 			text-decoration: underline;
 		}
 
-	.mapsed-right {
-		/* where the photo and select appears */
+	.mapsed-photo {
+		/* Give a bit of space between the elements */
+		padding-left: 10px !important;
+	}
+	.mapsed-photo, .mapsed-add-info {
+		/* where the photo and additional info appears */
 		margin: 0;
 		padding: 0;
 		vertical-align: top;
 	}
 	
-	.mapsed-right img {
+	.mapsed-photo img {
 		/* In case there's a "select" button underneath the photo image*/
 		margin-bottom: 10px;	
 		float: right;		
+	}
+	
+	.mapsed-add-info {
+		/* Give a bit of space between the elements */
+		padding-left: 10px;
+		white-space: nowrap;
 	}
 	
 	/* container for address data entry */
@@ -108,7 +118,11 @@
 			line-height: 20px;
 			margin-bottom: 5px;
 		}
-	
+
+	.mapsed-view {
+		/* Ensures stuff doesn't wrap around, which looks horrible when it does */
+		white-space: nowrap;
+	}
 	.mapsed-view .mapsed-website, .mapsed-view .mapsed-url {
 		
 	}
@@ -156,24 +170,23 @@
 */
 .mapsed-control-button {
 
+	border-color: rgba(0, 0, 0, 0.14902);
 	border: solid 1px #888;
 	border-radius: 2px;
 	background-color: #fff;
 	box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
 	-webkit-box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
-	padding: 2px 7px;
+	padding: 3px 6px;
 	font-family: Calibri, Arial;
 	font-size: 16px;
 	color: #000;
+	font-family: Roboto;
 	text-decoration: none;
 	font-weight: 400;
-	
+	line-height: 12px;
+		
 	margin-right: 3px;
 	cursor: pointer;
-}
-button.mapsed-geo-button {
-	/* GEO is a little bit different - purely because of the content icon */
-	padding: 2px 5px;
 }
 
 .gm-style-mtc > div {
@@ -187,6 +200,13 @@ button.mapsed-geo-button {
 	background-color: #ddd;
 }
 
+/*
+	Dialog styles
+*/
+.mapsed-buttons td:first-child {
+	padding-top: 10px;
+	/* we did play with putting these on the right, but the mobile view doesn't show them .... sometimes! */
+}
 
 button.mapsed-select-button, 
 button.mapsed-edit-button, 
@@ -202,7 +222,7 @@ button.mapsed-search-button, button.mapsed-more-button {
 	background-image: -webkit-linear-gradient(top,#4d90fe,#4787ed);
 	background-color: #4d90fe;
 	border: none;
-	border-radius: 0 2px 2px 0;
+	border-radius: 2px;
 	box-shadow: 0 2px 6px rgba(0,0,0,0.3);
 	cursor: pointer;
 }
@@ -230,6 +250,12 @@ button.mapsed-geo-button {
 button.mapsed-geo-button.is-active {
 	color: #0024B6;
 	font-weight: 300;
+}
+button.mapsed-select-button, 
+button.mapsed-edit-button, 
+button.mapsed-save-button, 
+button.mapsed-delete-button {
+	margin-right: 2px;
 }
 
 /*
@@ -364,7 +390,7 @@ button.mapsed-more-button {
 	left: 605px !important;
 }
 .mapsed-control-button {
-	top: 4px !important;
+	top: 5px !important;
 }
 
 
@@ -374,6 +400,14 @@ button.mapsed-more-button {
 		only screen 
 		and (min-device-width : 320px)
 		and (max-device-width : 480px) {
+
+		td.mapsed-photo {
+			/*
+				Photo takes up too much room on mobile version
+				Better for the content to be more readable.
+			*/
+			display: none !important;
+		}
 
 		.gm-style-mtc > div {
 			font-size: 22px !important;

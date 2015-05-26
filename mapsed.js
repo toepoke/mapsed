@@ -17,26 +17,16 @@
 	"use strict";
 
 	// singleton here (same variable across all instances of the plug-in)
-	var _version = '(0.1)',
+	var _version = '(0.3)',
 			_plugInName = "mapsed",
 			_plugInInstances = 1
 	;
 
 	$.fn.mapsed = function (options) {
 		// consts
-		// - Somewhere near the City Varieties ...
-		var DEFAULT_CENTER = new google.maps.LatLng(53.798823, -1.5426760000000286);
+		// - Centre of the UK (ish ...)
+		var DEFAULT_CENTER = new google.maps.LatLng(53.175148, -1.423908);
 		var DEFAULT_ZOOM = 10;
-
-		var BUTTONS = {
-			// labels and tooltips for the various buttons (anything after the pipe(|) is the tooltip)
-			Go: "Go",
-			More: "More|There are more results available ...",
-			AddPlace: "+|Add a place",
-			CloseMap: "&times;|Close map",
-			Geo: "&otimes;|Centre map based on your location",
-			Help: "?|Show help"
-		};
 
 		// private plug-in variables
 		var _plugIn = this,           // Reference back to the "mapsed" plug-in instance
@@ -60,7 +50,7 @@
 				_addBtn = null,           // Reference to the add button ([+])
 				_geoBtn = null,           // Reference to the Geo location button [(*)]
 				gm = null,                // Short cut reference to the Google Maps namespace (this is initialised in the constructor to give the Google API time to load on the page)
-				gp = null                 // Short cut reference to the Google Places namespace (this is initialised in the constructor to give the Google API time to load on the page)
+				gp = null                // Short cut reference to the Google Places namespace (this is initialised in the constructor to give the Google API time to load on the page)
 		;
 
 		/// <summary>
@@ -72,6 +62,24 @@
 			// (see accompanying examples for illustration)
 			showOnLoad: null,
 
+			// Specifies the buttons and tooltips added to the map toolbar
+			ToolbarButtons: {
+				Go: "Go",
+				More: "More|There are more results available ...",
+				AddPlace: "+|Add a place",
+				CloseMap: "&times;|Close map",
+				Geo: "&otimes;|Centre map based on your location",
+				Help: "?|Show help"
+			},
+
+			// Species the text of the buttons used the dialog templates
+			ActionButtons: {
+				Select: "Select",
+				Edit: "Edit",
+				Delete: "Delete",
+				Save: "Save"
+			},
+
 			// Options for drawing the map.  This is the same object
 			// that is passed to the Google Maps API when creating the map.
 			// If you need something custom supported by the Google Maps API
@@ -81,6 +89,7 @@
 				// Initial zoom level (initially not set)
 				// ... be cautious when setting a zoom level _and_ defining custom places as you may set the
 				// ... level to such a level that your places aren't visible
+				// ... by default the map will expand to show all custom places, you can change this with the "forceCenter" option
 				zoom: DEFAULT_ZOOM,
 
 				// Default to the best theatre ever :-)
@@ -142,7 +151,7 @@
 			// prototype: function(mapsed)
 			// 	return true to close the map, false keeps it open
 			onClose: null,
-			
+
 			// Callback for getting the [image] URL to use for a marker
 			// Parameter "markerType" is passed, indicating the type of marker, this can be
 			// prototype: function(mapsed, markerType, title)
@@ -155,7 +164,7 @@
 			//   title: Title attribute of the marker
 			// Returns:
 			//   Google Icon object (see https://developers.google.com/maps/documentation/javascript/reference#Icon)
-			getMarkerImage: null,			
+			getMarkerImage: null,
 
 			// Adds a help button to give further instructions to the end user
 			// prototype: function()
@@ -172,7 +181,12 @@
 			// GEO location position is.
 			// Note: This is ignored if "showOnLoad" property is populated as there is 
 			//       a risk the places won't be shown on the map
-			findGeoOnLoad: false
+			findGeoOnLoad: false,
+
+			// When adding custom places, mapsed will expand the map to show all places
+			// Usually this is what you'd want, but sometimes you may want to focus on a particular area
+			// "forceCenter" will override the default behaviour and centre where specified in the options
+			forceCenter: false
 
 		}, options || {});
 
@@ -296,7 +310,7 @@
 		/// Displays the "Add" dialog once the calling application
 		/// has resolved what should be displayed for the new marker
 		/// </summary>
-		this.showAddDialog = function(marker) {
+		this.showAddDialog = function (marker) {
 			// new places can always be edited
 			marker.showTooltip(true/*inRwMode*/);
 		}
@@ -325,7 +339,7 @@
 		/// </summary>
 		this.setMapCentreByGeo = function () {
 			if (!navigator.geolocation)
-				// GEO location not supported
+			// GEO location not supported
 				return;
 
 			navigator.geolocation.getCurrentPosition(
@@ -345,7 +359,7 @@
 
 						doSearch(search);
 					}
-					
+
 					if (so && settings.showOnLoad) {
 						addInitialPlaces();
 					}
@@ -398,8 +412,8 @@
 			marker.showTooltip(true/*inRwMode*/);
 
 		} // onPlaceEdit
-		
-		
+
+
 		/// <summary>
 		/// Internal event handler when the "Add" button is clicked
 		/// </summary>
@@ -417,7 +431,7 @@
 			gm.event.addListener(newMarker, "click", function (evt) {
 				var currMarker = this;
 				closeTooltips();
-				
+
 				if (settings.onAdd) {
 					var root = $(currMarker.tooltip.content);
 					settings.onAdd(_plugIn, currMarker);
@@ -425,9 +439,9 @@
 				} else {
 					// new places can always be edited
 					currMarker.showTooltip(true/*inRwMode*/);
-				}				
+				}
 			});
-			
+
 			gm.event.addListener(newMarker, "dragend", function (evt) {
 				var currMarker = this;
 				// only time when lat/lng can change!
@@ -517,6 +531,14 @@
 		/// </summary>
 		function gmMapLoaded() {
 
+			// The line-height of the toolbar buttons seems to vary depending on the DIV size 
+			//  - we use this to flag what line-size the [Google] map controls are using
+			var gmToolBtns = $(_mapContainer.find(".gm-style-mtc"));
+			if (gmToolBtns.length > 0) {
+				var gmLineHeight = $(gmToolBtns[0]).css("line-height");
+				$(_mapContainer.find(".mapsed-control-button")).css("line-height", gmLineHeight);
+			}
+		
 			if (_helpDlg) {
 				// note _helpBtn is the container, not the link inside the container
 				var btnContainer = _helpBtn;
@@ -820,6 +842,9 @@
 				// used to delay when jQuery tries to render the image tag
 				tmpl = replaceAll("{IMG", "<img", tmpl);
 			}
+			if (model.addInfo) {
+				tmpl = replaceAll("{ADD_INFO}", model.addInfo, tmpl);
+			}
 
 			$ctx.html(tmpl);
 
@@ -859,7 +884,8 @@
 				$url.hide();
 			}
 
-			$vw.find(".mapsed-right").toggle(model.photo != null);
+			$vw.find(".mapsed-photo").toggle(model.photo != null);
+			$vw.find(".mapsed-add-info").toggle(model.addInfo != null);
 
 			var settings = _plugIn.getSettings();
 
@@ -960,7 +986,7 @@
 			gm.event.addListener(_gMap, "bounds_changed", gmBoundsChanged);
 
 			_searchBtn = createControlButton(
-				BUTTONS.Go, gm.ControlPosition.TOP_LEFT,
+				settings.ToolbarButtons.Go, gm.ControlPosition.TOP_LEFT,
 				"mapsed-search-button mapsed-control-button",
 				function (evt) {
 					evt.preventDefault();
@@ -972,7 +998,7 @@
 			// For handling additional results, note there is not event handlers as this is]
 			// ... driven from the first set of search results we get back from Google
 			_moreBtn = createControlButton(
-				BUTTONS.More,
+				settings.ToolbarButtons.More,
 				gm.ControlPosition.TOP_LEFT,
 				"mapsed-more-button mapsed-control-button",
 				null
@@ -992,7 +1018,7 @@
 				return;
 
 			_addBtn = createControlButton(
-				BUTTONS.AddPlace,
+				settings.ToolbarButtons.AddPlace,
 				gm.ControlPosition.TOP_RIGHT,
 				"mapsed-add-button mapsed-control-button",
 				onPlaceAdd
@@ -1032,7 +1058,7 @@
 			};
 
 			_closeBtn = createControlButton(
-				BUTTONS.CloseMap,
+				settings.ToolbarButtons.CloseMap,
 				gm.ControlPosition.TOP_RIGHT,
 				"mapsed-close-button mapsed-control-button",
 				onCloseEvent
@@ -1061,7 +1087,7 @@
 			};
 
 			_geoBtn = createControlButton(
-				BUTTONS.Geo,
+				settings.ToolbarButtons.Geo,
 				gm.ControlPosition.TOP_RIGHT,
 				"mapsed-geo-button mapsed-control-button",
 				onClickEvent
@@ -1080,7 +1106,7 @@
 				return;
 
 			_helpBtn = createControlButton(
-				BUTTONS.Help,
+				settings.ToolbarButtons.Help,
 				gm.ControlPosition.TOP_RIGHT,
 				"mapsed-help-button mapsed-control-button",
 				function (evt) {
@@ -1093,7 +1119,7 @@
 			);
 
 			var helpHtml = settings.getHelpWindow();
-			_helpDlg = $(helpHtml).appendTo(_mapContainer).click(function() {
+			_helpDlg = $(helpHtml).appendTo(_mapContainer).click(function () {
 				$(this).fadeOut();
 				_helpBtn.toggleClass("open");
 			});
@@ -1348,9 +1374,11 @@
 			// proved to be too unreliable when used with map tooltips!
 			var html =
 			    "<table class='mapsed-container mapsed-view'>"
-			  + "<tr><td colspan='2'>"
+			  + "<tr>"
+			  + "<td colspan='3'>"
 			  + "<h1 class='mapsed-name' title='{NAME}'>{SHORT_NAME}</h1>"
-			  + "</td></tr>"
+			  + "</td>"
+			  + "</tr>"
 			  + "<tr>"
 			  + "<td class='mapsed-left'>"
 			  + "<address>"
@@ -1363,15 +1391,18 @@
 			  + "<a class='mapsed-website' href='{WEBSITE}' title='{WEBSITE}'>website</a>"
 			  + "<a class='mapsed-url' href='{GPLUS}' title='{GPLUS}'>g+</a>"
 			  + "</td>"
-			  + "<td class='mapsed-right'>"
+			  + "<td class='mapsed-photo'>"
 			  + "<a href='{GPLUS}'>{IMG src='{PHOTOURL}' /></a>"
+			  + "</td>"
+			  + "<td class='mapsed-add-info'>"
+			  + "{ADD_INFO}"
 			  + "</td>"
 			  + "</tr>"
 			  + "<tr class='mapsed-buttons'>"
-			  + "<td colspan='2'>"
-			  + "<button class='mapsed-select-button'>Select</button>"
-			  + "<button class='mapsed-edit-button'>Edit</button>"
-			  + "<button class='mapsed-delete-button'>Delete</button>"
+			  + "<td colspan='3'>"
+			  + "<button class='mapsed-select-button'>" + settings.ActionButtons.Select + "</button>"
+			  + "<button class='mapsed-edit-button'>" + settings.ActionButtons.Edit + "</button>"
+			  + "<button class='mapsed-delete-button'>" + settings.ActionButtons.Delete + "</button>"
 			  + "</td>"
 			  + "</tr>"
 			  + "</table>"
@@ -1432,7 +1463,7 @@
 				+ "</li>"
 				+ "</ul>"
 				+ "<div class='mapsed-buttons'>"
-				+ "<button class='mapsed-save-button'>Save</button>"
+				+ "<button class='mapsed-save-button'>" + settings.ActionButtons.Save + "</button>"
 			// placeholder for error messages
 				+ "<span class='mapsed-error'>&nbsp;</span>"
 				+ "</div>"
@@ -1549,11 +1580,15 @@
 			}
 
 			// we done?
-			_gMap.fitBounds(bounds);
+			if (!settings.forceCenter) {
+				_gMap.fitBounds(bounds);
+			}
 
 			if (places.length == 1) {
 				// only 1 so set the center
 				_gMap.setCenter(pos);
+			} else if (settings.forceCenter) {
+				_gMap.setCenter(settings.mapOptions.center);
 			}
 
 		} // addInitialPlaces
@@ -1794,12 +1829,9 @@
 				doSearch(so.initSearch);
 			}
 
-			if (!_areBoundsSet) {
-				// Boundary hasn't been set (by adding a custom place for instance)
-				// ... so apply the zoom and center (otherwise GM won't know where to draw it's map! and you'll just get a grey box)
-				_gMap.setZoom(settings.mapOptions.zoom);
-				_gMap.setCenter(settings.mapOptions.center);
-			}
+			// Apply the zoom and center (otherwise GM won't know where to draw it's map! and you'll just get a grey box)
+			_gMap.setZoom(settings.mapOptions.zoom);
+			_gMap.setCenter(settings.mapOptions.center);
 
 			var plugger = 'plugin_' + _plugInName;
 			if (!_mapContainer.data(plugger)) {
