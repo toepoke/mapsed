@@ -538,7 +538,7 @@
 				var gmLineHeight = $(gmToolBtns[0]).css("line-height");
 				$(_mapContainer.find(".mapsed-control-button")).css("line-height", gmLineHeight);
 			}
-		
+
 			if (_helpDlg) {
 				// note _helpBtn is the container, not the link inside the container
 				var btnContainer = _helpBtn;
@@ -1600,20 +1600,39 @@
 		/// </summary>
 		function doSearch(searchFor) {
 			var boundary = _gMap.getBounds();
+			var location = null;
+			var re = /(\-?\d+(\.\d+)?),\s*(\-?\d+(\.\d+)?)/gi; 	// regex for lat/lng co-ords
+			var query = searchFor;
+
+			// ensure the search box reflects what's been search for
+			_searchBox.val(searchFor);
 
 			// reset the result page count (as we're starting afresh with a new search)
 			_pageNum = 0;
 			clearMarkers();
 
+			var latLngMatches = query.match(re);
+
+			if (latLngMatches) {
+				// add a location
+				location = latLngMatches[0];
+				// remove the lat/lng from the search (otherwise causes issues with maps search)
+				query = query.replace(re, "");
+				// remove any "near" reference
+				query = query.replace("near", "");
+			}
+
 			var request = {
-				query: searchFor,
+				query: $.trim(query),
 				// limit to search to boundary of the map screen
 				bounds: boundary
 			};
-			_placesApi.textSearch(request, gmPlaceSelected);
 
-			// ensure the search box reflects what's been search for
-			_searchBox.val(searchFor);
+			if (location) {
+				request.location = location;
+			}
+
+			_placesApi.textSearch(request, gmPlaceSelected);
 
 		} // doSearch
 

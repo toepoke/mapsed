@@ -374,20 +374,20 @@ button.mapsed-delete-button {
 
 /* button positions - important is required as it gets overridden by Google Maps API */
 input.mapsed-searchbox, button.mapsed-search-button, button.mapsed-more-button {
-	top: 26px !important; 
+	top: 10px !important; 
 }
 button.mapsed-geo-button {
 	
 }
 input.mapsed-searchbox {
-	left: 90px !important;
+	left: 120px !important;
 	width: 440px !important;
 }
 button.mapsed-search-button {
-	left: 540px !important;
+	left: 570px !important;
 }
 button.mapsed-more-button {
-	left: 605px !important;
+	left: 635px !important;
 }
 .mapsed-control-button {
 	top: 5px !important;
