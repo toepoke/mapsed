@@ -1,6 +1,6 @@
 # mapsed.js
 
-On **[my website](http://toepoke.co.uk/)** I needed to be able to select places on a map.  
+On **[my website](https://toepoke.co.uk/)** I needed to be able to select places on a map.  
 
 I couldn't find anything that fully did what I was after so I built mapsed (besides I need the JavaScript practice!).
 
@@ -15,7 +15,7 @@ In short it provides the following:
 * Works with multiple maps on the same page
 
 ## Demos
-Demos at http://mapsed.apphb.com
+Demos at https://mapsed.apphb.com
 
 ## Settings
 
@@ -100,7 +100,7 @@ This object is passed onto the Google Maps initialisation, thereby allowing the 
 
 On a map, Google adds places of interest hotspots that can be clicked.  These might point to a local park or a cinema and bring up details about that *place*.
 
-Ordinarily this is quite useful, however if it's outside the concern of your audience you may not wish to distract them.  For instance [our audience](http://toepoke.co.uk/) is concerned with football venues, so cinemas aren't of interest to them at that time.
+Ordinarily this is quite useful, however if it's outside the concern of your audience you may not wish to distract them.  For instance [our audience](https://toepoke.co.uk/) is concerned with football venues, so cinemas aren't of interest to them at that time.
 
 The **disablePoi** setting turns off these point of interest hotspots.  However POI cannot be turned off with [styled maps](https://developers.google.com/maps/documentation/javascript/styling).
 

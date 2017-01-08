@@ -69,7 +69,7 @@ function showMap(e) {
 		getMarkerImage: function(m, markerType, title) {
 			if (title === "Here I am!") {
 				return {
-					url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%8A%95|fff999|000000|",
+					url: "https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%8A%95|fff999|000000|",
 					size: new google.maps.Size(21, 34)					
 				};
 			}
