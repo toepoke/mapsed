@@ -10,6 +10,9 @@
  * Compressed with:
  *   - http://closure-compiler.appspot.com/
  *
+ * History:
+ *  v0.4 - Country wasn't supported
+ * 
 */
 
 (function () {
@@ -17,7 +20,7 @@
 	"use strict";
 
 	// singleton here (same variable across all instances of the plug-in)
-	var _version = '(0.3)',
+	var _version = '(0.4)',
 			_plugInName = "mapsed",
 			_plugInInstances = 1
 	;
@@ -833,6 +836,7 @@
 			tmpl = replaceAll("{TOWN}", model.town, tmpl);
 			tmpl = replaceAll("{AREA}", model.area, tmpl);
 			tmpl = replaceAll("{POSTCODE}", model.postCode, tmpl);
+			tmpl = replaceAll("{COUNTRY}", model.country, tmpl);
 			tmpl = replaceAll("{TELNO}", model.telNo, tmpl);
 			tmpl = replaceAll("{WEBSITE}", model.website, tmpl);
 			tmpl = replaceAll("{GPLUS}", model.url, tmpl);
@@ -862,6 +866,7 @@
 			$vw.find(".mapsed-town").toggle(model.town && model.town.length > 0);
 			$vw.find(".mapsed-area").toggle(model.area && model.area.length > 0);
 			$vw.find(".mapsed-postCode").toggle(model.postCode && model.postCode.length > 0);
+			$vw.find(".mapsed-country").toggle(model.country && model.country.length > 0);
 
 			// these are a little different as we want them block if they're available (they're a tags)
 			var $telNo = $vw.find(".mapsed-telNo"),
@@ -1259,6 +1264,7 @@
 				town: "",
 				area: "",
 				postCode: "",
+				country: "",
 				telNo: "",
 				website: "",
 				url: "",
@@ -1386,6 +1392,7 @@
 			  + "<div class='mapsed-town'>{TOWN}</div>"
 			  + "<div class='mapsed-area'>{AREA}</div>"
 			  + "<div class='mapsed-postCode'>{POSTCODE}</div>"
+				+ "<div class='mapsed-country'>{COUNTRY}</div>"
 			  + "</address>"
 			  + "<a class='mapsed-telNo' href='tel:{TELNO}'>{TELNO}</a>"
 			  + "<a class='mapsed-website' href='{WEBSITE}' title='{WEBSITE}'>website</a>"
@@ -1447,6 +1454,11 @@
 				+ "</label>"
 				+ "</li>"
 				+ "<li>"
+				+ "<label>Country"
+				+ "<input class='mapsed-country' type='text' value='{COUNTRY}' />"
+				+ "</label>"
+				+ "</li>"
+				+ "<li>"
 				+ "<label>Tel No"
 				+ "<input class='mapsed-telNo' type='telephone' placeholder='contact telephone number' value='{TELNO}' />"
 				+ "</label>"
@@ -1499,6 +1511,7 @@
 				model.town = $vw.find(".mapsed-town").html();
 				model.area = $vw.find(".mapsed-area").html();
 				model.postCode = $vw.find(".mapsed-postCode").html();
+				model.country = $vw.find(".mapsed-country").html();
 				model.telNo = $vw.find(".mapsed-telNo").html();
 				model.website = $vw.find(".mapsed-website").attr("href");
 				model.url = $vw.find(".mapsed-url").attr("href");
@@ -1510,6 +1523,7 @@
 				model.town = $vw.find(".mapsed-town").val();
 				model.area = $vw.find(".mapsed-area").val();
 				model.postCode = $vw.find(".mapsed-postCode").val();
+				model.country = $vw.find(".mapsed-country").val();
 				model.telNo = $vw.find(".mapsed-telNo").val();
 				model.website = $vw.find(".mapsed-website").val();
 				model.url = $vw.find(".mapsed-url").val();
@@ -1535,6 +1549,7 @@
 			if (!place.town) place.town = "";
 			if (!place.area) place.area = "";
 			if (!place.postCode) place.postCode = "";
+			if (!place.country) place.country = "";
 			if (!place.telNo) place.telNo = "";
 			if (!place.website) place.website = "";
 			if (!place.url) place.url = "";
@@ -1648,19 +1663,22 @@
 
 			// Copy Googles version of an address to something more useable for us
 			var street = findPart(ac, "street_address");
-			if (street === "")
-			// not present so fallback to "route"
+			if (street === "") {
+				// not present so fallback to "route"
 				street = findPart(ac, "route");
+			}
 
 			var town = findPart(ac, "locality"),
 					area = findPart(ac, "administrative_area_level_1"),
-					postCode = findPart(ac, "postal_code")
+					postCode = findPart(ac, "postal_code"),
+					country = findPart(ac, "country")
 			;
 
 			details.street = street;
 			details.town = town;
 			details.area = area;
 			details.postCode = postCode;
+			details.country = country;
 
 			// and some other bits
 			details.name = fromGP.name || "";
@@ -1686,6 +1704,8 @@
 				details.area = $.trim(elements[2]);
 			if (elements.length >= 4)
 				details.postCode = $.trim(elements[3]);
+			if (elements.length >= 5)
+				details.country = $.trim(elements[4]);
 		}
 
 

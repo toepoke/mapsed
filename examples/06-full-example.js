@@ -94,6 +94,7 @@ function getPlaceHtml(details) {
 			", " + details.town + 
 			", " + details.area + 
 			", " + details.postCode + 
+			", " + details.country + 
 			"<br/><br/>" +
 		"website:&nbsp;&nbsp;<a href='" + details.website + "'>website</a><br/>" +
 		"g+&nbsp;&nbsp;<a href='" + details.url + "'>google+ page</a><br/>" +
@@ -146,6 +147,7 @@ function fullWindowExample(e) {
 				marker.details.town = "Test town";
 				marker.details.area = "Test area";
 				marker.details.postCode = "Test postcode";
+				marker.details.country = "Test country";
 				marker.details.telNo = "Test telNo";
 				marker.details.website = "example.com";
 				marker.details.url = "http://example.com";
