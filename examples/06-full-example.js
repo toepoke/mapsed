@@ -39,11 +39,11 @@ var _places = [
 		canEdit: true,
 		lat: 53.798823,
 		lng:-1.5426760000000286,
-		// The "reference" is a Google Places reference string 
+		// The "place_id" is a Google Places reference string 
 		// This is used to query Google Places for the details of the marker
 		// Useful if you only want to store references rather than a whole place object in your database
 		// Note: Google Places CANNOT be edited, only CUSTOM places can (see next place below)
-		reference: "CoQBfAAAAPw-5BTCS53grSLDwX8rwo5BnWnEWnA72lmOjxdgWg2ODGfC5lLjGyoz428IEaln1vJ6rq1jI96Npzlm-N-wmPH2jdJMGfOLxno_rmgnajAnMPzNzuI8UjexIOdHVZPBPvQGloC-tRhudGeKkbdTT-IWNP5hp4DIl4XOLWuYFOVYEhBxNPxaXZdW9uhKIETXf60hGhTc9yKchnS6oO-6z5XZJkK2ekewYQ",
+		place_id: "ChIJQd3IwBtceUgRha6laiANoro",
 		addInfo: 
 			"<p>Ordering drinks for the <br/>interval is an idea!</p>" 
 	},
@@ -89,7 +89,13 @@ function getPlaceHtml(details) {
 	var html = 
 		"UserData:&nbsp;&nbsp;" + details.userData + "<br/><br/>" + 
 		"Location:&nbsp;&nbsp;" + details.lat + " / " + details.lng + "<br/><br/>" +
-		"Name:&nbsp;&nbsp;" + details.name + "<br/><br/>" +
+		"Name:&nbsp;&nbsp;" + details.name + "<br/><br/>";
+	
+	if (details.place_id) {
+		html += "place_id:&nbsp;&nbsp;" + details.place_id + "<br/><br/>";
+	}
+
+	html +=
 		"Address:&nbsp;&nbsp;" + details.street + 
 			", " + details.town + 
 			", " + details.area + 

@@ -20,7 +20,7 @@
 	"use strict";
 
 	// singleton here (same variable across all instances of the plug-in)
-	var _version = '(0.4)',
+	var _version = '(0.5)',
 			_plugInName = "mapsed",
 			_plugInInstances = 1
 	;
@@ -53,7 +53,7 @@
 				_addBtn = null,           // Reference to the add button ([+])
 				_geoBtn = null,           // Reference to the Geo location button [(*)]
 				gm = null,                // Short cut reference to the Google Maps namespace (this is initialised in the constructor to give the Google API time to load on the page)
-				gp = null                // Short cut reference to the Google Places namespace (this is initialised in the constructor to give the Google API time to load on the page)
+				gp = null                 // Short cut reference to the Google Places namespace (this is initialised in the constructor to give the Google API time to load on the page)
 		;
 
 		/// <summary>
@@ -599,7 +599,7 @@
 			// For each place, get the icon, place name, and location.
 			var bounds = new gm.LatLngBounds();
 			for (var i = 0, place; place = places[i]; i++) {
-				if (!place.reference)
+				if (!place.place_id)
 					continue;
 
 				var pos = place.geometry.location;
@@ -638,12 +638,12 @@
 		function getPlaceDetails(forMarker, callback) {
 			if (!forMarker.details)
 				return;
-			if (!forMarker.details.reference)
+			if (!forMarker.details.place_id)
 				return;
 
 
 			var request = {
-				reference: forMarker.details.reference
+				placeId: forMarker.details.place_id
 			};
 			_placesApi.getDetails(request,
 				function (placeDetails, status) {
@@ -756,7 +756,7 @@
 				.fadeIn()
 			;
 
-		} // showMsg
+		} // buildMsg
 
 
 		/// <summary>
@@ -925,7 +925,7 @@
 		/// <summary>
 		/// Finds a marker in the loaded set based on the provided lat/lng 
 		/// co-ordinates
-		/// - the model doesn't have a reference to the markers, hence the need to find them
+		/// - the model doesn't have a "place_id" to the markers, hence the need to find them
 		/// </summary>
 		function findMarker(lat, lng) {
 			var marker = null;
@@ -1258,7 +1258,7 @@
 				lat: latLng.lat(),
 				lng: latLng.lng(),
 				userData: "",
-				reference: "",
+				place_id: "",
 				name: "",
 				street: "",
 				town: "",
@@ -1298,7 +1298,7 @@
 					"<input type='hidden' class='mapsed-lat' value='" + forMarker.position.lat() + "' />" +
 					"<input type='hidden' class='mapsed-lng' value='" + forMarker.position.lng() + "' />" +
 					"<input type='hidden' class='mapsed-can-edit' value='" + d.canEdit + "' />" +
-					"<input type='hidden' class='mapsed-reference' value='" + d.reference + "' />" +
+					"<input type='hidden' class='mapsed-place-id' value='" + d.place_id + "' />" +
 					"<input type='hidden' class='mapsed-user-data' value='" + d.userData + "' />" +
 					"<input type='hidden' class='mapsed-marker-type' value='" + forMarker.markerType + "' />" +
 					getViewTemplate() +
@@ -1498,7 +1498,7 @@
 				canEdit: ($root.find(".mapsed-can-edit").val() === "true"),
 				lat: $root.find(".mapsed-lat").val(),
 				lng: $root.find(".mapsed-lng").val(),
-				reference: $root.find(".mapsed-reference").val(),
+				place_id: $root.find(".mapsed-place-id").val(),
 				markerType: $root.find(".mapsed-marker-type").val(),
 				userData: $root.find(".mapsed-user-data").val()
 			};
@@ -1583,7 +1583,7 @@
 						markerType = ""
 				;
 
-				if (p.reference && p.reference.length > 0) {
+				if (p.place_id && p.place_id.length > 0) {
 					// we'll get the details from Google
 					markerType = "google";
 				} else {

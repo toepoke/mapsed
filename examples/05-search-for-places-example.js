@@ -23,6 +23,9 @@ function runExample5() {
 				"<br/>website: " + details.website + 
 				"<br/>g+: " + details.url
 			;
+			if (details.place_id) {
+				msg += "<br/>Place_id: " + details.place_id
+			}
 			m.showMsg("You selected ...", msg);
 			// indicate tip should be closed
 			return true;

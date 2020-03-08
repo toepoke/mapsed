@@ -50,11 +50,11 @@ A ***Google*** place is one derived from the Google Places database.  Google ret
 {
   lat: 53.798823,
   lng:-1.5426760000000286,
-  reference: "CoQBfAAAAPw-5BTCS53grSLDwX8rwo5BnWnEWnA72lmOjxdgWg2ODGfC5lLjGyoz428IEaln1vJ6rq1jI96Npzlm-N-wmPH2jdJMGfOLxno_rmgnajAnMPzNzuI8UjexIOdHVZPBPvQGloC-tRhudGeKkbdTT-IWNP5hp4DIl4XOLWuYFOVYEhBxNPxaXZdW9uhKIETXf60hGhTc9yKchnS6oO-6z5XZJkK2ekewYQ"
+  place_id: "ChIJQd3IwBtceUgRha6laiANoro"
 }
 ```
 
-**mapsed.js** uses the **reference token** to ask Google for the details (so rather than storing the full info in your database, you just store the **reference**).
+**mapsed.js** uses the **reference token** to ask Google for the details (so rather than storing the full info in your database, you just store the **reference**).  In Google terms this is the **place_id**.
 
 The lat/lng coordinates still need to be given to the plugin as it only asks Google for details when a marker is clicked upon (i.e. it queries as required) so it needs to know where the marker should be placed on the map.
 
@@ -176,12 +176,12 @@ As part of the callback *mapsed* typically passes the data for the place the eve
   <tr><td>canEdit</td><td>Flags this an <strong>editable</strong> place, i.e. when it's clicked on the map it has an <strong>edit</strong> button.</td></tr>
   <tr><td>lat</td><td>Latitude position of the place.</td></tr>
   <tr><td>lng</td><td>Longitude position of the place.</td></tr>
-  <tr><td>reference</td><td>Unique reference to a place in the Google Places database (this is provided by Google), see also <a href="#google-place">Google Place</a></td></tr>
+  <tr><td>place_id</td><td>Unique reference to a place in the Google Places database (this is provided by Google), see also <a href="#google-place">Google Place</a></td></tr>
   <tr><td>userData</td><td>
     Some unique identifier to link a marker on the map with a database entity (e.g. primary key).<br/>
     For <strong>new</strong> places this will be empty and should be populated by the <a href="#onsave">onSave callback</a>.<br/><br/>
 
-    <i>A place may have both the <strong>userData</strong> property and the <strong>reference</strong> property populated.  Typically this would be because you're using the <strong>userData</strong> field to lookup the <a href="#google-place"><strong>google place</strong></a> <strong>reference</strong> from your database.</i>
+    <i>A place may have both the <strong>userData</strong> property and the <strong>place_id</strong> property populated.  Typically this would be because you're using the <strong>userData</strong> field to lookup the <a href="#google-place"><strong>google place</strong></a> <strong>place_id</strong> from your database.</i>
     
   </td></tr>
   <tr>
@@ -196,7 +196,7 @@ As part of the callback *mapsed* typically passes the data for the place the eve
       Place is derived from <i>your</i> database, <u>not</u> Google.
     </td></tr>
     <tr><td><strong>google</strong></td><td>
-      Place is dervied from the Google Places API (has a <a href="#google-place">reference</a> property).
+      Place is dervied from the Google Places API (has a <a href="#google-place">place_id</a> property).
     </td></tr>
   </table>
   </td>

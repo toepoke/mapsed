@@ -39,10 +39,14 @@ function runExample1() {
 					"<br/>website: " + newPlace.website + 
 					"<br/>g+: " + newPlace.url
 				;
-				if (newPlace.markerType == "new")
+				if (newPlace.place_id) {
+					msg += "<br/>Place_id: " + details.place_id
+				}
+				if (newPlace.markerType == "new") {
 					title = "New place added!";
-				else
+				} else {
 					title = "Place saved!";
+				}
 				m.showMsg(title, msg);
 			}
 		
