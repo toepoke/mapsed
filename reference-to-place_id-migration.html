@@ -1,0 +1,89 @@
+<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=[YOUR-API-KEY]>"></script>
+</head>
+
+<body>
+	<div id="map"></div>
+	<p>
+		Google has <a href="https://developers.google.com/places/web-service/field-migration">depreciated the <strong>reference</strong> field</a>.
+	</p>
+	<p>
+		This is just a little helper script to help you convert your <strong>reference</strong> fields to the new <strong>place_id</strong> field.
+	</p>
+	<p>
+		You'll need to make a few changes to this script for it to work for you.
+	</p>
+	<ol>
+		<li>Change the <strong>[YOUR-API-KEY]</strong>with your own Google API key</li>
+		<li>Add the references you need to lookup in the array, see <strong>var referencesToMigrate</strong></li>
+		<li>If you're updating a database, look for <strong>var sqlTemplate</strong> and change the table and field references</li>
+	</ol>
+	<textarea id="converted" rows="50" cols="80"></textarea>
+	
+</body>
+
+<script>
+	var referencesToMigrate = [
+		"<your Google Places reference>"
+	];
+	var converted = [];
+	
+	function ready(fn) {
+		if (document.readyState != 'loading'){
+			fn();
+		} else {
+			document.addEventListener('DOMContentLoaded', fn);
+		}
+	}	
+	function showConverted() {
+		var sqlTemplate = "update <YOUR-TABLE> set <YOUR-REFERENCE-COLUMN> = '{NEW_REF}' where <YOUR-REFERENCE-COLUMN>> = '{OLD_REF}';\n" + String.fromCharCode(13);
+		var sql = "";
+		console.table(converted);
+		for (var i=0; i < converted.length; i++) {
+			var item = converted[i];
+			if (item.changed) {
+				sql += sqlTemplate.replace('{OLD_REF}', item.reference).replace('{NEW_REF}', item.place_id);
+			}
+		}
+		
+		document.getElementById("converted").innerText = sql;
+	}
+	
+	function doStuff() {
+		var map = new google.maps.Map(document.getElementById("map"));
+		var service = new google.maps.places.PlacesService(map);
+	
+		for (var i=0; i < referencesToMigrate.length; i++) {
+			// Keep within request limits ...
+			setTimeout(function() {
+				var refToMigrate = referencesToMigrate.pop();
+				var request = {
+					reference: refToMigrate
+				};
+				console.log("service.getDetails(request." + refToMigrate + ")");
+				service.getDetails(request, function(placeDetails, status) {
+					if (status === "OVER_QUERY_LIMIT") {
+						console.error("Query over limits");
+						return;
+					}
+					converted.push({
+						reference: refToMigrate, 
+						place_id: placeDetails.place_id,
+						changed: (refToMigrate !== placeDetails.place_id)
+					});
+					if (referencesToMigrate.length === 0) {
+						// list exhausted so show results
+						showConverted();
+					}
+				});
+			}, (i+1) * 1000);
+
+		} // for
+	} // doStuff
+
+	ready(doStuff);
+</script>
+
+</html>
