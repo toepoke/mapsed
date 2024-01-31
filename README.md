@@ -309,6 +309,8 @@ Google Places library (v3)
 The source code is knocked up to satisfy a need.  I'm not advertising it as best practice, but if you think it will benefit you, please feel free to use it.
 mapsed.js is released under a ''do what you like with it'' license :-)
 
+Read [how to work locally](Local-Development.md) to play around and maybe contribute.
+
 ## Change Log
 
 - **0.0.2 (Planned)**
