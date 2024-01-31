@@ -21,9 +21,9 @@
 
 	// singleton here (same variable across all instances of the plug-in)
 	var _version = '(0.5)',
-			_plugInName = "mapsed",
-			_plugInInstances = 1
-	;
+		_plugInName = "mapsed",
+		_plugInInstances = 1
+		;
 
 	$.fn.mapsed = function (options) {
 		// consts
@@ -33,28 +33,28 @@
 
 		// private plug-in variables
 		var _plugIn = this,           // Reference back to the "mapsed" plug-in instance
-				_searchBox = null,        // Search box that appears on the map 
-				_gmSearchBox = null,      // Google (autocompleting) Search box the underlying input text box is twinned with 
-				_searchBtn = null,        // Button to click to confirm search should be applied (not strictly needed (ENTER does the same), but users may be confused if there isn't one!)
-				_moreBtn = null,          // Available when more results are available for a result set (Google Places API pages the results)
-				_pageNum = 0,             // Keeps track of how many pages of results are shown (used to reset the markers on a new search)
-				_gMap = null,             // Underlying Google maps object for the div
-				_mapContainer = null,     // jQuery reference to the DIV the map is in
-				_placesApi = null,        // Reference to the Google Places API object
-				_markers = [],            // Set of markers displayed on the map
-				_instance = -1,           // Instance "this" plug-in is managing (so we can support zmultiple maps on the page)
-				_fullWin = false,         // Flags "mapsed" is in full-window mode, which means "mapsed" created the DIV we're in
-				_firstSearch = true,      // Used to ensure we don't clear markers when the map is drawn for the first time (so any "showOnLoad" markers aren't cleared)
-				_hasMapInitFired = false, // Used to flag initialisation of the map (after Google Maps API has finished drawing it)
-				_areBoundsSet = false,    // Used to flag that an event has set the boundary (so we don't set the zoom/center manually as GM will calc this for us)
-				_helpBtn = null,          // Reference to the help dialog button ([?])
-				_helpDlg = null,          // Reference to the help dialog that is toggled by the help button
-				_closeBtn = null,         // Reference to the close button (only used in full-window mode)
-				_addBtn = null,           // Reference to the add button ([+])
-				_geoBtn = null,           // Reference to the Geo location button [(*)]
-				gm = null,                // Short cut reference to the Google Maps namespace (this is initialised in the constructor to give the Google API time to load on the page)
-				gp = null                 // Short cut reference to the Google Places namespace (this is initialised in the constructor to give the Google API time to load on the page)
-		;
+			_searchBox = null,        // Search box that appears on the map 
+			_gmSearchBox = null,      // Google (autocompleting) Search box the underlying input text box is twinned with 
+			_searchBtn = null,        // Button to click to confirm search should be applied (not strictly needed (ENTER does the same), but users may be confused if there isn't one!)
+			_moreBtn = null,          // Available when more results are available for a result set (Google Places API pages the results)
+			_pageNum = 0,             // Keeps track of how many pages of results are shown (used to reset the markers on a new search)
+			_gMap = null,             // Underlying Google maps object for the div
+			_mapContainer = null,     // jQuery reference to the DIV the map is in
+			_placesApi = null,        // Reference to the Google Places API object
+			_markers = [],            // Set of markers displayed on the map
+			_instance = -1,           // Instance "this" plug-in is managing (so we can support zmultiple maps on the page)
+			_fullWin = false,         // Flags "mapsed" is in full-window mode, which means "mapsed" created the DIV we're in
+			_firstSearch = true,      // Used to ensure we don't clear markers when the map is drawn for the first time (so any "showOnLoad" markers aren't cleared)
+			_hasMapInitFired = false, // Used to flag initialisation of the map (after Google Maps API has finished drawing it)
+			_areBoundsSet = false,    // Used to flag that an event has set the boundary (so we don't set the zoom/center manually as GM will calc this for us)
+			_helpBtn = null,          // Reference to the help dialog button ([?])
+			_helpDlg = null,          // Reference to the help dialog that is toggled by the help button
+			_closeBtn = null,         // Reference to the close button (only used in full-window mode)
+			_addBtn = null,           // Reference to the add button ([+])
+			_geoBtn = null,           // Reference to the Geo location button [(*)]
+			gm = null,                // Short cut reference to the Google Maps namespace (this is initialised in the constructor to give the Google API time to load on the page)
+			gp = null                 // Short cut reference to the Google Places namespace (this is initialised in the constructor to give the Google API time to load on the page)
+			;
 
 		/// <summary>
 		/// Plug-in options:
@@ -237,8 +237,8 @@
 		/// </summary>
 		this.addMapControl = function (markUp, ctrlPos) {
 			var $control = null,
-					$html = null
-			;
+				$html = null
+				;
 
 			// create a jQuery object out of the markup
 			$html = $(markUp);
@@ -262,41 +262,41 @@
 		/// </summary>
 		this.disablePointsOfInterest = function () {
 			_gMap.styles =
-			[
-				{
-					featureType: "poi",
-					stylers: [
-						{ visibility: "off" }
-					]
-				}
-			];
+				[
+					{
+						featureType: "poi",
+						stylers: [
+							{ visibility: "off" }
+						]
+					}
+				];
 
 		},
 
 
-		/// <summary>
-		/// When in full-window mode, this will close the map 
-		/// and release resources.
-		/// </summary>
-		this.closeMap = function () {
-			// just kill the DIV container and Google object
-			_gMap = null;
+			/// <summary>
+			/// When in full-window mode, this will close the map 
+			/// and release resources.
+			/// </summary>
+			this.closeMap = function () {
+				// just kill the DIV container and Google object
+				_gMap = null;
 
-			// close help dialog (if displayed)
-			if (_helpDlg) {
-				_helpDlg.fadeOut();
-			}
+				// close help dialog (if displayed)
+				if (_helpDlg) {
+					_helpDlg.fadeOut();
+				}
 
-			// close if only available if we created the DIV and we're in full screen mode
-			// so kill off the DIV and remove
-			_mapContainer.fadeOut(function () {
-				$(this).remove();
-			});
+				// close if only available if we created the DIV and we're in full screen mode
+				// so kill off the DIV and remove
+				_mapContainer.fadeOut(function () {
+					$(this).remove();
+				});
 
-			// no longer in full window mode
-			_fullWin = false;
+				// no longer in full window mode
+				_fullWin = false;
 
-		} // closeMap
+			} // closeMap
 
 
 		/// <summary>
@@ -342,7 +342,7 @@
 		/// </summary>
 		this.setMapCentreByGeo = function () {
 			if (!navigator.geolocation)
-			// GEO location not supported
+				// GEO location not supported
 				return;
 
 			navigator.geolocation.getCurrentPosition(
@@ -560,7 +560,7 @@
 					.css("top", dialogTop)
 					.css("right", "1%")
 					.css("width", "20%")
-				;
+					;
 
 				if (settings.showHelpOnLoad && _helpBtn.click) {
 					_helpBtn.trigger("click");
@@ -698,9 +698,9 @@
 		/// </summary>
 		function buildMsg(title, msg, doConfirm, prompt, callback) {
 			var $modal = null,
-					html = "",
-					buttons = ""
-			;
+				html = "",
+				buttons = ""
+				;
 
 			// protect from undefined
 			title = title || "";
@@ -730,31 +730,31 @@
 
 			html =
 				"<div class='mapsed-modal'>" +
-					"<h3>" + title + "</h3>" +
-					"<div>" +
-						"<div class='mapsed-modal-message'>" +
-							msg +
-						"</div>" +
-						buttons +
-					"</div>" +
+				"<h3>" + title + "</h3>" +
+				"<div>" +
+				"<div class='mapsed-modal-message'>" +
+				msg +
+				"</div>" +
+				buttons +
+				"</div>" +
 				"</div>"
-			;
+				;
 
 			$modal = $(html).appendTo(_mapContainer);
 			$modal
 				.find("button")
-					.on("click", function () {
-						var $btn = $(this);
-						$modal.fadeOut();
-						if (!$btn.hasClass("cancel")) {
-							// only call the callback if we haven't cancelled
-							if (callback)
-								callback($btn);
-						}
-					})
-					.end()
+				.on("click", function () {
+					var $btn = $(this);
+					$modal.fadeOut();
+					if (!$btn.hasClass("cancel")) {
+						// only call the callback if we haven't cancelled
+						if (callback)
+							callback($btn);
+					}
+				})
+				.end()
 				.fadeIn()
-			;
+				;
 
 		} // buildMsg
 
@@ -870,9 +870,9 @@
 
 			// these are a little different as we want them block if they're available (they're a tags)
 			var $telNo = $vw.find(".mapsed-telNo"),
-					$ws = $vw.find(".mapsed-website"),
-					$url = $vw.find(".mapsed-url")
-			;
+				$ws = $vw.find(".mapsed-website"),
+				$url = $vw.find(".mapsed-url")
+				;
 			if (model.telNo && model.telNo.length > 0) {
 				$telNo.show().css("display", "block");
 			} else {
@@ -905,11 +905,11 @@
 				showSelect = settings.onSelect != null;
 				showSave = (settings.onSave != null && canEdit);
 				showDelete = (
-							settings.onDelete != null && canEdit
-				// can only delete markers we created!
-							&& model.markerType == "custom"
-						)
-				;
+					settings.onDelete != null && canEdit
+					// can only delete markers we created!
+					&& model.markerType == "custom"
+				)
+					;
 
 				$vw.find(".mapsed-select-button").toggle(showSelect);
 				$vw.find(".mapsed-edit-button").toggle(showSave);
@@ -955,13 +955,13 @@
 
 			_searchBox = $("#" + id);
 			if (_searchBox.length > 0)
-			// already added
+				// already added
 				return;
 
 			// create the "search" box and add to document (in body)
 			var so = settings.searchOptions,
-					html = "<input type='text' id='" + id + "' class='mapsed-searchbox' autocomplete='off' "
-			;
+				html = "<input type='text' id='" + id + "' class='mapsed-searchbox' autocomplete='off' "
+				;
 			html += "placeholder='";
 			if (so.enabled && so.placeholder)
 				html += so.placeholder;
@@ -1019,7 +1019,7 @@
 		/// </summary>
 		function addNewPlaceButton() {
 			if (_addBtn)
-			// already done
+				// already done
 				return;
 
 			_addBtn = createControlButton(
@@ -1038,14 +1038,14 @@
 		/// </summary>
 		function addCloseButton() {
 			if (_closeBtn)
-			// already done
+				// already done
 				return;
 
 			var onCloseEvent = function (evt) {
 				evt.preventDefault();
 
 				if (!_fullWin)
-				// already closed
+					// already closed
 					return;
 
 				var closeMap = true;
@@ -1084,7 +1084,7 @@
 		/// </summary>
 		function addGeoLocationButton() {
 			if (_geoBtn)
-			// already added
+				// already added
 				return;
 
 			var onClickEvent = function (evt) {
@@ -1107,7 +1107,7 @@
 		/// </summary>
 		function addHelpButton() {
 			if (_helpDlg)
-			// already done
+				// already done
 				return;
 
 			_helpBtn = createControlButton(
@@ -1146,10 +1146,10 @@
 		/// </summary>
 		function createControlButton(buttonText, ctrlPos, addClass, onClickEvent) {
 			var btn = null,
-					markUp = "",
-					classes = "",
-					tooltip = ""
-			;
+				markUp = "",
+				classes = "",
+				tooltip = ""
+				;
 
 			if (addClass && addClass.length > 0) {
 				classes = " class='" + addClass + "' ";
@@ -1169,7 +1169,7 @@
 				+ ">"
 				+ buttonText
 				+ "</button>"
-			;
+				;
 
 			btn = _plugIn.addMapControl(markUp, ctrlPos);
 
@@ -1295,14 +1295,14 @@
 
 			var item = $(
 				"<div id='mapsed-" + newId + "' class='mapsed-root'>" +
-					"<input type='hidden' class='mapsed-lat' value='" + forMarker.position.lat() + "' />" +
-					"<input type='hidden' class='mapsed-lng' value='" + forMarker.position.lng() + "' />" +
-					"<input type='hidden' class='mapsed-can-edit' value='" + d.canEdit + "' />" +
-					"<input type='hidden' class='mapsed-place-id' value='" + d.place_id + "' />" +
-					"<input type='hidden' class='mapsed-user-data' value='" + d.userData + "' />" +
-					"<input type='hidden' class='mapsed-marker-type' value='" + forMarker.markerType + "' />" +
-					getViewTemplate() +
-					getEditTemplate() +
+				"<input type='hidden' class='mapsed-lat' value='" + forMarker.position.lat() + "' />" +
+				"<input type='hidden' class='mapsed-lng' value='" + forMarker.position.lng() + "' />" +
+				"<input type='hidden' class='mapsed-can-edit' value='" + d.canEdit + "' />" +
+				"<input type='hidden' class='mapsed-place-id' value='" + d.place_id + "' />" +
+				"<input type='hidden' class='mapsed-user-data' value='" + d.userData + "' />" +
+				"<input type='hidden' class='mapsed-marker-type' value='" + forMarker.markerType + "' />" +
+				getViewTemplate() +
+				getEditTemplate() +
 				"</div>"
 			);
 
@@ -1379,41 +1379,41 @@
 			// tables!, yes I know, I know.  In my defence "proper" CSS 
 			// proved to be too unreliable when used with map tooltips!
 			var html =
-			    "<table class='mapsed-container mapsed-view'>"
-			  + "<tr>"
-			  + "<td colspan='3'>"
-			  + "<h1 class='mapsed-name' title='{NAME}'>{SHORT_NAME}</h1>"
-			  + "</td>"
-			  + "</tr>"
-			  + "<tr>"
-			  + "<td class='mapsed-left'>"
-			  + "<address>"
-			  + "<div class='mapsed-street'>{STREET}</div>"
-			  + "<div class='mapsed-town'>{TOWN}</div>"
-			  + "<div class='mapsed-area'>{AREA}</div>"
-			  + "<div class='mapsed-postCode'>{POSTCODE}</div>"
+				"<table class='mapsed-container mapsed-view'>"
+				+ "<tr>"
+				+ "<td colspan='3'>"
+				+ "<h1 class='mapsed-name' title='{NAME}'>{SHORT_NAME}</h1>"
+				+ "</td>"
+				+ "</tr>"
+				+ "<tr>"
+				+ "<td class='mapsed-left'>"
+				+ "<address>"
+				+ "<div class='mapsed-street'>{STREET}</div>"
+				+ "<div class='mapsed-town'>{TOWN}</div>"
+				+ "<div class='mapsed-area'>{AREA}</div>"
+				+ "<div class='mapsed-postCode'>{POSTCODE}</div>"
 				+ "<div class='mapsed-country'>{COUNTRY}</div>"
-			  + "</address>"
-			  + "<a class='mapsed-telNo' href='tel:{TELNO}'>{TELNO}</a>"
-			  + "<a class='mapsed-website' href='{WEBSITE}' title='{WEBSITE}'>website</a>"
-			  + "<a class='mapsed-url' href='{GPLUS}' title='{GPLUS}'>g+</a>"
-			  + "</td>"
-			  + "<td class='mapsed-photo'>"
-			  + "<a href='{GPLUS}'>{IMG src='{PHOTOURL}' /></a>"
-			  + "</td>"
-			  + "<td class='mapsed-add-info'>"
-			  + "{ADD_INFO}"
-			  + "</td>"
-			  + "</tr>"
-			  + "<tr class='mapsed-buttons'>"
-			  + "<td colspan='3'>"
-			  + "<button class='mapsed-select-button'>" + settings.ActionButtons.Select + "</button>"
-			  + "<button class='mapsed-edit-button'>" + settings.ActionButtons.Edit + "</button>"
-			  + "<button class='mapsed-delete-button'>" + settings.ActionButtons.Delete + "</button>"
-			  + "</td>"
-			  + "</tr>"
-			  + "</table>"
-			;
+				+ "</address>"
+				+ "<a class='mapsed-telNo' href='tel:{TELNO}'>{TELNO}</a>"
+				+ "<a class='mapsed-website' href='{WEBSITE}' title='{WEBSITE}'>website</a>"
+				+ "<a class='mapsed-url' href='{GPLUS}' title='{GPLUS}'>g+</a>"
+				+ "</td>"
+				+ "<td class='mapsed-photo'>"
+				+ "<a href='{GPLUS}'>{IMG src='{PHOTOURL}' /></a>"
+				+ "</td>"
+				+ "<td class='mapsed-add-info'>"
+				+ "{ADD_INFO}"
+				+ "</td>"
+				+ "</tr>"
+				+ "<tr class='mapsed-buttons'>"
+				+ "<td colspan='3'>"
+				+ "<button class='mapsed-select-button'>" + settings.ActionButtons.Select + "</button>"
+				+ "<button class='mapsed-edit-button'>" + settings.ActionButtons.Edit + "</button>"
+				+ "<button class='mapsed-delete-button'>" + settings.ActionButtons.Delete + "</button>"
+				+ "</td>"
+				+ "</tr>"
+				+ "</table>"
+				;
 
 			return html;
 
@@ -1425,7 +1425,7 @@
 		/// </summary>
 		function getEditTemplate() {
 			var html =
-				 "<div class='mapsed-container mapsed-address-entry mapsed-edit'>"
+				"<div class='mapsed-container mapsed-address-entry mapsed-edit'>"
 				+ "<h1>Place details:</h1>"
 				+ "<ul>"
 				+ "<li>"
@@ -1476,11 +1476,11 @@
 				+ "</ul>"
 				+ "<div class='mapsed-buttons'>"
 				+ "<button class='mapsed-save-button'>" + settings.ActionButtons.Save + "</button>"
-			// placeholder for error messages
+				// placeholder for error messages
 				+ "<span class='mapsed-error'>&nbsp;</span>"
 				+ "</div>"
 				+ "</div>"  // mapsed-address-entry
-			;
+				;
 
 			return html;
 
@@ -1563,8 +1563,8 @@
 		/// </summary>
 		function addInitialPlaces() {
 			var placeDetails = [],
-					bounds = new gm.LatLngBounds()
-			;
+				bounds = new gm.LatLngBounds()
+				;
 
 			clearMarkers();
 
@@ -1579,9 +1579,9 @@
 
 			for (var i = 0; i < places.length; i++) {
 				var p = places[i],
-						pos = new gm.LatLng(p.lat, p.lng),
-						markerType = ""
-				;
+					pos = new gm.LatLng(p.lat, p.lng),
+					markerType = ""
+					;
 
 				if (p.place_id && p.place_id.length > 0) {
 					// we'll get the details from Google
@@ -1618,6 +1618,11 @@
 			var location = null;
 			var re = /(\-?\d+(\.\d+)?),\s*(\-?\d+(\.\d+)?)/gi; 	// regex for lat/lng co-ords
 			var query = searchFor;
+
+			if (!searchFor || searchFor == "") {
+				_plugIn.showMsg("Search", "No search criteria has been entered");
+				return;
+			}
 
 			// ensure the search box reflects what's been search for
 			_searchBox.val(searchFor);
@@ -1669,10 +1674,10 @@
 			}
 
 			var town = findPart(ac, "locality"),
-					area = findPart(ac, "administrative_area_level_1"),
-					postCode = findPart(ac, "postal_code"),
-					country = findPart(ac, "country")
-			;
+				area = findPart(ac, "administrative_area_level_1"),
+				postCode = findPart(ac, "postal_code"),
+				country = findPart(ac, "country")
+				;
 
 			details.street = street;
 			details.town = town;
@@ -1714,15 +1719,15 @@
 		/// </summary>
 		function findPart(addressParts, typeName, getShortVersion) {
 			if (addressParts == null || addressParts.length == 0)
-			// address not available
+				// address not available
 				return "";
 
 			var value = "";
 
 			for (var i = 0; i < addressParts.length; i++) {
 				var item = addressParts[i],
-						found = false
-				;
+					found = false
+					;
 
 				for (var j = 0; j < item.types.length; j++) {
 					var addrType = item.types[j];
@@ -1809,7 +1814,7 @@
 							var msg = "<strong>" + model.name + "</strong> will be deleted."
 							_plugIn.confirmMsg("Confirm Delete", msg,
 								"Are you sure?",
-							// callback only fired if "Yes" is selected
+								// callback only fired if "Yes" is selected
 								function () {
 									onPlaceDelete(element);
 								}
@@ -1850,7 +1855,7 @@
 				// tiles_loaded event is still too early to initialise the map
 				// so give it another second to finish up before we initialise ourselves
 				if (_hasMapInitFired)
-				// already wired up
+					// already wired up
 					return;
 
 				gmMapLoaded();
@@ -1891,8 +1896,8 @@
 		// Full screen entry point
 		if (!this.length) {
 			var mapId = "mapsed-full-window",
-					_mapContainer = $("#" + mapId)	// see if we've already added one
-			;
+				_mapContainer = $("#" + mapId)	// see if we've already added one
+				;
 			if (!_mapContainer.length) {
 				_mapContainer = $("<div id='mapsed-full-window' class='mapsed-full-window'></div>");
 				_mapContainer.appendTo("body");
