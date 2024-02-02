@@ -23,7 +23,7 @@
 	var _version = '(0.5)',
 		_plugInName = "mapsed",
 		_plugInInstances = 1
-		;
+	;
 
 	$.fn.mapsed = function (options) {
 		// consts
