@@ -619,11 +619,12 @@
 				_moreBtn[0].disabled = !pagination.hasNextPage;
 
 				if (pagination.hasNextPage) {
-					gm.event.addDomListenerOnce(_moreBtn[0], "click", function () {
-						event.preventDefault();
-
+f					_moreBtn[0].addEventListener("click", function() {
 						_pageNum++;
 						pagination.nextPage();
+						return false;
+					}, {
+						once: true
 					});
 				}
 			}
