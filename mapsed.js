@@ -619,7 +619,7 @@
 				_moreBtn[0].disabled = !pagination.hasNextPage;
 
 				if (pagination.hasNextPage) {
-f					_moreBtn[0].addEventListener("click", function() {
+					_moreBtn[0].addEventListener("click", function() {
 						_pageNum++;
 						pagination.nextPage();
 						return false;
