@@ -140,7 +140,7 @@
 		font-weight: 300;
 		text-overflow: ellipsis;
 
-		height: 32px;
+		height: 40px;
 		border: 1px solid #fff;
 		outline: none;
 		border-radius: 2px 0 0 2px;
@@ -233,7 +233,7 @@ button.mapsed-search-button, button.mapsed-more-button {
 
 button.mapsed-search-button, button.mapsed-more-button {
 	/* search button is a little bit different to the other button controls */
-	padding: 7px 20px;
+	padding: 11px 20px;
 	font-size: 15px;
 	line-height: 1.3;
 }
@@ -380,14 +380,14 @@ button.mapsed-geo-button {
 	
 }
 input.mapsed-searchbox {
-	left: 120px !important;
+	left: 190px !important;
 	width: 440px !important;
 }
 button.mapsed-search-button {
-	left: 570px !important;
+	left: 640px !important;
 }
 button.mapsed-more-button {
-	left: 635px !important;
+	left: 710px !important;
 }
 .mapsed-control-button {
 	top: 5px !important;
