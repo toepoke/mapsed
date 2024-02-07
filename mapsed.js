@@ -99,7 +99,11 @@
 				center: DEFAULT_CENTER,
 
 				// Type of map to show initially
-				mapTypeId: google.maps.MapTypeId.ROADMAP
+				mapTypeId: google.maps.MapTypeId.ROADMAP,
+
+				// Mapsed has facilities for handling full-screen mode
+				// ... turn off Google's so we have better control of the UI
+				fullscreenControl: false,
 			},
 
 			// Flags whether Google Maps should still display other points-of-interest
