@@ -300,14 +300,13 @@ function fullWindowExample(e) {
 			    onThemeChange($(this), mapsed);
 			});
 			
-			
 			// add warning about problems with POI being turn off with custom maps
 			html = 
-				"<div>" + 
+				"<div class='mapsed-poi-message'>" + 
 					"<p>Please note that POI cannot be turned off when using styled maps.</p>" + 
 				"</div>"
 			;
-			mapsed.addMapControl(html, google.maps.ControlPosition.BOTTOM_LEFT);
+			mapsed.addMapControl(html, google.maps.ControlPosition.RIGHT_CENTRE);
 		},
 		
 		// Fired once the map has completed loading
