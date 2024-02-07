@@ -306,7 +306,7 @@ function fullWindowExample(e) {
 					"<p>Please note that POI cannot be turned off when using styled maps.</p>" + 
 				"</div>"
 			;
-			mapsed.addMapControl(html, google.maps.ControlPosition.RIGHT_CENTRE);
+			mapsed.addMapControl(html, google.maps.ControlPosition.RIGHT_CENTER);
 		},
 		
 		// Fired once the map has completed loading
