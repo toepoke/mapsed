@@ -30,6 +30,7 @@
 		// - Centre of the UK (ish ...)
 		var DEFAULT_CENTER = new google.maps.LatLng(53.175148, -1.423908);
 		var DEFAULT_ZOOM = 10;
+		var MAPSED_CONTROLS_POSITION = google.maps.ControlPosition.LEFT_CENTER;
 
 		// private plug-in variables
 		var _plugIn = this,           // Reference back to the "mapsed" plug-in instance
@@ -1029,7 +1030,7 @@
 
 			_addBtn = createControlButton(
 				settings.ToolbarButtons.AddPlace,
-				gm.ControlPosition.TOP_RIGHT,
+				MAPSED_CONTROLS_POSITION,
 				"mapsed-add-button mapsed-control-button",
 				onPlaceAdd
 			);
@@ -1069,7 +1070,7 @@
 
 			_closeBtn = createControlButton(
 				settings.ToolbarButtons.CloseMap,
-				gm.ControlPosition.TOP_RIGHT,
+				MAPSED_CONTROLS_POSITION,
 				"mapsed-close-button mapsed-control-button",
 				onCloseEvent
 			);
@@ -1098,7 +1099,7 @@
 
 			_geoBtn = createControlButton(
 				settings.ToolbarButtons.Geo,
-				gm.ControlPosition.TOP_RIGHT,
+				MAPSED_CONTROLS_POSITION,
 				"mapsed-geo-button mapsed-control-button",
 				onClickEvent
 			);
@@ -1117,7 +1118,7 @@
 
 			_helpBtn = createControlButton(
 				settings.ToolbarButtons.Help,
-				gm.ControlPosition.TOP_RIGHT,
+				MAPSED_CONTROLS_POSITION,
 				"mapsed-help-button mapsed-control-button",
 				function (evt) {
 					evt.preventDefault();
