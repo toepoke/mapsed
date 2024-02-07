@@ -1065,7 +1065,7 @@
 					_plugIn.closeMap();
 				}
 				// else 
-				// nothing to do, leave map in place as it was					
+				// nothing to do, leave map in place as it was
 			};
 
 			_closeBtn = createControlButton(
