@@ -324,12 +324,10 @@ button.mapsed-delete-button {
 	
 	/* modal message support */
 	.mapsed-modal {
-		position: fixed;
-		top: 25%;
-		left: 25%;
-		width: 50%;
-		max-width: 630px;
-		min-width: 320px;
+		position: absolute;
+		top: 20%;
+		left: 20%;
+		width: 60%;
 		z-index: 2000;
 		height: auto;
 		font-family: "Calibri", "Arial";
@@ -495,6 +493,11 @@ button.mapsed-more-button {
 			font-size: 20px !important;
 		}
 
+		.mapsed-modal {
+			top: 20%;
+			left: 15%;
+			width: 70%;
+		}
 
 	}
 
