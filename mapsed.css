@@ -282,7 +282,6 @@ button.mapsed-delete-button {
 */
 	.mapsed-help {
 		margin: 0;
-		right: 10px;
 		padding: 5px;
 		background: #fff;
 		border: solid 1px #ddd;
@@ -291,6 +290,13 @@ button.mapsed-delete-button {
 		min-width: 250px;
 		color: #000;
 		cursor: pointer;
+	}
+	.mapsed-help {
+		position: absolute;
+		z-index: 999;
+		top: 20%;
+		left: 20%;
+		width: 60%;
 	}
 
 	.mapsed-help  h3 {
@@ -473,18 +479,20 @@ button.mapsed-more-button {
 		}
 
 		.mapsed-help {
-			width: 50% !important;
-			right: 10% !important;
+			top: 20%;
+			left: 15%;
+			width: 70%;
 		}
+
 		.mapsed-help li {
-			margin-left: 10px !important;
+			margin-left: 1% !important;
 		}
 		.mapsed-help p, .mapsed-help li {
-			font-size: 20px !important;
+			font-size: 15px !important;
 			line-height: 1.2;
 		}
 		.mapsed-help h3 {
-			font-size: 30px !important;
+			font-size: 20px !important;
 		}
 
 

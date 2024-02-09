@@ -605,22 +605,6 @@
 				// note _helpBtn is the container, not the link inside the container
 				var btnContainer = _helpBtn;
 
-				// work out where the top-left of the dialog should be placed
-				var dialogLeft = btnContainer.position().left;
-				dialogLeft += (btnContainer.width() / 2);
-				dialogLeft -= (_helpDlg.width() / 2);
-
-				var dialogTop = btnContainer.position().top;
-				dialogTop += btnContainer.height() * 2;
-
-				_helpDlg
-					.css("z-index", 999)
-					.css("position", "absolute")
-					.css("top", dialogTop)
-					.css("right", "1%")
-					.css("width", "20%")
-					;
-
 				if (settings.showHelpOnLoad && _helpBtn.click) {
 					_helpBtn.trigger("click");
 				}
