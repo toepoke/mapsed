@@ -36,29 +36,29 @@
 
 		// private plug-in variables
 		var _plugIn = this,           // Reference back to the "mapsed" plug-in instance
-			_searchBox = null,        // Search box that appears on the map 
-			_gmSearchBox = null,      // Google (autocompleting) Search box the underlying input text box is twinned with 
-			_searchBtn = null,        // Button to click to confirm search should be applied (not strictly needed (ENTER does the same), but users may be confused if there isn't one!)
-			_moreBtn = null,          // Available when more results are available for a result set (Google Places API pages the results)
-			_pageNum = 0,             // Keeps track of how many pages of results are shown (used to reset the markers on a new search)
-			_gMap = null,             // Underlying Google maps object for the div
-			_mapContainer = null,     // jQuery reference to the DIV the map is in
-			_placesApi = null,        // Reference to the Google Places API object
-			_markers = [],            // Set of markers displayed on the map
-			_instance = -1,           // Instance "this" plug-in is managing (so we can support zmultiple maps on the page)
-			_fullWin = false,         // Flags "mapsed" is in full-window mode, which means "mapsed" created the DIV we're in
-			_firstSearch = true,      // Used to ensure we don't clear markers when the map is drawn for the first time (so any "showOnLoad" markers aren't cleared)
-			_hasMapInitFired = false, // Used to flag initialisation of the map (after Google Maps API has finished drawing it)
-			_areBoundsSet = false,    // Used to flag that an event has set the boundary (so we don't set the zoom/center manually as GM will calc this for us)
-			_helpBtn = null,          // Reference to the help dialog button ([?])
-			_helpDlg = null,          // Reference to the help dialog that is toggled by the help button
-			_closeBtn = null,         // Reference to the close button (only used in full-window mode)
-			_addBtn = null,           // Reference to the add button ([+])
-			_geoBtn = null,           // Reference to the Geo location button [(*)]
+			_searchBox = null,          // Search box that appears on the map 
+			_gmSearchBox = null,        // Google (autocompleting) Search box the underlying input text box is twinned with 
+			_searchBtn = null,          // Button to click to confirm search should be applied (not strictly needed (ENTER does the same), but users may be confused if there isn't one!)
+			_moreBtn = null,            // Available when more results are available for a result set (Google Places API pages the results)
+			_pageNum = 0,               // Keeps track of how many pages of results are shown (used to reset the markers on a new search)
+			_gMap = null,               // Underlying Google maps object for the div
+			_mapContainer = null,       // jQuery reference to the DIV the map is in
+			_placesApi = null,          // Reference to the Google Places API object
+			_markers = [],              // Set of markers displayed on the map
+			_instance = -1,             // Instance "this" plug-in is managing (so we can support zmultiple maps on the page)
+			_fullWin = false,           // Flags "mapsed" is in full-window mode, which means "mapsed" created the DIV we're in
+			_firstSearch = true,        // Used to ensure we don't clear markers when the map is drawn for the first time (so any "showOnLoad" markers aren't cleared)
+			_hasMapInitFired = false,   // Used to flag initialisation of the map (after Google Maps API has finished drawing it)
+			_areBoundsSet = false,      // Used to flag that an event has set the boundary (so we don't set the zoom/center manually as GM will calc this for us)
+			_helpBtn = null,            // Reference to the help dialog button ([?])
+			_helpDlg = null,            // Reference to the help dialog that is toggled by the help button
+			_closeBtn = null,           // Reference to the close button (only used in full-window mode)
+			_addBtn = null,             // Reference to the add button ([+])
+			_geoBtn = null,             // Reference to the Geo location button [(*)]
 			_toolbarContainer = null,   // Container for mapsed tools (add, geo, help, etc)
 			_searchBarContainer = null, // Container for search control, button & more
-			gm = null,                // Short cut reference to the Google Maps namespace (this is initialised in the constructor to give the Google API time to load on the page)
-			gp = null                 // Short cut reference to the Google Places namespace (this is initialised in the constructor to give the Google API time to load on the page)
+			gm = null,                  // Short cut reference to the Google Maps namespace (this is initialised in the constructor to give the Google API time to load on the page)
+			gp = null                   // Short cut reference to the Google Places namespace (this is initialised in the constructor to give the Google API time to load on the page)
 			;
 
 		/// <summary>
