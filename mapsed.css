@@ -42,10 +42,18 @@
 	}
 
 
-	/* container for address details, phone, etc */
-	.mapsed-left {
-		vertical-align: top;
-	}
+.mapsed-toolbar-container {
+	display: flex;
+	flex-direction: column;
+
+	margin-left: 0.5rem;
+}
+.mapsed-searchbar-container {
+	margin-left: 0.5rem;
+	margin-top: 0.5rem;
+}
+
+/* container for address details, phone, etc */
 
 		.mapsed-left address {
 			font-size: small;

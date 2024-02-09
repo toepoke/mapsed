@@ -30,7 +30,9 @@
 		// - Centre of the UK (ish ...)
 		var DEFAULT_CENTER = new google.maps.LatLng(53.175148, -1.423908);
 		var DEFAULT_ZOOM = 10;
-		var MAPSED_CONTROLS_POSITION = google.maps.ControlPosition.LEFT_CENTER;
+		// For positioning options, see https://developers.google.com/maps/documentation/javascript/reference/control#ControlPosition
+		var MAPSED_CONTROLBAR_POSITION = google.maps.ControlPosition.LEFT_CENTER;
+		var MAPSED_SEARCH_CONTROLBAR_POSITION = google.maps.ControlPosition.LEFT_TOP;
 
 		// private plug-in variables
 		var _plugIn = this,           // Reference back to the "mapsed" plug-in instance
@@ -53,6 +55,8 @@
 			_closeBtn = null,         // Reference to the close button (only used in full-window mode)
 			_addBtn = null,           // Reference to the add button ([+])
 			_geoBtn = null,           // Reference to the Geo location button [(*)]
+			_toolbarContainer = null,   // Container for mapsed tools (add, geo, help, etc)
+			_searchBarContainer = null, // Container for search control, button & more
 			gm = null,                // Short cut reference to the Google Maps namespace (this is initialised in the constructor to give the Google API time to load on the page)
 			gp = null                 // Short cut reference to the Google Places namespace (this is initialised in the constructor to give the Google API time to load on the page)
 			;
@@ -234,29 +238,34 @@
 
 
 		/// <summary>
-		/// Helper method to make it a bit easier to add your own controls onto
-		/// the map.
-		/// markUp - HTML for the control (just HTML, no jQuery or anything, ID is _not_ required)
+		/// Helper method to make it a bit easier to add your own container onto the map.
+		/// This can contain multiple "controls" (HTML elements).
+		/// markUp - HTML for the control (just HTML, no jQuery or anything, ID is _not_ required) - typically just a generic DIV
 		/// ctrlPos - Where on the map the control should be added, available options details here:
 		///           https://developers.google.com/maps/documentation/javascript/controls#ControlPositioning
 		/// </summary>
-		this.addMapControl = function (markUp, ctrlPos) {
-			var $control = null,
+		/// <remarks>
+		/// Turns out adding a generic DIV to the map is the "right" way to do it, see:
+		/// https://developers.google.com/maps/documentation/javascript/controls#CustomControls
+		/// </remarks>
+		this.addMapContainer = function (markUp, ctrlPos) {
+			var $container = null,
 				$html = null
-				;
+			;
 
 			// create a jQuery object out of the markup
 			$html = $(markUp);
 
 			// add control into the DOM 
 			// ... (as part of the map container as the control is "owned" by the map)
-			$control = $html.appendTo(_mapContainer);
+			$container = $html.appendTo(_mapContainer);
 
 			// tell Google Maps where to place it
-			_gMap.controls[ctrlPos].push($control[0]);
+			_gMap.controls[ctrlPos].push($container[0]);
 
 			// and return the create control so the events can be wired up
-			return $control;
+			// ... (note we return the HTML element, not the jQuery object)
+			return $container[0];
 		};
 
 
@@ -977,6 +986,7 @@
 			if (so.enabled && so.initSearch && so.initSearch.length > 0)
 				html += " value='" + so.initSearch + "'";
 			html += " />";
+			_searchBarContainer.appendChild(_searchBox);
 
 			_searchBox = $(html).appendTo(_mapContainer);
 
@@ -1003,7 +1013,7 @@
 					evt.preventDefault();
 					var searchFor = _searchBox.val();
 					doSearch(searchFor);
-				}
+			_searchBarContainer.appendChild(_searchBtn);
 			);
 
 			// For handling additional results, note there is not event handlers as this is]
@@ -1012,7 +1022,7 @@
 				settings.ToolbarButtons.More,
 				gm.ControlPosition.TOP_LEFT,
 				"mapsed-more-button mapsed-control-button",
-				null
+			_searchBarContainer.appendChild(_moreBtn);
 			);
 			// Should be disabled to start with
 			_moreBtn[0].disabled = true;
@@ -1030,10 +1040,10 @@
 
 			_addBtn = createControlButton(
 				settings.ToolbarButtons.AddPlace,
-				MAPSED_CONTROLS_POSITION,
-				"mapsed-add-button mapsed-control-button",
+				"mapsed-add-button, mapsed-control-button, mapsed-toolbar-button",
 				onPlaceAdd
 			);
+			_toolbarContainer.appendChild(_addBtn);
 
 		} // addNewPlaceButton
 
@@ -1070,10 +1080,11 @@
 
 			_closeBtn = createControlButton(
 				settings.ToolbarButtons.CloseMap,
-				MAPSED_CONTROLS_POSITION,
-				"mapsed-close-button mapsed-control-button",
+				"mapsed-close-button, mapsed-control-button, mapsed-toolbar-button",
 				onCloseEvent
 			);
+			_toolbarContainer.appendChild(_closeBtn);
+
 			// With lightbox type functionality, it's traditional to let the ESCape key close it too
 			$("body").on("keyup", function (evt) {
 				evt.preventDefault();
@@ -1099,10 +1110,10 @@
 
 			_geoBtn = createControlButton(
 				settings.ToolbarButtons.Geo,
-				MAPSED_CONTROLS_POSITION,
-				"mapsed-geo-button mapsed-control-button",
+				"mapsed-geo-button, mapsed-control-button, mapsed-toolbar-button",
 				onClickEvent
 			);
+			_toolbarContainer.appendChild(_geoBtn);
 
 		} // addGeoLocationButton
 
@@ -1118,8 +1129,7 @@
 
 			_helpBtn = createControlButton(
 				settings.ToolbarButtons.Help,
-				MAPSED_CONTROLS_POSITION,
-				"mapsed-help-button mapsed-control-button",
+				"mapsed-help-button, mapsed-control-button, mapsed-toolbar-button",
 				function (evt) {
 					evt.preventDefault();
 
@@ -1128,6 +1138,7 @@
 					_helpBtn.toggleClass("open");
 				}
 			);
+			_toolbarContainer.appendChild(_helpBtn);
 
 			var helpHtml = settings.getHelpWindow();
 			_helpDlg = $(helpHtml).appendTo(_mapContainer).click(function () {
@@ -1184,6 +1195,7 @@
 				// wire up the click event handler
 				btn.on("click", onClickEvent);
 			}
+			_toolbarContainer.appendChild(btn);
 
 			return btn;
 
@@ -1832,6 +1844,14 @@
 				);
 			}
 
+			// add toolbar
+			var toolbarContainerHtml =
+"<div id='mapsed-toolbar' class='mapsed-toolbar-container'></div>";
+			_toolbarContainer = _plugIn.addMapContainer(toolbarContainerHtml, MAPSED_CONTROLBAR_POSITION);
+
+			var searchBarContainerHtml =
+"<div id='mapsed-searchbar-container' class='mapsed-searchbar-container'></div>";
+			_searchBarContainer = _plugIn.addMapContainer(searchBarContainerHtml, MAPSED_SEARCH_CONTROLBAR_POSITION);
 
 			// position geo before the search bar (works better me thinks)
 			if (settings.allowGeo) {
