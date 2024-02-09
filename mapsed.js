@@ -388,6 +388,51 @@
 		}
 
 
+		/**
+		 * Helper to create a button element (used for toolbar buttons, search, etc)
+		 * @param {any} text - Text of the button, can have tooltip embedded, e.g. "Go|This is the go button"
+		 * @param {any} classNames - CSV of classes to add
+		 * @param {any} onClickHandler - Button "Click" handler
+		 * @param {any} type - Element type, defaults to "BUTTON"
+		 * @returns Created element.
+		 */
+		function createButton(text, classNames, onClickHandler, type = "BUTTON") {
+			var buttonText = text,
+			    tooltip = ""
+			;
+			var btn = document.createElement(type);
+
+			// We allow the use the pipe symbol to associate a tooltip
+			if (text && text.indexOf("|") > 0) {
+				var splitter = text.split('|');
+				buttonText = splitter[0];
+				tooltip = splitter[1];
+			}
+			btn.innerHTML = buttonText;
+
+			if (tooltip && tooltip.length > 0) {
+				btn.setAttribute("title", tooltip);
+			}
+
+			if (onClickHandler && typeof onClickHandler === "function") {
+				btn.addEventListener("click", onClickHandler);
+			}
+
+			if (classNames) {
+				if (classNames.indexOf(",") > 0) {
+					// multiple classes to add (can't have any delimiting spaces though)
+					classNames = classNames.replaceAll(" ", "");
+					var classes = classNames.split(",");
+					btn.classList.add(...classes);
+				} else {
+					btn.className = classNames;
+				}
+			}
+
+			return btn;
+		}
+
+
 		//
 		// MAPSED EVENT HANDLERS
 		// - Handlers for mapsed events.  Typically these will issue
@@ -630,10 +675,10 @@
 			} // for
 
 			if (pagination) {
-				_moreBtn[0].disabled = !pagination.hasNextPage;
+				_moreBtn.disabled = !pagination.hasNextPage;
 
 				if (pagination.hasNextPage) {
-					_moreBtn[0].addEventListener("click", function() {
+					_moreBtn.addEventListener("click", function() {
 						_pageNum++;
 						pagination.nextPage();
 						return false;
@@ -968,14 +1013,13 @@
 		function addSearch() {
 			var id = "mapsed-search-box-" + _instance;
 
-			_searchBox = $("#" + id);
-			if (_searchBox.length > 0)
+			if (_searchBox) {
 				// already added
 				return;
 
 			// create the "search" box and add to document (in body)
-			var so = settings.searchOptions,
-				html = "<input type='text' id='" + id + "' class='mapsed-searchbox' autocomplete='off' "
+			var so = settings.searchOptions;
+			//	html = "<input type='text' id='" + id + "' class='mapsed-searchbox' autocomplete='off' "
 				;
 			html += "placeholder='";
 			if (so.enabled && so.placeholder)
@@ -986,6 +1030,18 @@
 			if (so.enabled && so.initSearch && so.initSearch.length > 0)
 				html += " value='" + so.initSearch + "'";
 			html += " />";
+			_searchBox = document.createElement("INPUT");
+			_searchBox.type = "SEARCH";
+			_searchBox.classList.add("mapsed-searchbox");
+			_searchBox.setAttribute("autocomplete", "off");
+			if (so.enabled && so.placeholder) {
+				_searchBox.ariaPlaceholder = so.placeholder;
+			} else {
+				_searchBox.ariaPlaceholder = "Search ...";
+			}
+			if (so.enabled && so.initSearch && so.initSearch.length > 0) {
+				_searchBox.value = so.initSearch;
+			}
 			_searchBarContainer.appendChild(_searchBox);
 
 			_searchBox = $(html).appendTo(_mapContainer);
@@ -999,33 +1055,31 @@
 			// and wire up the callback when a user selects a hit
 			gm.event.addListener(_gmSearchBox, "places_changed",
 				function () {
-					var searchFor = _searchBox.val();
+					var searchFor = _searchBox.value;
 					doSearch(searchFor);
 				}
 			);
 			// and again for when they zoom in/out
 			gm.event.addListener(_gMap, "bounds_changed", gmBoundsChanged);
 
-			_searchBtn = createControlButton(
-				settings.ToolbarButtons.Go, gm.ControlPosition.TOP_LEFT,
-				"mapsed-search-button mapsed-control-button",
-				function (evt) {
-					evt.preventDefault();
-					var searchFor = _searchBox.val();
-					doSearch(searchFor);
+
+			// add search button
+			_searchBtn = createButton("Go", "mapsed-search-button, mapsed-control-button", function (evt) {
+				evt.preventDefault();
+				var searchFor = _searchBox.value;
+				doSearch(searchFor);
+			});
 			_searchBarContainer.appendChild(_searchBtn);
 			);
 
-			// For handling additional results, note there is not event handlers as this is]
+			// For handling additional results, note there is no event handlers as this is
 			// ... driven from the first set of search results we get back from Google
-			_moreBtn = createControlButton(
-				settings.ToolbarButtons.More,
-				gm.ControlPosition.TOP_LEFT,
-				"mapsed-more-button mapsed-control-button",
+			// add "more" button
+			_moreBtn = createButton("More", "mapsed-more-button, mapsed-control-button");
+			// Start disabled
+			// ... (only comes into effect if there are multiple results following a search)
+			_moreBtn.disabled = true;
 			_searchBarContainer.appendChild(_moreBtn);
-			);
-			// Should be disabled to start with
-			_moreBtn[0].disabled = true;
 		} // addSearch
 
 
@@ -1038,7 +1092,7 @@
 				// already done
 				return;
 
-			_addBtn = createControlButton(
+			_addBtn = createButton(
 				settings.ToolbarButtons.AddPlace,
 				"mapsed-add-button, mapsed-control-button, mapsed-toolbar-button",
 				onPlaceAdd
@@ -1078,7 +1132,7 @@
 				// nothing to do, leave map in place as it was
 			};
 
-			_closeBtn = createControlButton(
+			_closeBtn = createButton(
 				settings.ToolbarButtons.CloseMap,
 				"mapsed-close-button, mapsed-control-button, mapsed-toolbar-button",
 				onCloseEvent
@@ -1108,7 +1162,7 @@
 				_plugIn.setMapCentreByGeo();
 			};
 
-			_geoBtn = createControlButton(
+			_geoBtn = createButton(
 				settings.ToolbarButtons.Geo,
 				"mapsed-geo-button, mapsed-control-button, mapsed-toolbar-button",
 				onClickEvent
@@ -1127,7 +1181,7 @@
 				// already done
 				return;
 
-			_helpBtn = createControlButton(
+			_helpBtn = createButton(
 				settings.ToolbarButtons.Help,
 				"mapsed-help-button, mapsed-control-button, mapsed-toolbar-button",
 				function (evt) {
@@ -1152,7 +1206,7 @@
 
 		/// <summary>
 		/// Convenience function for creating control buttons on the map (re-uses
-		/// the public "addMapControl" method.  This is just a short-cut for buttons
+		/// the public "addMapContainer" method.  This is just a short-cut for buttons
 		/// buttonText: Text to appear in the button
 		///             You can also add a tooltip by prefixing it with a pipe, e.g. "Go|Perform a search" will give
 		///             a tooltip of "Perform a search"
@@ -1161,12 +1215,12 @@
 		/// addClass: Additional classes to add to the button (to target CSS)
 		/// onClickEvent: Callback to execute when the button is clicked
 		/// </summary>
-		function createControlButton(buttonText, ctrlPos, addClass, onClickEvent) {
+		function addToolBarButton(buttonText, ctrlPos, addClass, onClickEvent) {
 			var btn = null,
 				markUp = "",
 				classes = "",
 				tooltip = ""
-				;
+			;
 
 			if (addClass && addClass.length > 0) {
 				classes = " class='" + addClass + "' ";
@@ -1176,30 +1230,22 @@
 			if (buttonText && buttonText.length > 0) {
 				var arrSplit = buttonText.split("|");
 				buttonText = arrSplit[0];
-				tooltip = (arrSplit.length > 1 ? " title='" + arrSplit[1] + "'" : "");
+				tooltip = arrSplit[1];
 			}
 
-			var markUp =
-				"<button "
-				+ classes
-				+ tooltip
-				+ ">"
-				+ buttonText
-				+ "</button>"
-				;
-
-			btn = _plugIn.addMapControl(markUp, ctrlPos);
-
-			// and wire up the onclick event handler
+			var btn = document.createElement("BUTTON");
+			var classArray = addClass.split(" ");
+			btn.classList.add(...classArray);
+			btn.innerHTML = buttonText;
+			btn.setAttribute("title", tooltip);
 			if (onClickEvent) {
-				// wire up the click event handler
-				btn.on("click", onClickEvent);
+				btn.addEventListener("click", onClickEvent);
 			}
 			_toolbarContainer.appendChild(btn);
 
 			return btn;
 
-		} // createControlButton
+		} // addToolBarButton
 
 
 		/// <summary>
@@ -1643,7 +1689,7 @@
 			}
 
 			// ensure the search box reflects what's been search for
-			_searchBox.val(searchFor);
+			_searchBox.value = searchFor;
 
 			// reset the result page count (as we're starting afresh with a new search)
 			_pageNum = 0;
