@@ -610,9 +610,6 @@
 			}
 
 			if (_helpDlg) {
-				// note _helpBtn is the container, not the link inside the container
-				var btnContainer = _helpBtn;
-
 				if (settings.showHelpOnLoad && _helpBtn.click) {
 					_helpBtn.click();
 				}
@@ -1053,7 +1050,6 @@
 				doSearch(searchFor);
 			});
 			_searchBarContainer.appendChild(_searchBtn);
-			);
 
 			// For handling additional results, note there is no event handlers as this is
 			// ... driven from the first set of search results we get back from Google

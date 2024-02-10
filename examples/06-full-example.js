@@ -195,7 +195,7 @@ function fullWindowExample(e) {
 		mapOptions: {
 			zoom: 15,
 			center: new google.maps.LatLng(51.501364 , -0.14189),
-			styles: _avocadoStyle	// see variables.js
+			styles: _avocadoStyle
 		},
 
 		// Adds a predictive search box
