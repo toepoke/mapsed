@@ -65,7 +65,7 @@
 		/// Plug-in options:
 		/// Set of options to configure how the map will behave
 		/// </summary>
-		var settings = $.extend({
+		var settings = $.extend(true,{
 			// Array of places to show on the map initially
 			// (see accompanying examples for illustration)
 			showOnLoad: null,
@@ -109,6 +109,13 @@
 				// Mapsed has facilities for handling full-screen mode
 				// ... turn off Google's so we have better control of the UI
 				fullscreenControl: false,
+
+				// Override default positioning so mapsed controls can enjoy better placement
+				mapTypeControl: true,
+				mapTypeControlOptions: {
+					style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+					position: google.maps.ControlPosition.LEFT_BOTTOM
+				}
 			},
 
 			// Flags whether Google Maps should still display other points-of-interest
@@ -1045,13 +1052,9 @@
 			}
 			_searchBarContainer.appendChild(_searchBox);
 
-			_searchBox = $(html).appendTo(_mapContainer);
-
 			// associate with places api
 			// ... note Google Maps API doesn't play well with jQuery
-			_gmSearchBox = new gp.SearchBox(_searchBox[0]);
-			// Place search box onto the screen
-			_gMap.controls[gm.ControlPosition.TOP_LEFT].push(_searchBox[0]);
+			_gmSearchBox = new gp.SearchBox(_searchBox);
 
 			// and wire up the callback when a user selects a hit
 			gm.event.addListener(_gmSearchBox, "places_changed",
