@@ -628,10 +628,11 @@
 				// and put some results up on start-up (via the "initSearch" option)
 				// we don't want to clear the markers as we'll remove the "showOnLoad"
 				// ones we've added
-
-				if (_pageNum == 0)
+				if (_pageNum == 0) {
 					clearMarkers();
+				}
 			}
+
 			_firstSearch = false;
 
 			if (status == "ZERO_RESULTS") {
@@ -999,6 +1000,7 @@
 			if (_searchBox) {
 				// already added
 				return;
+			}
 
 			// create the "search" box and add to document (in body)
 			var so = settings.searchOptions;
