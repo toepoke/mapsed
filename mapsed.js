@@ -557,6 +557,9 @@
 			var errors = "";
 			var place = getViewModel($rw);
 
+			// if we're saving it can no longer be "new"
+			place.markerType = "custom";
+
 			// see if the calling code is happy with what's being changed
 			errors = settings.onSave(_plugIn, place);
 
