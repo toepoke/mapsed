@@ -827,11 +827,8 @@
 			inBoundary.extend(position);
 
 			// wire up click event
-			gm.event.addListener(marker, "click", function () {
-				var m = this;
-				closeTooltips();
-				m.showTooltip(false/*inRwMode*/);
-			});
+			gm.event.addListener(marker, "click", onMarkerSelect);
+
 			if (model.autoShow) {
 				// show on load enabled for marker
 				marker.showTooltip(false/*inRwMode*/);
