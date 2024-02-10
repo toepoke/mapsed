@@ -148,15 +148,15 @@ function fullWindowExample(e) {
 			// use a timeout to emulate an ajax lookup
 			// note marker has "lat" and "lng" properties to use for querying google maps
 			setTimeout(function() {
-				marker.details.name = "Test name";
-				marker.details.street = "Test street";
-				marker.details.town = "Test town";
-				marker.details.area = "Test area";
-				marker.details.postCode = "Test postcode";
-				marker.details.country = "Test country";
-				marker.details.telNo = "Test telNo";
-				marker.details.website = "example.com";
-				marker.details.url = "http://example.com";
+			marker.details.street = "Test street";
+			marker.details.town = "Test town";
+			marker.details.area = "Test area";
+			marker.details.postCode = "Test postcode";
+			marker.details.country = "Test country";
+			marker.details.telNo = "Test telNo";
+			marker.details.website = "example.com";
+			marker.details.url = "http://example.com";
+			// pass control back to mapsed
 				
 				// pass control back to mapsed
 				m.showAddDialog(marker);
@@ -221,7 +221,7 @@ function fullWindowExample(e) {
 			// return false if the delete failed
 			return true;
 		},
-              		
+
 		// Custom marker images
 		getMarkerImage: function(m, markerType, title) {
 			var imageUrl = "";
@@ -245,7 +245,7 @@ function fullWindowExample(e) {
 				anchor: new google.maps.Point(14, 45)
 			};
 		},
-				
+
 		// shows additional instructions to the user
 		getHelpWindow: function(m) {
 			var html = 
@@ -276,8 +276,8 @@ function fullWindowExample(e) {
 			// you can cancel the close of the map by returning false
 			return closeMap;
 		},
-		
-	    // Fired once the mapsed object has initialised, but before the map 
+
+	  // Fired once the mapsed object has initialised, but before the map
 		// has been drawn.  If you wish to add custom controls, this is where to do it
 		onPreInit: function(mapsed) {
 			var html = "",

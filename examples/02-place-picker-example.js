@@ -11,7 +11,7 @@ function runExample2() {
 					details.postCode +
 				"<br/>website: " + details.website +
 				"<br/>g+: " + details.url +
-				"<br/>Tel: " + details.telNo						
+				"<br/>Tel: " + details.telNo
 			;
 			if (details.place_id) {
 				msg += "<br/>Place_id: " + details.place_id

@@ -288,29 +288,29 @@
 		},
 
 
-			/// <summary>
-			/// When in full-window mode, this will close the map 
-			/// and release resources.
-			/// </summary>
-			this.closeMap = function () {
-				// just kill the DIV container and Google object
-				_gMap = null;
+		/// <summary>
+		/// When in full-window mode, this will close the map 
+		/// and release resources.
+		/// </summary>
+		this.closeMap = function () {
+			// just kill the DIV container and Google object
+			_gMap = null;
 
-				// close help dialog (if displayed)
-				if (_helpDlg) {
-					_helpDlg.fadeOut();
-				}
+			// close help dialog (if displayed)
+			if (_helpDlg) {
+				_helpDlg.fadeOut();
+			}
 
-				// close if only available if we created the DIV and we're in full screen mode
-				// so kill off the DIV and remove
-				_mapContainer.fadeOut(function () {
-					$(this).remove();
-				});
+			// close if only available if we created the DIV and we're in full screen mode
+			// so kill off the DIV and remove
+			_mapContainer.fadeOut(function () {
+				$(this).remove();
+			});
 
-				// no longer in full window mode
-				_fullWin = false;
+			// no longer in full window mode
+			_fullWin = false;
 
-			} // closeMap
+		} // closeMap
 
 
 		/// <summary>
@@ -952,8 +952,7 @@
 					settings.onDelete != null && canEdit
 					// can only delete markers we created!
 					&& model.markerType == "custom"
-				)
-					;
+				);
 
 				$vw.find(".mapsed-select-button").toggle(showSelect);
 				$vw.find(".mapsed-edit-button").toggle(showSave);

@@ -175,6 +175,7 @@
 
 /*
 * Custom map control styles
+* Mimics style of Google icons
 */
 .mapsed-control-button {
 
@@ -192,7 +193,7 @@
 	text-decoration: none;
 	font-weight: 400;
 	line-height: 12px;
-		
+
 	margin-right: 3px;
 	cursor: pointer;
 }
@@ -446,13 +447,13 @@ button.mapsed-more-button {
 			font-size: 20px !important;
 		}
 		.input.mapsed-searchbox {
-			padding: 0px 12px !important;			
+			padding: 0px 12px !important;
 		}
 		button.mapsed-search-button {
-			padding: 0px 10px !important;			
+			padding: 0px 10px !important;
 		}
 		button.mapsed-more-button {
-			padding: 0px 10px !important;			
+			padding: 0px 10px !important;
 		}
 
 	
