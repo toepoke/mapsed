@@ -55,6 +55,8 @@
 
 /* container for address details, phone, etc */
 .mapsed-left {
+	vertical-align: top;
+}
 
 		.mapsed-left address {
 			font-size: small;
@@ -179,7 +181,6 @@
 * Mimics style of Google icons
 */
 .mapsed-control-button {
-
 	border-color: rgba(0, 0, 0, 0.14902);
 	border: solid 1px #888;
 	border-radius: 2px;
@@ -435,20 +436,6 @@ button.mapsed-more-button {
 			top: 1px !important;
 		}
 
-		.mapsed-control-button {
-			/* slightly bigger for our buttons over the google Map/Satellite */
-			padding: 7px 18px !important;
-			font-size: 30px;
-			top: 1px !important;
-		}
-		button.mapsed-geo-button {
-			/* GEO is a little bit different - purely because of the content icon */
-			font-size: 30px !important;
-			padding: 7px 13px !important;
-		}
-
-
-	
 		input.mapsed-searchbox, button.mapsed-search-button, button.mapsed-more-button {
 			height: 50px;
 			font-size: 20px !important;
