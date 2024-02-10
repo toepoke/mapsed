@@ -374,6 +374,7 @@
 						var newLocation = pos.toUrlValue();
 						var search = so.geoSearch.replace("{POSITION}", newLocation);
 
+						clearMarkers();
 						doSearch(search);
 					}
 
@@ -620,6 +621,29 @@
 			}
 
 		} // gmMapLoaded
+
+
+		/// <summary>
+		/// When the user submits a search (see "searchOptions")
+		/// we clear any existing hits otherwise it will get confusing really
+		/// quickly.
+		/// (plus this is the same behaviour as Google Maps itself)
+		/// </summary>
+		function clearMarkers() {
+			if (_markers && _markers.length > 0) {
+				for (var i = 0; i < _markers.length; i++) {
+					var currMarker = _markers[i];
+					// We want to keep the "custom" ones ... whole point of this plugin!
+					if (currMarker.details.markerType != "custom") {
+						currMarker.tooltip = null;
+						currMarker.setMap(null);
+					}
+				}
+			}
+
+			_markers = [];
+
+		} // clearMarkers
 
 
 		/// <summary>
@@ -1033,6 +1057,7 @@
 			gm.event.addListener(_gmSearchBox, "places_changed",
 				function () {
 					var searchFor = _searchBox.value;
+					clearMarkers();
 					doSearch(searchFor);
 				}
 			);
@@ -1044,6 +1069,7 @@
 			_searchBtn = createButton("Go", "mapsed-search-button, mapsed-control-button", function (evt) {
 				evt.preventDefault();
 				var searchFor = _searchBox.value;
+				clearMarkers();
 				doSearch(searchFor);
 			});
 			_searchBarContainer.appendChild(_searchBtn);
@@ -1197,7 +1223,6 @@
 		/// </summary>
 		function addToolBarButton(buttonText, ctrlPos, addClass, onClickEvent) {
 			var btn = null,
-				markUp = "",
 				classes = "",
 				tooltip = ""
 			;
@@ -1226,26 +1251,6 @@
 			return btn;
 
 		} // addToolBarButton
-
-
-		/// <summary>
-		/// When the user submits a search (see "searchOptions")
-		/// we clear any existing hits otherwise it will get confusing really
-		/// quickly.
-		/// (plus this is the same behaviour as Google Maps itself)
-		/// </summary>
-		function clearMarkers() {
-			if (_markers && _markers.length > 0) {
-				for (var i = 0; i < _markers.length; i++) {
-					var currMarker = _markers[i];
-					currMarker.tooltip = null;
-					currMarker.setMap(null);
-				}
-			}
-
-			_markers = [];
-
-		} // clearMarkers
 
 
 		/// <summary>
@@ -1369,6 +1374,10 @@
 		/// </summary>
 		function showTooltip(inRwMode) {
 			var marker = this;
+			if (!marker.tooltip) {
+				// not sure why but this can happen
+				marker.tooltip = new gm.InfoWindow();
+			}
 			var tip = marker.tooltip;
 			var model = marker.details;
 			var $ele = $(tip.content);
@@ -1673,7 +1682,6 @@
 
 			// reset the result page count (as we're starting afresh with a new search)
 			_pageNum = 0;
-			clearMarkers();
 
 			var latLngMatches = query.match(re);
 
