@@ -1,4 +1,6 @@
 
+var _myPlaces = [];
+
 // 
 // Map style to use when loading the map
 //
@@ -29,7 +31,7 @@ var _snazzyMaps = [
 ];
 
 // Some custom places to show when loading the full map, again to illustrate how it's done
-var _places = [
+var _default_places = [
 	// City Varieties
 	{
 		// Flag this place should be shown as tooltip once the map has finished loading
@@ -45,7 +47,8 @@ var _places = [
 		// Note: Google Places CANNOT be edited, only CUSTOM places can (see next place below)
 		place_id: "ChIJQd3IwBtceUgRha6laiANoro",
 		addInfo: 
-			"<p>Ordering drinks for the <br/>interval is an idea!</p>" 
+			"<p>Ordering drinks for the <br/>interval is an idea!</p>",
+			userData: 1
 	},
 	// Random made up CUSTOM place
 	{
@@ -56,7 +59,7 @@ var _places = [
 		lng: -1.59,
 		name: "Somewhere",
 		street: "Over the rainbow, Up high way",
-		userData: 99
+		userData: 2
 	}
 ];
 
@@ -109,6 +112,73 @@ function getPlaceHtml(details) {
 }
 
 
+
+function storageGetPlace(key) {
+	var value = localStorage.getItem(key);
+	var place = JSON.parse(value);
+
+	return place;
+}
+
+function storageDeletePlace(placeToDelete) {
+	if (window.localStorage.getItem[placeToDelete.userData]) {
+		var key = placeToDelete.userData;
+		window.localStorage.removeItem(key);
+	}
+}
+
+function storageSavePlace(savedPlace) {
+	if (!savedPlace.userData) {
+		savedPlace.userData = storageGetNextId();
+	} else {
+		storageDeletePlace(savedPlace);
+	}
+
+	var key = savedPlace.userData;
+	var value = JSON.stringify(savedPlace);
+	window.localStorage.setItem(key, value);
+
+	return value;
+}
+
+function storageGetNextId() {
+	var nextId = 0;
+
+	for (var i = 0, len = window.localStorage.length; i < len; ++i) {
+		var key = parseInt(localStorage.key(i));
+		if (key > nextId) {
+			nextId = key;
+		}
+	}
+
+	nextId += 1;
+
+	return nextId;
+}
+
+function storageLoadAllPlaces() {
+	var places = [];
+
+	if (window.localStorage.length == 0) {
+		// Local storage is empty so initialise with the default set of places
+		for (var i = 0, len = _default_places.length; i < len; ++i) {
+			var place = storageSavePlace(_default_places[i]);
+			places.push( place );
+		}
+		return places;
+	}
+
+	// Some already saved, so read them out
+	for (var i = 0, len = window.localStorage.length; i < len; ++i) {
+		var key = localStorage.key(i);
+		var place = storageGetPlace(key);
+		places.push( place );
+	}
+
+	return places;
+}
+
+
 //
 // Builds up the mapsed object for the demo, wires up default options and
 // event handlers.
@@ -116,6 +186,8 @@ function getPlaceHtml(details) {
 // Don't be put off ... you won't need anywhere near this level ... probably :oD
 // 
 function fullWindowExample(e) {
+	_myPlaces = storageLoadAllPlaces();
+
 	e.preventDefault();
 	
 	$.fn.mapsed({
@@ -137,7 +209,7 @@ function fullWindowExample(e) {
 		allowGeo: true,		
 
 		// Emulate places being loaded from a db
-		showOnLoad: _places,
+		showOnLoad: _myPlaces,
 		
 		// Adds the "+" button to the control bar at the top right of the map
 		allowAdd: true,
@@ -147,7 +219,7 @@ function fullWindowExample(e) {
 		onAdd: function(m, marker) {
 			// use a timeout to emulate an ajax lookup
 			// note marker has "lat" and "lng" properties to use for querying google maps
-			setTimeout(function() {
+			marker.details.name = "Test name";
 			marker.details.street = "Test street";
 			marker.details.town = "Test town";
 			marker.details.area = "Test area";
@@ -157,11 +229,8 @@ function fullWindowExample(e) {
 			marker.details.website = "example.com";
 			marker.details.url = "http://example.com";
 			// pass control back to mapsed
-				
-				// pass control back to mapsed
-				m.showAddDialog(marker);
-			}, 2000);
-		},		
+			m.showAddDialog(marker);
+		},
 
 		// Enables place selection
 		// ... note the presence of the callback is 
@@ -194,10 +263,13 @@ function fullWindowExample(e) {
 			}
 			
 			if (newPlace) {
-				if (newPlace.markerType == "new") {
+				if (!newPlace.userData) {
 					// simulate a primary key being save to a db
-					newPlace.userData = parseInt(Math.random() * 100000);
+					newPlace.userData = storageGetNextId();
 				}
+
+				storageSavePlace(newPlace);
+
 				var msg = getPlaceHtml(newPlace);
 				m.showMsg("YOUR SAVE CODE HERE!", msg);
 			}
@@ -216,7 +288,8 @@ function fullWindowExample(e) {
 			);
 			
 			// here would be code your application to do the actual delete
-			
+			storageDeletePlace(placeToDelete);
+
 			// return true to confirm it was deleted OK and remove marker from the map
 			// return false if the delete failed
 			return true;
