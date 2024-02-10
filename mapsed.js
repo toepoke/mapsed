@@ -366,7 +366,7 @@
 					_gMap.setCenter(pos);
 
 					// change geo button to show it's now active
-					_geoBtn.addClass("is-active");
+					_geoBtn.classList.add("is-active");
 
 					// first time map has been loaded, so apply any initial search
 					var so = settings.searchOptions;
@@ -606,7 +606,7 @@
 				var btnContainer = _helpBtn;
 
 				if (settings.showHelpOnLoad && _helpBtn.click) {
-					_helpBtn.trigger("click");
+					_helpBtn.click();
 				}
 			}
 
@@ -1004,25 +1004,15 @@
 
 			// create the "search" box and add to document (in body)
 			var so = settings.searchOptions;
-			//	html = "<input type='text' id='" + id + "' class='mapsed-searchbox' autocomplete='off' "
-				;
-			html += "placeholder='";
-			if (so.enabled && so.placeholder)
-				html += so.placeholder;
-			else
-				html += "Search ...";
-			html += "' ";
-			if (so.enabled && so.initSearch && so.initSearch.length > 0)
-				html += " value='" + so.initSearch + "'";
-			html += " />";
+
 			_searchBox = document.createElement("INPUT");
 			_searchBox.type = "SEARCH";
 			_searchBox.classList.add("mapsed-searchbox");
 			_searchBox.setAttribute("autocomplete", "off");
 			if (so.enabled && so.placeholder) {
-				_searchBox.ariaPlaceholder = so.placeholder;
+				_searchBox.placeholder = so.placeholder;
 			} else {
-				_searchBox.ariaPlaceholder = "Search ...";
+				_searchBox.placeholder = "Search ...";
 			}
 			if (so.enabled && so.initSearch && so.initSearch.length > 0) {
 				_searchBox.value = so.initSearch;
@@ -1174,7 +1164,11 @@
 
 					// show/hide the dialog
 					_helpDlg.fadeToggle();
-					_helpBtn.toggleClass("open");
+					if (_helpBtn.classList.contains("open")) {
+						_helpBtn.classList.remove("open");
+					} else {
+						_helpBtn.classList.add("open");
+					}
 				}
 			);
 			_toolbarContainer.appendChild(_helpBtn);
@@ -1182,7 +1176,7 @@
 			var helpHtml = settings.getHelpWindow();
 			_helpDlg = $(helpHtml).appendTo(_mapContainer).click(function () {
 				$(this).fadeOut();
-				_helpBtn.toggleClass("open");
+				_helpBtn.classList.remove("open");
 			});
 			_helpDlg.fadeOut();
 
@@ -1376,7 +1370,7 @@
 			var marker = this;
 			var tip = marker.tooltip;
 			var model = marker.details;
-			var $ele = $(tip.getContent());
+			var $ele = $(tip.content);
 			var $ro = $ele.find(".mapsed-view");
 			var $rw = $ele.find(".mapsed-edit");
 			var settings = _plugIn.getSettings();
