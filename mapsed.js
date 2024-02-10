@@ -1627,6 +1627,7 @@
 			// "showOnLoad" can be specified as an array or a single object, so if it's the
 			// latter, we'll use the former
 			var places = [];
+			var pos = settings.DEFAULT_CENTER;
 
 			if ($.isArray(settings.showOnLoad))
 				places = settings.showOnLoad;
@@ -1651,15 +1652,18 @@
 			}
 
 			// we done?
-			if (!settings.forceCenter) {
-				_gMap.fitBounds(bounds);
-			}
-
-			if (places.length == 1) {
-				// only 1 so set the center
-				_gMap.setCenter(pos);
-			} else if (settings.forceCenter) {
+			if (settings.forceCenter) {
+				// Callee wants to position at a _specific_ lat/lng
 				_gMap.setCenter(settings.mapOptions.center);
+
+			} else if (places.length > 0) {
+				// Just centre on the last place added ()
+				// ... of course if there's only one we'll centre on that one
+				_gMap.setCenter(pos);
+
+			} else {
+				// Nothing else to go on, use the default
+				_gMap.setCenter(settings.DEFAULT_CENTER);
 			}
 
 		} // addInitialPlaces
