@@ -201,7 +201,7 @@ function fullWindowExample(e) {
 		// Adds a predictive search box
 		searchOptions: {
 			enabled: true,
-			//initSearch: "Football in Leeds",
+			initSearch: "Football near me",
 			placeholder: "Search for \"5aside\" ..."
 		},
 		
