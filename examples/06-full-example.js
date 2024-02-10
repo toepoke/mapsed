@@ -206,7 +206,7 @@ function fullWindowExample(e) {
 		},
 		
 		// Turn geo button on
-		allowGeo: true,		
+		allowGeo: true,
 
 		// Emulate places being loaded from a db
 		showOnLoad: _myPlaces,
@@ -217,7 +217,6 @@ function fullWindowExample(e) {
 		// Illustrating custom behaviour
 		// ... changing the added marker to have _some_data_
 		onAdd: function(m, marker) {
-			// use a timeout to emulate an ajax lookup
 			// note marker has "lat" and "lng" properties to use for querying google maps
 			marker.details.name = "Test name";
 			marker.details.street = "Test street";
