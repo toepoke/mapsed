@@ -476,6 +476,23 @@
 		} // onPlaceEdit
 
 
+		function onMarkerSelect(evt) {
+			var currMarker = this;
+			closeTooltips();
+
+			if (currMarker.details.markerType == "new") {
+				if (settings.onAdd) {
+					settings.onAdd(_plugIn, currMarker);
+				}
+			} else {
+				// Custom places user has previously added can be edited
+				// Google places ones can't (for hopefully obvious reasons!)
+				var canEdit = (currMarker.details.markerType == "custom");
+				currMarker.showTooltip(false);
+			}
+
+		}		
+
 		/// <summary>
 		/// Internal event handler when the "Add" button is clicked
 		/// </summary>
@@ -490,19 +507,7 @@
 			_markers.push(newMarker);
 			bounds.extend(centre);
 
-			gm.event.addListener(newMarker, "click", function (evt) {
-				var currMarker = this;
-				closeTooltips();
-
-				if (settings.onAdd) {
-					var root = $(currMarker.tooltip.content);
-					settings.onAdd(_plugIn, currMarker);
-					// tooltip will be shown via 
-				} else {
-					// new places can always be edited
-					currMarker.showTooltip(true/*inRwMode*/);
-				}
-			});
+			gm.event.addListener(newMarker, "click", onMarkerSelect);
 
 			gm.event.addListener(newMarker, "dragend", function (evt) {
 				var currMarker = this;
