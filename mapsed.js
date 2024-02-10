@@ -546,8 +546,8 @@
 				var marker = findMarker(model.lat, model.lng);
 
 				// remove the marker
-				marker.setMap(null);
 				marker.tooltip = null;
+				marker.setMap(null);
 			}
 
 		} // onPlaceDelete
