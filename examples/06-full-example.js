@@ -121,8 +121,9 @@ function storageGetPlace(key) {
 }
 
 function storageDeletePlace(placeToDelete) {
-	if (window.localStorage.getItem[placeToDelete.userData]) {
-		var key = placeToDelete.userData;
+	var key = placeToDelete.userData;
+
+	if (window.localStorage.getItem(key)) {
 		window.localStorage.removeItem(key);
 	}
 }
