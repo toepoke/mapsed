@@ -609,14 +609,6 @@
 		/// </summary>
 		function gmMapLoaded() {
 
-			// The line-height of the toolbar buttons seems to vary depending on the DIV size 
-			//  - we use this to flag what line-size the [Google] map controls are using
-			var gmToolBtns = $(_mapContainer.find(".gm-style-mtc"));
-			if (gmToolBtns.length > 0) {
-				var gmLineHeight = $(gmToolBtns[0]).css("line-height");
-				$(_mapContainer.find(".mapsed-control-button")).css("line-height", gmLineHeight);
-			}
-
 			if (_helpDlg) {
 				if (settings.showHelpOnLoad && _helpBtn.click) {
 					_helpBtn.click();

@@ -12,11 +12,6 @@
 		line-height: 1; 
 	}
 	
-	.mapsed-address-entry { 
-		/* edit dialog needs to be a bit bigger */
-		min-width: 300px;
-	}
-	
 	.mapsed-container {
 		width: 95%;
 		margin: 3px;
@@ -96,10 +91,12 @@
 	}
 	
 	/* container for address data entry */
-	.mapsed-address-entry {			
+	.mapsed-address-entry {
+		/* edit dialog needs to be a bit bigger */
+		min-width: 300px;
 	}
 		.mapsed-address-entry ul {
-			list-style-type: none;	
+			list-style-type: none;
 			margin: 0 5px 0 5px;
 			padding: 0;
 		}
@@ -431,44 +428,26 @@ button.mapsed-more-button {
 		}
 
 		.gm-style-mtc > div {
-			font-size: 22px !important;
-			padding: 10px 5px !important;
-			top: 1px !important;
 		}
 
-		input.mapsed-searchbox, button.mapsed-search-button, button.mapsed-more-button {
-			height: 50px;
-			font-size: 20px !important;
-		}
-		.input.mapsed-searchbox {
-			padding: 0px 12px !important;
-		}
-		button.mapsed-search-button {
-			padding: 0px 10px !important;
-		}
-		button.mapsed-more-button {
-			padding: 0px 10px !important;
+		/* container for address data entry */
+		.mapsed-address-entry {
+			/* reset back for mobile */
+			min-width: initial;
 		}
 
-	
-		/* positions */
-		#themePicker, button.mapsed-add-button, button.mapsed-help-button, button.mapsed-add-button, button.mapsed-close-button, button.mapsed-geo-button {
-			top: 6px !important;
-		}
+
 		input.mapsed-searchbox, button.mapsed-search-button, button.mapsed-more-button {
-			top: 57px !important; 
 		}
 		input.mapsed-searchbox {
 			left: 33px !important;
-			width: 229px !important;
+			width: 223px !important;
 		}
 		button.mapsed-search-button {
 			left: 265px !important;
 		}
 		button.mapsed-more-button {
 			left: 311px !important;
-		}
-		#themePicker, button.mapsed-add-button, button.mapsed-help-button, button.mapsed-add-button, button.mapsed-close-button, button.mapsed-geo-button {
 		}
 
 		.mapsed-help {
