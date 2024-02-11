@@ -15,7 +15,7 @@ In short it provides the following:
 * Works with multiple maps on the same page
 
 ## Demos
-Demos at https://mapsed.apphb.com
+Demos at https://blog.toepoke.co.uk/mapsed/
 
 ## Settings
 
