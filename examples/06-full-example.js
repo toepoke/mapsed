@@ -214,6 +214,7 @@ function fullWindowExample(e) {
 		
 		// Adds the "+" button to the control bar at the top right of the map
 		allowAdd: true,
+		disablePoi: true,
 
 		// Illustrating custom behaviour
 		// ... changing the added marker to have _some_data_
@@ -357,6 +358,14 @@ function fullWindowExample(e) {
 					$select = null,
 					$selectContainer = null
 			;
+
+			// add warning about problems with POI being turn off with custom maps
+			var poiIs = (this.disablePoi ? "disabled" : "enabled");
+			var poiMessage =
+				"<br/><div class='mapsed-poi-message'>" +
+				"<p>Please note that POI cannot be turned off when using styled maps (poi is <strong>" + poiIs + "</strong>).</p>" +
+				"</div>"
+			;
 			
 			// build up the theme picker
 			html += "<select id='themePicker' title='Pick an alternative map style...' class='mapsed-control-button'>";
@@ -364,7 +373,8 @@ function fullWindowExample(e) {
 				var theme = _snazzyMaps[i];
 				html += "<option value='" + theme.name + "'>" + theme.name + "</option>";
 			}
-			html += "</select>";
+			html += "</select>" + poiMessage;
+
 
 			$selectContainer = mapsed.addMapContainer("<div class='snazzy-container'></div>", google.maps.ControlPosition.BOTTOM_CENTER);
 
@@ -374,12 +384,6 @@ function fullWindowExample(e) {
 			    onThemeChange($(this), mapsed);
 			});
 
-			// add warning about problems with POI being turn off with custom maps
-			html = 
-				"<div class='mapsed-poi-message'>" + 
-					"<p>Please note that POI cannot be turned off when using styled maps.</p>" + 
-				"</div>"
-			;
 		},
 		
 		// Fired once the map has completed loading
