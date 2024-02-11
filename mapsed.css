@@ -36,17 +36,26 @@
 		cursor: help;
 	}
 
-
 .mapsed-toolbar-container {
 	display: flex;
 	flex-direction: column;
+	/* 10px mimics Google's toolbars */
+	left: 10px !important;
+}
 
-	margin-left: 0.5rem;
-}
 .mapsed-searchbar-container {
-	margin-left: 0.5rem;
-	margin-top: 0.5rem;
+	display: flex;
+	justify-content: flex-start;
+	width: 70%;
+	/* Something overrides these styles (expect the google maps api), hence the !important declarations */
+	position: absolute !important;
+	/* 10px mimics Google's toolbars */
+	left: 10px !important;
+	top: 10px !important;
 }
+	.mapsed-searchbox     { width: 83%; }
+	.mapsed-search-button { width:  7%;  margin-left: 0.5rem; }
+	.mapsed-more-button   { width: 10%;  margin-left: 0.25rem; }
 
 /* container for address details, phone, etc */
 .mapsed-left {
@@ -142,13 +151,12 @@
 	input.mapsed-searchbox {
 		background-color: #fff;
 		padding: 0 11px 0 13px;
-		width: 50%;
 		font-family: "Calibri", "Arial";
 		font-size: 15px;
 		font-weight: 300;
 		text-overflow: ellipsis;
 
-		height: 40px;
+		line-height: 3;
 		border: 1px solid #fff;
 		outline: none;
 		border-radius: 2px 0 0 2px;
@@ -247,9 +255,6 @@ button.mapsed-search-button, button.mapsed-more-button {
 
 button.mapsed-search-button, button.mapsed-more-button {
 	/* search button is a little bit different to the other button controls */
-	padding: 11px 20px;
-	font-size: 15px;
-	line-height: 1.3;
 }
 button.mapsed-more-button[disabled] {
 	background-image: -webkit-linear-gradient(top,#f5f9ff,#e9e9e9);
@@ -392,20 +397,15 @@ button.mapsed-delete-button {
 
 /* button positions - important is required as it gets overridden by Google Maps API */
 input.mapsed-searchbox, button.mapsed-search-button, button.mapsed-more-button {
-	top: 10px !important; 
 }
 button.mapsed-geo-button {
 	
 }
 input.mapsed-searchbox {
-	left: 190px !important;
-	width: 440px !important;
 }
 button.mapsed-search-button {
-	left: 640px !important;
 }
 button.mapsed-more-button {
-	left: 710px !important;
 }
 .mapsed-control-button {
 	top: 5px !important;
@@ -418,6 +418,21 @@ button.mapsed-more-button {
 		only screen 
 		and (min-device-width : 320px)
 		and (max-device-width : 480px) {
+
+		.mapsed-searchbar-container {
+			width: 101%; /* HACK: Seems we have to set 101% so it uses the full row :( */
+		
+			/* 
+				Something overrides these styles in desktop (expect the google maps api), 
+				so we have to have !important against them (see further up) which means we have to undo
+				our own hack to ensure the mobile view is _glued_ to the top.
+			*/
+			left: 0 !important;
+			top: 0 !important;
+		}
+			.mapsed-searchbox     { width: 60%; }
+			.mapsed-search-button { width: 20%; }
+			.mapsed-more-button   { width: 20%; }
 
 		td.mapsed-photo {
 			/*
@@ -436,19 +451,6 @@ button.mapsed-more-button {
 			min-width: initial;
 		}
 
-
-		input.mapsed-searchbox, button.mapsed-search-button, button.mapsed-more-button {
-		}
-		input.mapsed-searchbox {
-			left: 33px !important;
-			width: 223px !important;
-		}
-		button.mapsed-search-button {
-			left: 265px !important;
-		}
-		button.mapsed-more-button {
-			left: 311px !important;
-		}
 
 		.mapsed-help {
 			top: 20%;
