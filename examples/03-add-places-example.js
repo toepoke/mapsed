@@ -23,7 +23,7 @@ function runExample1() {
 			}
 			
 			if (newPlace) {
-				if (newPlace.markerType == "new") {
+				if (!newPlace.userData) {
 					// simulate a primary key being save to a db
 					newPlace.userData = parseInt(Math.random() * 100000);
 				}
