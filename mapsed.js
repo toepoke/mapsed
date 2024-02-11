@@ -11,6 +11,7 @@
  *   - http://closure-compiler.appspot.com/
  *
  * History:
+ *  v1.0 - Loads of fixes, mainly with the icon placement, particularly on mobile.
  *  v0.4 - Country wasn't supported
  * 
 */
