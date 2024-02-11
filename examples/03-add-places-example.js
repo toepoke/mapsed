@@ -37,7 +37,7 @@ function runExample1() {
 						newPlace.town + ", " + newPlace.postCode + 
 					"<br/>telNo: " + newPlace.telNo + 
 					"<br/>website: " + newPlace.website + 
-					"<br/>g+: " + newPlace.url
+					"<br/>more: " + newPlace.url
 				;
 				if (newPlace.place_id) {
 					msg += "<br/>Place_id: " + details.place_id

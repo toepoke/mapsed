@@ -208,7 +208,7 @@ As part of the callback *mapsed* typically passes the data for the place the eve
   <tr><td>postCode</td><td>Postcode/zipcode of the place, e.g. LS1 6LW</td></tr>
   <tr><td>telNo</td><td>Telephone number of the place.</td></tr>
   <tr><td>website</td><td>Website address of the place.</td></tr>
-  <tr><td>url</td><td>Google+ page url</td></tr>
+  <tr><td>url</td><td>More info url</td></tr>
 </table>
 
 

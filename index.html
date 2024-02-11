@@ -175,7 +175,7 @@ $("#place-picker").mapsed({
         details.area + ", " + 
         details.postCode +
       "website: " + details.website +
-      "g+: " + details.url +
+      "more: " + details.url +
       "Tel: " + details.telNo
     ;
     mapsed.showMsg("Place selected!", msg);
@@ -268,7 +268,7 @@ $("#add-places").mapsed({
         newPlace.town + ", " + newPlace.postCode + 
         "telNo: " + newPlace.telNo + 
         "website: " + newPlace.website + 
-        "g+: " + newPlace.url
+        "more: " + newPlace.url
       ;
       if (newPlace.markerType == "new")
         title = "New place added!";
@@ -402,7 +402,7 @@ $("#search-for-places").mapsed({
       details.town + ", " + details.postCode + 
       "telNo: " + details.telNo + 
       "website: " + details.website + 
-      "g+: " + details.url
+      "more: " + details.url
     ;
 		mapsed.showMsg("You selected ...", msg);
     // indicate tip should be closed

@@ -909,7 +909,7 @@
 			tmpl = replaceAll("{COUNTRY}", model.country, tmpl);
 			tmpl = replaceAll("{TELNO}", model.telNo, tmpl);
 			tmpl = replaceAll("{WEBSITE}", model.website, tmpl);
-			tmpl = replaceAll("{GPLUS}", model.url, tmpl);
+			tmpl = replaceAll("{MORE}", model.url, tmpl);
 			if (model.photo) {
 				var path = model.photo.getUrl({ "maxWidth": "70" });
 				tmpl = replaceAll("{PHOTOURL}", path, tmpl);
@@ -1444,10 +1444,10 @@
 				+ "</address>"
 				+ "<a class='mapsed-telNo' href='tel:{TELNO}'>{TELNO}</a>"
 				+ "<a class='mapsed-website' href='{WEBSITE}' title='{WEBSITE}'>website</a>"
-				+ "<a class='mapsed-url' href='{GPLUS}' title='{GPLUS}'>g+</a>"
+				+ "<a class='mapsed-url' href='{MORE}' title='{MORE}'>more</a>"
 				+ "</td>"
 				+ "<td class='mapsed-photo'>"
-				+ "<a href='{GPLUS}'>{IMG src='{PHOTOURL}' /></a>"
+				+ "<a href='{MORE}'>{IMG src='{PHOTOURL}' /></a>"
 				+ "</td>"
 				+ "<td class='mapsed-add-info'>"
 				+ "{ADD_INFO}"
@@ -1517,8 +1517,8 @@
 				+ "</label>"
 				+ "</li>"
 				+ "<li>"
-				+ "<label>g+ url"
-				+ "<input class='mapsed-url' type='url' placeholder='e.g. https://plus.google.com/+ToepokeCoUk‎' value='{GPLUS}' />"
+				+ "<label>more url"
+				+ "<input class='mapsed-url' type='url' placeholder='e.g. https://www.youtube.com/@toepoke_co_uk' value='{MORE}' />"
 				+ "</label>"
 				+ "</li>"
 				+ "</ul>"

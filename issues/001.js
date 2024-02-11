@@ -30,7 +30,7 @@ function getPlaceHtml(details) {
 			", " + details.postCode + 
 			"<br/><br/>" +
 		"website:&nbsp;&nbsp;<a href='" + details.website + "'>website</a><br/>" +
-		"g+&nbsp;&nbsp;<a href='" + details.url + "'>google+ page</a><br/>" +
+		"more&nbsp;&nbsp;<a href='" + details.url + "'>more page</a><br/>" +
 		"Tel:&nbsp;&nbsp;" + details.telNo
 	return html;
 }

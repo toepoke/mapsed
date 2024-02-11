@@ -10,7 +10,7 @@ function runExample2() {
 					details.area + ", " + 
 					details.postCode +
 				"<br/>website: " + details.website +
-				"<br/>g+: " + details.url +
+				"<br/>more: " + details.url +
 				"<br/>Tel: " + details.telNo
 			;
 			if (details.place_id) {
