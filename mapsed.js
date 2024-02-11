@@ -20,7 +20,7 @@
 	"use strict";
 
 	// singleton here (same variable across all instances of the plug-in)
-	var _version = '(0.6)',
+	var _version = '(1.0.0)',
 		_plugInName = "mapsed",
 		_plugInInstances = 1
 	;

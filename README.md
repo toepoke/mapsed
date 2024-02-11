@@ -313,8 +313,8 @@ Read [how to work locally](Local-Development.md) to play around and maybe contri
 
 ## Change Log
 
-- **0.0.2 (Planned)**
-Nothing planned.
+- **1.0.0**
+[Bug fixes & ux improvements](https://github.com/toepoke/mapsed/issues?q=is%3Aissue+is%3Aclosed+milestone%3A1.0.0)
 
 - **0.0.1**
 Initial release 
