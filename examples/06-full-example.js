@@ -355,7 +355,7 @@ function fullWindowExample(e) {
 		onPreInit: function(mapsed) {
 			var html = "",
 					$select = null,
-					$mapContainer = null
+					$selectContainer = null
 			;
 			
 			// build up the theme picker
@@ -366,20 +366,20 @@ function fullWindowExample(e) {
 			}
 			html += "</select>";
 
-			$select = mapsed.addMapControl(html, google.maps.ControlPosition.TOP_RIGHT);
-			
+			$selectContainer = mapsed.addMapContainer("<div class='snazzy-container'></div>", google.maps.ControlPosition.BOTTOM_CENTER);
+
+			$select = $(html).appendTo($selectContainer);
 			// wire up the change event to pick a new theme
 			$select.on("change", function() {
 			    onThemeChange($(this), mapsed);
 			});
-			
+
 			// add warning about problems with POI being turn off with custom maps
 			html = 
 				"<div class='mapsed-poi-message'>" + 
 					"<p>Please note that POI cannot be turned off when using styled maps.</p>" + 
 				"</div>"
 			;
-			mapsed.addMapControl(html, google.maps.ControlPosition.RIGHT_CENTER);
 		},
 		
 		// Fired once the map has completed loading
@@ -391,7 +391,7 @@ function fullWindowExample(e) {
 
 }
 
-$(document).ready(function() {			
+$(document).ready(function() {
 	// wire up examples
 	
 	// wire up full window example
