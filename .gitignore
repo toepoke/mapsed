@@ -162,6 +162,11 @@ Backup*/
 UpgradeLog*.XML
 UpgradeLog*.htm
 
+######################
+## Visual Studio Code
+######################
+.vs
+
 # SQL Server files
 App_Data/*.mdf
 App_Data/*.ldf
