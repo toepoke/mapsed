@@ -3,7 +3,25 @@ function runExample3() {
 
 		// Adds the "+" button to the control bar at the top right of the map
 		allowAdd: true,
-		
+		disablePoi: true,
+
+		// Illustrating custom behaviour
+		// ... changing the added marker to have _some_data_
+		onAdd: function (m, marker) {
+			// note marker has "lat" and "lng" properties to use for querying google maps
+			marker.details.name = "Test name";
+			marker.details.street = "Test street";
+			marker.details.town = "Test town";
+			marker.details.area = "Test area";
+			marker.details.postCode = "Test postcode";
+			marker.details.country = "Test country";
+			marker.details.telNo = "Test telNo";
+			marker.details.website = "example.com";
+			marker.details.url = "http://example.com";
+			// pass control back to mapsed
+			m.showAddDialog(marker);
+		},
+
 		// Enables edit of custom places (to your web application, not Google Maps!)
 		// ... again the presence of the callback enables the functionality
 		onSave: function(m, newPlace) {
@@ -52,8 +70,32 @@ function runExample3() {
 		
 			// indicate form was OK and saved
 			return "";
-		}
-				
+		},
+
+		// Custom marker images
+		getMarkerImage: function (m, markerType, title) {
+			var imageUrl = "";
+
+			if (markerType == "custom")
+				// a place dervied from "your" database
+				imageUrl = "examples/images/view-place.png";
+			else if (markerType == "new")
+				// user has clicked on the add place (+) icon to add a new place
+				imageUrl = "examples/images/add-place.png";
+			else
+				// normal Google Places result
+				imageUrl = "examples/images/google-place.png";
+
+			return {
+				url: imageUrl,
+				size: new google.maps.Size(28, 40),
+				origin: new google.maps.Point(0, 0),
+
+				// where the little cross-hair appears (on new markers) relative to the image
+				anchor: new google.maps.Point(14, 45)
+			};
+		},
+
 	});
 }
 
