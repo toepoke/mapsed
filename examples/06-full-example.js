@@ -1,5 +1,6 @@
 
 var _myPlaces = [];
+var _store = mapsedStorage;
 
 // 
 // Map style to use when loading the map
@@ -120,7 +121,7 @@ function getPlaceHtml(details) {
 // Don't be put off ... you won't need anywhere near this level ... probably :oD
 // 
 function fullWindowExample(e) {
-	_myPlaces = storageLoadAllPlaces();
+	_myPlaces = _store.loadAllPlaces();
 
 	e.preventDefault();
 	
@@ -199,10 +200,10 @@ function fullWindowExample(e) {
 			if (newPlace) {
 				if (!newPlace.userData) {
 					// simulate a primary key being save to a db
-					newPlace.userData = storageGetNextId();
+					newPlace.userData = _store.getNextId();
 				}
 
-				storageSavePlace(newPlace);
+				_store.savePlace(newPlace);
 
 				var msg = getPlaceHtml(newPlace);
 				m.showMsg("YOUR SAVE CODE HERE!", msg);
@@ -222,7 +223,7 @@ function fullWindowExample(e) {
 			);
 			
 			// here would be code your application to do the actual delete
-			storageDeletePlace(placeToDelete);
+			_store.deletePlace(placeToDelete);
 
 			// return true to confirm it was deleted OK and remove marker from the map
 			// return false if the delete failed
