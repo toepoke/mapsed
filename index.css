@@ -11,3 +11,18 @@ body {
 .call-to-action.small {
 	padding: 10px 0;
 }
+
+.mapsed-poi-message {
+	position: absolute;
+	bottom: 3em;
+	left: 0em;
+	width: 100%;
+	background-color: #ddd;
+	margin: 0;
+	padding: 0;
+}
+
+	.mapsed-poi-message p {
+		margin: 0;
+		padding: 0;
+	}
