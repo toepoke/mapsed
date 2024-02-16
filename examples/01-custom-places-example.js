@@ -1,4 +1,4 @@
-function runExample3() {
+function runExample1() {
     $("#custom-places").mapsed({
 		showOnLoad: 	
 		[
@@ -24,13 +24,13 @@ function runExample3() {
 			}
 
 		]
-		
-	});									
+
+	});
 }
 
 
 $(document).ready(function() {
-	runExample3();
+	runExample1();
 });
 
 

@@ -1,4 +1,4 @@
-function runExample1() {
+function runExample3() {
     $("#add-places").mapsed({
 
 		// Adds the "+" button to the control bar at the top right of the map
@@ -59,6 +59,6 @@ function runExample1() {
 
 
 $(document).ready(function() {
-	runExample1();
+	runExample3();
 });
 
