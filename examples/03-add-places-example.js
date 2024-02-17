@@ -5,23 +5,6 @@ function runExample3() {
 		allowAdd: true,
 		disablePoi: true,
 
-		// Illustrating custom behaviour
-		// ... changing the added marker to have _some_data_
-		onAdd: function (m, marker) {
-			// note marker has "lat" and "lng" properties to use for querying google maps
-			marker.details.name = "Test name";
-			marker.details.street = "Test street";
-			marker.details.town = "Test town";
-			marker.details.area = "Test area";
-			marker.details.postCode = "Test postcode";
-			marker.details.country = "Test country";
-			marker.details.telNo = "Test telNo";
-			marker.details.website = "example.com";
-			marker.details.url = "http://example.com";
-			// pass control back to mapsed
-			m.showAddDialog(marker);
-		},
-
 		// Enables edit of custom places (to your web application, not Google Maps!)
 		// ... again the presence of the callback enables the functionality
 		onSave: function(m, newPlace) {

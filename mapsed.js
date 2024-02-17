@@ -485,22 +485,31 @@
 		} // onPlaceEdit
 
 
+		/**
+		 * Event handler for when a marker is added to the map, either
+		 * as a new marker, or when an existing marker is added to the map.
+		 * Shows the infoWindow for the location.
+		 * @param {any} evt
+		 */
 		function onMarkerSelect(evt) {
+			var canEdit = false;
 			var currMarker = this;
 			closeTooltips();
 
 			if (currMarker.details.markerType == "new") {
+				canEdit = true;
 				if (settings.onAdd) {
 					settings.onAdd(_plugIn, currMarker);
 				}
 			} else {
 				// Custom places user has previously added can be edited
 				// Google places ones can't (for hopefully obvious reasons!)
-				var canEdit = (currMarker.details.markerType == "custom");
-				currMarker.showTooltip(false);
+				canEdit = (currMarker.details.markerType == "custom");
 			}
 
-		}		
+			currMarker.showTooltip(canEdit);
+		}
+
 
 		/// <summary>
 		/// Internal event handler when the "Add" button is clicked
@@ -527,6 +536,7 @@
 				tip.find(".mapsed-lat").val(currMarker.details.lat);
 				tip.find(".mapsed-lng").val(currMarker.details.lng);
 			});
+
 			// for tooltip to be displayed
 			gm.event.trigger(newMarker, "click");
 
