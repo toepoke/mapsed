@@ -206,9 +206,8 @@
 }
 
 .mapsed-toolbar-button {
-	font-size: 3rem;
-	width: 5rem;
-	height: 5rem;
+	font-size: 2rem;
+	padding: 1rem 0.5rem;
 }
 
 .gm-style-mtc > div {
@@ -433,6 +432,11 @@ button.mapsed-more-button {
 			.mapsed-searchbox     { width: 60%; }
 			.mapsed-search-button { width: 20%; }
 			.mapsed-more-button   { width: 20%; }
+
+		.mapsed-toolbar-button {
+			font-size: 3rem;
+			padding: 1.5rem 1rem;
+		}
 
 		td.mapsed-photo {
 			/*
