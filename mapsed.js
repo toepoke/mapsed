@@ -910,7 +910,8 @@
 		/// Quick and dirty template function, just does a replacement
 		/// according to our model ... nothing more advanced than that!
 		/// </summary>
-		function applyTemplate(tmpl, model, $ctx) {
+		function applyTemplate(tmpl, model, renderOptions, $ctx) {
+			var header = "", footer = "";
 			tmpl = replaceAll("{NAME}", model.name, tmpl);
 			tmpl = replaceAll("{SHORT_NAME}", shorten(model.name, 25), tmpl);
 			tmpl = replaceAll("{STREET}", model.street, tmpl);
@@ -930,8 +931,17 @@
 			if (model.addInfo) {
 				tmpl = replaceAll("{ADD_INFO}", model.addInfo, tmpl);
 			}
+			if (renderOptions?.header) header = renderOptions.header;
+			if (renderOptions?.footer) footer = renderOptions.footer;
+			tmpl = replaceAll("{HEADER}", header, tmpl);
+			tmpl = replaceAll("{FOOTER}", footer, tmpl);
 
 			$ctx.html(tmpl);
+
+			// The edit template is a table so if there's no content we need to hide the row
+			// ... we don't know which template we're dealing with so just apply to both
+			$ctx.find(".mapsed-view-header").toggle( header !== '' );
+			$ctx.find(".mapsed-view-footer").toggle( footer !== '' );
 
 		} // applyTemplate
 
@@ -1412,15 +1422,25 @@
 			// ensure we have a _clean_ model to play with
 			sanitise(model);
 
+			// Do we have any header/footer customisation for _this_ typeof marker
+			var renderOptions = null;
+			if (settings.templateOptions && settings.templateOptions[marker.markerType]) {
+				if (inRwMode) {
+					renderOptions = settings.templateOptions[marker.markerType].edit;
+				} else {
+					renderOptions = settings.templateOptions[marker.markerType].view;
+				}
+			}
+
 			if (inRwMode) {
 				// re-apply template
 				var tmpl = getEditTemplate();
-				applyTemplate(tmpl, model, $rw);
+				applyTemplate(tmpl, model, renderOptions, $rw);
 
 			} else {
 				// re-apply template
 				var tmpl = getViewTemplate();
-				applyTemplate(tmpl, model, $ro);
+				applyTemplate(tmpl, model, renderOptions, $ro);
 				hideEmpty(model, $ro);
 			}
 
@@ -1439,6 +1459,11 @@
 			// proved to be too unreliable when used with map tooltips!
 			var html =
 				"<table class='mapsed-container mapsed-view'>"
+				+ "<tr class='mapsed-view-header'>"
+				+ "<td colspan='3'>"
+				+ "{HEADER}"
+				+ "</td>"
+				+ "</tr>"
 				+ "<tr>"
 				+ "<td colspan='3'>"
 				+ "<h1 class='mapsed-name' title='{NAME}'>{SHORT_NAME}</h1>"
@@ -1471,8 +1496,13 @@
 				+ "<button class='mapsed-delete-button'>" + settings.ActionButtons.Delete + "</button>"
 				+ "</td>"
 				+ "</tr>"
+				+ "<tr class='mapsed-view-footer'>"
+				+ "<td colspan='3'>"
+				+ "{FOOTER}"
+				+ "</td>"
+				+ "</tr>"
 				+ "</table>"
-				;
+			;
 
 			return html;
 
@@ -1485,6 +1515,7 @@
 		function getEditTemplate() {
 			var html =
 				"<div class='mapsed-container mapsed-address-entry mapsed-edit'>"
+				+ "{HEADER}"
 				+ "<h1>Place details:</h1>"
 				+ "<ul>"
 				+ "<li>"
@@ -1538,6 +1569,7 @@
 				// placeholder for error messages
 				+ "<span class='mapsed-error'>&nbsp;</span>"
 				+ "</div>"
+				+ "{FOOTER}"
 				+ "</div>"  // mapsed-address-entry
 				;
 

@@ -187,14 +187,22 @@ $("#place-picker").mapsed({
   },
   
   showOnLoad: 
-    // City Varieties - note there's only one place here, we don't need an array
-    {
-      // flag that this place should have the tooltip shown when the map is first loaded
-      autoShow: true,
-      lat: 53.798823,
-      lng:-1.5426760000000286,
-      place_id: "ChIJQd3IwBtceUgRha6laiANoro"
+  // City Varieties
+  {
+    // flag that this place should have the tooltip shown when the map is first loaded
+    autoShow: true,
+    lat: 53.798823,
+    lng:-1.5426760000000286,
+    place_id: "ChIJQd3IwBtceUgRha6laiANoro"
+  },
+  templateOptions: {
+    google: {
+      view: {
+        footer: '&lt;center&gt;I came from Google Places&lt;/center&gt;',
+      }
     }
+  }
+
 });
 								</pre>
 							</div>
@@ -202,6 +210,9 @@ $("#place-picker").mapsed({
 								The <em>Select</em> button is turned on simply by implementing 
 								the <a href="https://github.com/toepoke/mapsed/blob/master/README.md#onselect">onSelect</a> 
 								callback.
+							</p>
+							<p>
+								Note you can also add your own <a href="https://github.com/toepoke/mapsed/blob/master/README.md#Template-Customisations">headers &amp; footers</a> too.
 							</p>
 						</div>
 					</div>

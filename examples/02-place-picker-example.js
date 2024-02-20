@@ -30,9 +30,16 @@ function runExample2() {
 				lat: 53.798823,
 				lng:-1.5426760000000286,
 				place_id: "ChIJQd3IwBtceUgRha6laiANoro"
+			},
+		templateOptions: {
+			google: {
+				view: {
+					footer: "<center>I came from Google Places</center>",
+				}
 			}
-		
-	});
+		}
+
+	}); // mapsed
 }
 
 $(document).ready(function() {
