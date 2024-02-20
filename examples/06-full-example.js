@@ -178,7 +178,50 @@ function fullWindowExample(e) {
 			// indicate tip should be closed
 			return true;
 		},
-		
+
+		// Defines header and footers to be applied to the 
+		// ... select/edit/delete tooltips shown to the user
+		templateOptions: {
+			// You can have a different header or footer for
+			// each "markerType".  Supported customisations are:
+			// "custom" - Where your user has previously added a marker
+			// "add" - Where your user has click "add" to create a new marker
+			// "google" - Where your user has clicked on a marker found via Google Places APi
+			custom: {
+				view: {
+					header: "<center>custom view header</center>",
+					footer: "<center>custom view footer</center>",
+				},
+				edit: {
+					header: "<center>custom edit header</center>",
+					footer: "<center>custom edit footer</center>"
+				}
+			},
+
+			add: {
+				view: {
+					header: "<center>add view header</center>",
+					footer: "<center>add view footer</center>",
+				},
+				edit: {
+					header: "<center>add edit header</center>",
+					footer: "<center>add edit footer</center>"
+				}
+			},
+
+			google: {
+				view: {
+					header: "<center>google view header</center>",
+					footer: "<center>google view footer</center>",
+				},
+				edit: {
+					header: "<center>google edit header</center>",
+					footer: "<center>google edit footer</center>"
+				}
+			}
+
+		},
+
 		// Enables edit of new places (to your web application, not Google Maps!)
 		// ... again the presence of the callback enables the functionality
 		onSave: function(m, newPlace) {
