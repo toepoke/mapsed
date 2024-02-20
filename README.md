@@ -211,6 +211,34 @@ As part of the callback *mapsed* typically passes the data for the place the eve
   <tr><td>url</td><td>More info url</td></tr>
 </table>
 
+## Template Customisations
+
+Allows custom text/html to be injected as a header and/or footer to the tooltip window which 
+appears when the end-user selects or adds a new _place_.
+
+````js
+templateOptions: {
+  custom: {
+    view: {
+      header: "<center>custom view header</center>",
+      footer: "<center>custom view footer</center>",
+    },
+    edit: {
+      header: "<center>custom edit header</center>",
+      footer: "<center>custom edit footer</center>"
+    }
+  }
+}
+````
+
+The above customisation will show a header and footer to the map tooltip when and end-user selects a _custom_ place.
+
+Custom headers & footers can be set for:
+ - _Custom_ places as above
+ - _New_ places (when your end-user clicks the [+](#onAdd) button
+ - _Google_ places where a map _marker_ is derived from [Google Places API](#Google-Place)
+
+[See full-window example](examples/06-full-example.js)
 
 ## Events / Callbacks
 
