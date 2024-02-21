@@ -800,7 +800,7 @@
 
 			buttons += "<div class='mapsed-modal-button-bar'>";
 			if (prompt && prompt.length > 0) {
-				buttons += "<p class='prompt'>" + prompt + "</p>";
+				buttons += `<p class='prompt'>${prompt}</p>`;
 			}
 			buttons += "<div class='mapsed-modal-buttons'>";
 			if (doConfirm) {
@@ -812,17 +812,16 @@
 			buttons += "</div>";
 			buttons += "</div>";
 
-			html =
-				"<div class='mapsed-modal'>" +
-				"<h3>" + title + "</h3>" +
-				"<div>" +
-				"<div class='mapsed-modal-message'>" +
-				msg +
-				"</div>" +
-				buttons +
-				"</div>" +
-				"</div>"
-				;
+			html = 
+`<div class='mapsed-modal'>
+	<h3>${title}</h3>
+	<div>
+		<div class='mapsed-modal-message'>
+		${msg}
+		</div>
+		${buttons}
+	</div>
+</div>`;
 
 			$modal = $(html).appendTo(_mapContainer);
 			$modal
@@ -1041,7 +1040,7 @@
 		/// 	https://developers.google.com/maps/documentation/javascript/examples/places-searchbox
 		/// </summary>
 		function addSearch() {
-			var id = "mapsed-search-box-" + _instance;
+			var id = `mapsed-search-box-${_instance}`;
 
 			if (_searchBox) {
 				// already added
@@ -1244,7 +1243,7 @@
 			;
 
 			if (addClass && addClass.length > 0) {
-				classes = " class='" + addClass + "' ";
+				classes = ` class='${addClass}' `;
 			}
 
 			// see if there's a tooltip added
@@ -1349,7 +1348,7 @@
 		function attachTooltip(forMarker) {
 			if (forMarker.id) {
 				// already created, so return
-				var item = $("#mapsed-" + forMarker.id);
+				var item = $(`#mapsed-${forMarker.id}`);
 				return item;
 			}
 
@@ -1359,16 +1358,16 @@
 			forMarker.id = newId;
 
 			var item = $(
-				"<div id='mapsed-" + newId + "' class='mapsed-root'>" +
-				"<input type='hidden' class='mapsed-lat' value='" + forMarker.position.lat() + "' />" +
-				"<input type='hidden' class='mapsed-lng' value='" + forMarker.position.lng() + "' />" +
-				"<input type='hidden' class='mapsed-can-edit' value='" + d.canEdit + "' />" +
-				"<input type='hidden' class='mapsed-place-id' value='" + d.place_id + "' />" +
-				"<input type='hidden' class='mapsed-user-data' value='" + d.userData + "' />" +
-				"<input type='hidden' class='mapsed-marker-type' value='" + forMarker.markerType + "' />" +
-				getViewTemplate() +
-				getEditTemplate() +
-				"</div>"
+`<div id='mapsed-${newId}' class='mapsed-root'>
+	<input type='hidden' class='mapsed-lat' value='${forMarker.position.lat()}' />
+	<input type='hidden' class='mapsed-lng' value='${forMarker.position.lng()}' />
+	<input type='hidden' class='mapsed-can-edit' value='${d.canEdit}' />
+	<input type='hidden' class='mapsed-place-id' value='${d.place_id}' />
+	<input type='hidden' class='mapsed-user-data' value='${d.userData}' />
+	<input type='hidden' class='mapsed-marker-type' value='${forMarker.markerType}' />
+	${getViewTemplate()}
+	${getEditTemplate()}
+</div>`
 			);
 
 			forMarker.tooltip = new gm.InfoWindow();
@@ -1458,51 +1457,46 @@
 			// tables!, yes I know, I know.  In my defence "proper" CSS 
 			// proved to be too unreliable when used with map tooltips!
 			var html =
-				"<table class='mapsed-container mapsed-view'>"
-				+ "<tr class='mapsed-view-header'>"
-				+ "<td colspan='3'>"
-				+ "{HEADER}"
-				+ "</td>"
-				+ "</tr>"
-				+ "<tr>"
-				+ "<td colspan='3'>"
-				+ "<h1 class='mapsed-name' title='{NAME}'>{SHORT_NAME}</h1>"
-				+ "</td>"
-				+ "</tr>"
-				+ "<tr>"
-				+ "<td class='mapsed-left'>"
-				+ "<address>"
-				+ "<div class='mapsed-street'>{STREET}</div>"
-				+ "<div class='mapsed-town'>{TOWN}</div>"
-				+ "<div class='mapsed-area'>{AREA}</div>"
-				+ "<div class='mapsed-postCode'>{POSTCODE}</div>"
-				+ "<div class='mapsed-country'>{COUNTRY}</div>"
-				+ "</address>"
-				+ "<a class='mapsed-telNo' href='tel:{TELNO}'>{TELNO}</a>"
-				+ "<a class='mapsed-website' href='{WEBSITE}' title='{WEBSITE}'>website</a>"
-				+ "<a class='mapsed-url' href='{MORE}' title='{MORE}'>more</a>"
-				+ "</td>"
-				+ "<td class='mapsed-photo'>"
-				+ "<a href='{MORE}'>{IMG src='{PHOTOURL}' /></a>"
-				+ "</td>"
-				+ "<td class='mapsed-add-info'>"
-				+ "{ADD_INFO}"
-				+ "</td>"
-				+ "</tr>"
-				+ "<tr class='mapsed-buttons'>"
-				+ "<td colspan='3'>"
-				+ "<button class='mapsed-select-button'>" + settings.ActionButtons.Select + "</button>"
-				+ "<button class='mapsed-edit-button'>" + settings.ActionButtons.Edit + "</button>"
-				+ "<button class='mapsed-delete-button'>" + settings.ActionButtons.Delete + "</button>"
-				+ "</td>"
-				+ "</tr>"
-				+ "<tr class='mapsed-view-footer'>"
-				+ "<td colspan='3'>"
-				+ "{FOOTER}"
-				+ "</td>"
-				+ "</tr>"
-				+ "</table>"
-			;
+				`<table class='mapsed-container mapsed-view'>
+	<tr class='mapsed-view-header'>
+		<td colspan='3'>{HEADER}</td>
+	</tr>
+	<tr>
+		<td colspan='3'>
+			<h1 class='mapsed-name' title='{NAME}'>{SHORT_NAME}</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class='mapsed-left'>
+			<address>
+				<div class='mapsed-street'>{STREET}</div>
+				<div class='mapsed-town'>{TOWN}</div>
+				<div class='mapsed-area'>{AREA}</div>
+				<div class='mapsed-postCode'>{POSTCODE}</div>
+				<div class='mapsed-country'>{COUNTRY}</div>
+			</address>
+			<a class='mapsed-telNo'   href='tel:{TELNO}'>{TELNO}</a>
+			<a class='mapsed-website' href='{WEBSITE}' title='{WEBSITE}'>website</a>
+			<a class='mapsed-url'     href='{MORE}'    title='{MORE}'>more</a>
+		</td>
+		<td class='mapsed-photo'>
+			<a href='{MORE}'>{IMG src='{PHOTOURL}' /></a>
+		</td>
+		<td class='mapsed-add-info'>
+			{ADD_INFO}
+		</td>
+	</tr>
+	<tr class='mapsed-buttons'>
+		<td colspan='3'>
+			<button class='mapsed-select-button'>${settings.ActionButtons.Select}</button>
+			<button class='mapsed-edit-button'>${settings.ActionButtons.Edit}</button>
+			<button class='mapsed-delete-button'>${settings.ActionButtons.Delete}</button>
+		</td>
+	</tr>
+	<tr class='mapsed-view-footer'>
+		<td colspan='3'>{FOOTER}</td>
+	</tr>
+</table>`;
 
 			return html;
 
@@ -1514,64 +1508,62 @@
 		/// </summary>
 		function getEditTemplate() {
 			var html =
-				"<div class='mapsed-container mapsed-address-entry mapsed-edit'>"
-				+ "{HEADER}"
-				+ "<h1>Place details:</h1>"
-				+ "<ul>"
-				+ "<li>"
-				+ "<label>Name"
-				+ "<input class='mapsed-name' type='text' placeholder='e.g. Bob sandwich shop' value='{NAME}' />"
-				+ "</label>"
-				+ "</li>"
-				+ "<li>"
-				+ "<label>Street"
-				+ "<input class='mapsed-street' type='text' placeholder='e.g. 3 Hemington place' value='{STREET}' />"
-				+ "</label>"
-				+ "</li>"
-				+ "<li>"
-				+ "<label>Town"
-				+ "<input class='mapsed-town' type='text' placeholder='e.g. Leeds' value='{TOWN}' />"
-				+ "</label>"
-				+ "</li>"
-				+ "<li>"
-				+ "<label>Area"
-				+ "<input class='mapsed-area' type='text' placeholder='e.g. West Yorkshire' value='{AREA}' />"
-				+ "</label>"
-				+ "</li>"
-				+ "<li>"
-				+ "<label>Postcode"
-				+ "<input class='mapsed-postCode' type='text' value='{POSTCODE}' />"
-				+ "</label>"
-				+ "</li>"
-				+ "<li>"
-				+ "<label>Country"
-				+ "<input class='mapsed-country' type='text' value='{COUNTRY}' />"
-				+ "</label>"
-				+ "</li>"
-				+ "<li>"
-				+ "<label>Tel No"
-				+ "<input class='mapsed-telNo' type='telephone' placeholder='contact telephone number' value='{TELNO}' />"
-				+ "</label>"
-				+ "</li>"
-				+ "<li>"
-				+ "<label>website"
-				+ "<input class='mapsed-website' type='url' placeholder='e.g. https://toepoke.co.uk' value='{WEBSITE}' />"
-				+ "</label>"
-				+ "</li>"
-				+ "<li>"
-				+ "<label>more url"
-				+ "<input class='mapsed-url' type='url' placeholder='e.g. https://www.youtube.com/@toepoke_co_uk' value='{MORE}' />"
-				+ "</label>"
-				+ "</li>"
-				+ "</ul>"
-				+ "<div class='mapsed-buttons'>"
-				+ "<button class='mapsed-save-button'>" + settings.ActionButtons.Save + "</button>"
-				// placeholder for error messages
-				+ "<span class='mapsed-error'>&nbsp;</span>"
-				+ "</div>"
-				+ "{FOOTER}"
-				+ "</div>"  // mapsed-address-entry
-				;
+`<div class='mapsed-container mapsed-address-entry mapsed-edit'>
+	{HEADER}
+	<h1>Place details:</h1>
+	<ul>
+		<li>
+		<label>Name
+		<input class='mapsed-name' type='text' placeholder='e.g. Bob sandwich shop' value='{NAME}' />
+		</label>
+		</li>
+	<li>
+		<label>Street
+		<input class='mapsed-street' type='text' placeholder='e.g. 3 Hemington place' value='{STREET}' />
+		</label>
+	</li>
+	<li>
+		<label>Town
+		<input class='mapsed-town' type='text' placeholder='e.g. Leeds' value='{TOWN}' />
+		</label>
+	</li>
+	<li>
+		<label>Area
+		<input class='mapsed-area' type='text' placeholder='e.g. West Yorkshire' value='{AREA}' />
+		</label>
+	</li>
+	<li>
+		<label>Postcode
+		<input class='mapsed-postCode' type='text' value='{POSTCODE}' />
+		</label>
+	</li>
+	<li>
+		<label>Country
+		<input class='mapsed-country' type='text' value='{COUNTRY}' />
+		</label>
+	</li>
+	<li>
+		<label>Tel No
+		<input class='mapsed-telNo' type='telephone' placeholder='contact telephone number' value='{TELNO}' />
+		</label>
+	</li>
+	<li>
+		<label>website
+		<input class='mapsed-website' type='url' placeholder='e.g. https://toepoke.co.uk' value='{WEBSITE}' />
+		</label>
+	</li>
+	<li>
+		<label>more url
+		<input class='mapsed-url' type='url' placeholder='e.g. https://www.youtube.com/@toepoke_co_uk' value='{MORE}' />
+		</label>
+	</li>
+	</ul>
+	<div class='mapsed-buttons'>
+		<button class='mapsed-save-button'>${settings.ActionButtons.Save}</button>
+		<span class='mapsed-error'>&nbsp;</span>
+	</div>
+	{FOOTER}
+</div>`;
 
 			return html;
 
@@ -1905,7 +1897,7 @@
 						if (settings.confirmDelete) {
 							var $vw = element.parents(".mapsed-view");
 							var model = getViewModel($vw);
-							var msg = "<strong>" + model.name + "</strong> will be deleted."
+							var msg = `<strong>${model.name}</strong> will be deleted.`;
 							_plugIn.confirmMsg("Confirm Delete", msg,
 								"Are you sure?",
 								// callback only fired if "Yes" is selected
@@ -1998,7 +1990,7 @@
 		// Full screen entry point
 		if (!this.length) {
 			var mapId = "mapsed-full-window",
-				_mapContainer = $("#" + mapId)	// see if we've already added one
+				_mapContainer = $(`#${mapId}`)	// see if we've already added one
 				;
 			if (!_mapContainer.length) {
 				_mapContainer = $("<div id='mapsed-full-window' class='mapsed-full-window'></div>");
