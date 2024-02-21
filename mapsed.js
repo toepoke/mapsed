@@ -596,6 +596,14 @@
 
 			// update the model to reflect the changes made
 			jQuery.extend(marker.details, place);
+			// ... markerType is held a two levels
+			marker.markerType = place.markerType;
+
+			// update the icon (place could be new and then been saved)
+			if (settings.getMarkerImage) {
+				var image = settings.getMarkerImage(_plugIn, marker.markerType);
+				marker.setIcon(image.url);
+			}
 
 			// once an object has been edited successfully it becomes a normal editable "custom" object
 			root.find(".mapsed-marker-type").val("custom");
