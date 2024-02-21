@@ -502,9 +502,9 @@
 					settings.onAdd(_plugIn, currMarker);
 				}
 			} else {
-				// Custom places user has previously added can be edited
-				// Google places ones can't (for hopefully obvious reasons!)
-				canEdit = (currMarker.details.markerType == "custom");
+				// Initially we show the view template.  User can then decide
+				// whether to SELECT, EDIT or DELETE the marker
+				canEdit = false;
 			}
 
 			currMarker.showTooltip(canEdit);
