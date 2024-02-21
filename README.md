@@ -341,6 +341,9 @@ Read [how to work locally](Local-Development.md) to play around and maybe contri
 
 ## Change Log
 
+- **1.2.0**
+[Bug fixes & ux improvements](https://github.com/toepoke/mapsed/issues?q=milestone%3A1.2.0)
+
 - **1.1.0**
 [Bug fix](https://github.com/toepoke/mapsed/issues?q=milestone%3A1.1.0)
 
