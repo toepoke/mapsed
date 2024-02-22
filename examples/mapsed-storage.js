@@ -76,7 +76,7 @@ var mapsedStorage = {
 		var value = JSON.stringify(savedPlace);
 		window.localStorage.setItem(key, value);
 
-		return value;
+		return savedPlace;
 	},
 
 
