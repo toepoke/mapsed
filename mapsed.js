@@ -27,13 +27,15 @@
 	;
 
 	$.fn.mapsed = function (options) {
-		// consts
-		// - Centre of the UK (ish ...)
-		var DEFAULT_CENTER = new google.maps.LatLng(53.175148, -1.423908);
-		var DEFAULT_ZOOM = 10;
-		// For positioning options, see https://developers.google.com/maps/documentation/javascript/reference/control#ControlPosition
-		var MAPSED_CONTROLBAR_POSITION = google.maps.ControlPosition.LEFT_CENTER;
-		var MAPSED_SEARCH_CONTROLBAR_POSITION = google.maps.ControlPosition.LEFT_TOP;
+
+		var defaults = {
+			// - Centre of the UK (ish ...)
+			DEFAULT_CENTER: new google.maps.LatLng(53.175148, -1.423908),
+			DEFAULT_ZOOM: 10,
+			// For positioning options, see https://developers.google.com/maps/documentation/javascript/reference/control#ControlPosition
+			MAPSED_CONTROLBAR_POSITION: google.maps.ControlPosition.LEFT_CENTER,
+			MAPSED_SEARCH_CONTROLBAR_POSITION: google.maps.ControlPosition.LEFT_TOP
+		};
 
 		// private plug-in variables
 		var _plugIn = this,           // Reference back to the "mapsed" plug-in instance
@@ -99,10 +101,10 @@
 				// ... be cautious when setting a zoom level _and_ defining custom places as you may set the
 				// ... level to such a level that your places aren't visible
 				// ... by default the map will expand to show all custom places, you can change this with the "forceCenter" option
-				zoom: DEFAULT_ZOOM,
+				zoom: defaults.DEFAULT_ZOOM,
 
 				// Default to the best theatre ever :-)
-				center: DEFAULT_CENTER,
+				center: defaults.DEFAULT_CENTER,
 
 				// Type of map to show initially
 				mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -1662,7 +1664,7 @@
 			// "showOnLoad" can be specified as an array or a single object, so if it's the
 			// latter, we'll use the former
 			var places = [];
-			var pos = settings.DEFAULT_CENTER;
+			var pos = defaults.DEFAULT_CENTER;
 
 			if ($.isArray(settings.showOnLoad))
 				places = settings.showOnLoad;
@@ -1671,10 +1673,10 @@
 
 			for (var i = 0; i < places.length; i++) {
 				var p = places[i],
-					pos = new gm.LatLng(p.lat, p.lng),
 					markerType = ""
-					;
+				;
 
+				pos = new gm.LatLng(p.lat, p.lng);
 				if (p.place_id && p.place_id.length > 0) {
 					// we'll get the details from Google
 					markerType = "google";
@@ -1698,7 +1700,7 @@
 
 			} else {
 				// Nothing else to go on, use the default
-				_gMap.setCenter(settings.DEFAULT_CENTER);
+				_gMap.setCenter(defaults.DEFAULT_CENTER);
 			}
 
 		} // addInitialPlaces
@@ -1923,11 +1925,11 @@
 			// add toolbar
 			var toolbarContainerHtml =
 "<div id='mapsed-toolbar' class='mapsed-toolbar-container'></div>";
-			_toolbarContainer = _plugIn.addMapContainer(toolbarContainerHtml, MAPSED_CONTROLBAR_POSITION);
+			_toolbarContainer = _plugIn.addMapContainer(toolbarContainerHtml, defaults.MAPSED_CONTROLBAR_POSITION);
 
 			var searchBarContainerHtml =
 "<div id='mapsed-searchbar-container' class='mapsed-searchbar-container'></div>";
-			_searchBarContainer = _plugIn.addMapContainer(searchBarContainerHtml, MAPSED_SEARCH_CONTROLBAR_POSITION);
+			_searchBarContainer = _plugIn.addMapContainer(searchBarContainerHtml, defaults.MAPSED_SEARCH_CONTROLBAR_POSITION);
 
 			// position geo before the search bar (works better me thinks)
 			if (settings.allowGeo) {
