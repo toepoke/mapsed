@@ -1,4 +1,37 @@
 
+// Some custom places to show when loading the full map, again to illustrate how it's done
+var _default_places = [
+	// City Varieties
+	{
+		// Flag this place should be shown as tooltip once the map has finished loading
+		autoShow: true,
+		// "canEdit" flags that the user can edit the contents of this place
+		// once the user has finished editing you will get the "onEditOK" event
+		canEdit: true,
+		lat: 53.798823,
+		lng: -1.5426760000000286,
+		// The "place_id" is a Google Places reference string 
+		// This is used to query Google Places for the details of the marker
+		// Useful if you only want to store references rather than a whole place object in your database
+		// Note: Google Places CANNOT be edited, only CUSTOM places can (see next place below)
+		place_id: "ChIJQd3IwBtceUgRha6laiANoro",
+		addInfo:
+			"<p>Ordering drinks for the <br/>interval is an idea!</p>",
+		userData: 1
+	},
+	// Random made up CUSTOM place
+	{
+		// Flag this place can edited (tooltip has an "Edit" button)
+		// Once editing has completed a callback is fired so you can save the details to your DB
+		canEdit: true,
+		lat: 53.79,
+		lng: -1.59,
+		name: "Somewhere",
+		street: "Over the rainbow, Up high way",
+		userData: 2
+	}
+];
+
 var mapsedStorage = {
 
 	/**
