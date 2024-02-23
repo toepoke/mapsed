@@ -64,10 +64,10 @@
 			gp = null                   // Short cut reference to the Google Places namespace (this is initialised in the constructor to give the Google API time to load on the page)
 			;
 
-		/// <summary>
-		/// Plug-in options:
-		/// Set of options to configure how the map will behave
-		/// </summary>
+		/**
+		 * Plug-in options:
+		 * Set of options to configure how the map will behave
+		 */
 		var settings = $.extend(true,{
 			// Array of places to show on the map initially
 			// (see accompanying examples for illustration)
@@ -217,47 +217,49 @@
 		// PUBLIC METHODS
 		//
 
-		/// <summary>
-		/// Get the settings the map was build with
-		/// </summary>
+		/**
+		 * Get the settings the map was build with
+		 * @returns settings
+		 */
 		this.getSettings = function () {
 			return settings;
 		};
 
 
-		/// <summary>
-		/// Gets the underlying Google Map object that was initially
-		/// created
-		/// - useful if you want to play directly with the map to provide
-		///   further functionality outside mapsed
-		/// </summary>
+		/**
+		 * Gets the underlying Google Map object that was initially
+		 * created
+		 * - useful if you want to play directly with the map to provide
+		 *   further functionality outside mapsed
+		 * @returns Google map object
+		 */
 		this.getGoogleMap = function () {
 			return _gMap;
 		};
 
 
-		/// <summary>
-		/// Usually you'll already know this (it's how you called up 
-		/// the mapsed jQuery plugin - however in full-window mode the div is
-		/// generated, so you'll need this then ... sometimes :-) 
-		/// - see "onPreInit" full-window example.
-		/// </summary>
+		/**
+		 * Usually you'll already know this (it's how you called up 
+		 * the mapsed jQuery plugin - however in full-window mode the div is
+		 * generated, so you'll need this then ... sometimes :-) 
+		 * - see "onPreInit" full-window example.
+		 * @returns caller DIV where the Google map is contained within
+		 */
 		this.getMapContainer = function () {
 			return _mapContainer;
 		};
 
 
-		/// <summary>
-		/// Helper method to make it a bit easier to add your own container onto the map.
-		/// This can contain multiple "controls" (HTML elements).
-		/// markUp - HTML for the control (just HTML, no jQuery or anything, ID is _not_ required) - typically just a generic DIV
-		/// ctrlPos - Where on the map the control should be added, available options details here:
-		///           https://developers.google.com/maps/documentation/javascript/controls#ControlPositioning
-		/// </summary>
-		/// <remarks>
-		/// Turns out adding a generic DIV to the map is the "right" way to do it, see:
-		/// https://developers.google.com/maps/documentation/javascript/controls#CustomControls
-		/// </remarks>
+		/**
+		 * Helper method to make it a bit easier to add your own container onto the map.
+		 * This can contain multiple "controls" (HTML elements).
+		 * Remarks:
+		 * Turns out adding a generic DIV to the map is the "right" way to do it, see:
+		 * https://developers.google.com/maps/documentation/javascript/controls#CustomControls
+		 * @param {any} markUp HTML for the control (just HTML, no jQuery or anything, ID is _not_ required) - typically just a generic DIV
+		 * @param {any} ctrlPos Where on the map the control should be added, available options details here - https://developers.google.com/maps/documentation/javascript/controls#ControlPositioning
+		 * @returns HTML element of the control added (to allow the caller to easily wire up events)
+		 */
 		this.addMapContainer = function (markUp, ctrlPos) {
 			var $container = null,
 				$html = null
@@ -279,11 +281,11 @@
 		};
 
 
-		/// <summary>
-		/// Turns off clicking of Google places of interest.
-		/// Note this turns off ALL styling so don't use this option
-		/// when using custom styles.
-		/// </summary>
+		/**
+		 * Turns off clicking of Google places of interest.
+		 * Note this turns off ALL styling so don't use this option
+		 * when using custom styles.
+		 */
 		this.disablePointsOfInterest = function () {
 			_gMap.styles =
 				[
@@ -298,10 +300,10 @@
 		},
 
 
-		/// <summary>
-		/// When in full-window mode, this will close the map 
-		/// and release resources.
-		/// </summary>
+		/**
+		 * When in full-window mode, this will close the map
+		 * and release resources.
+		 */
 		this.closeMap = function () {
 			// just kill the DIV container and Google object
 			_gMap = null;
@@ -323,47 +325,49 @@
 		} // closeMap
 
 
-		/// <summary>
-		/// Displays a modal message over the top of the map
-		/// title - text to appear in the title bar
-		/// msg - text to appear as the main message
-		/// callback - callback function to call when OK is clicked
-		/// </summary>
+		/**
+		 * Displays a modal message over the top of the map
+		 * @param {any} title text to appear in the title bar
+		 * @param {any} msg text to appear as the main message
+		 * @param {any} callback callback function to call when OK is clicked
+		 */
 		this.showMsg = function (title, msg, callback) {
 			buildMsg(title, msg, false/*doConfirm*/, "", callback);
 		}
 
-		/// <summary>
-		/// Displays the "Add" dialog once the calling application
-		/// has resolved what should be displayed for the new marker
-		/// </summary>
+		/**
+		 * Displays the "Add" dialog once the calling application
+		 * has resolved what should be displayed for the new marker
+		 * @param {any} marker - marker to show (i.e. the one we've just added)
+		 */
 		this.showAddDialog = function (marker) {
 			// new places can always be edited
 			marker.showTooltip(true/*inRwMode*/);
 		}
 
 
-		/// <summary>
-		/// Displays a modal confirmation over the top of the map, prompting
-		/// the user to "confirm" _some_ action
-		/// title - text to appear in the title bar
-		/// msg - text to appear as the main message
-		/// prompt - text to appear next to the action buttons
-		/// callback - callback function to call when OK is clicked
-		///            Note the callback is ONLY called when OK is clicked
-		/// </summary>
+		/**
+		 * Displays a modal confirmation over the top of the map, prompting
+		 * the user to "confirm" _some_ action
+		 * @param {any} title text to appear in the title bar
+		 * @param {any} msg text to appear as the main message
+		 * @param {any} prompt text to appear next to the action buttons
+		 * @param {any} callback callback function to call when OK is clicked
+		 *                       Note the callback is ONLY called when OK is clicked
+		 */
 		this.confirmMsg = function (title, msg, prompt, callback) {
 			buildMsg(title, msg, true/*doConfirm*/, prompt, callback);
 		}
 
 
-		/// <summary>
-		/// Moves the map location to the centre of the geo-location of the user
-		/// If custom places are defined, these are also added.
-		/// Note: Custom places are only added when the map is first loaded
-		/// If the user clicks the geo-button the custom places aren't added as the "geoSearch"
-		/// takes priority, overwriting the "showOnLoad" places (due to order of the callbacks)
-		/// </summary>
+		/**
+		 * Moves the map location to the centre of the geo-location of the user
+		 * If custom places are defined, these are also added.
+		 * Note: Custom places are only added when the map is first loaded
+		 * If the user clicks the geo-button the custom places aren't added as the "geoSearch"
+		 * takes priority, overwriting the "showOnLoad" places (due to order of the callbacks)
+		 * @returns none
+		 */
 		this.setMapCentreByGeo = function () {
 			if (!navigator.geolocation)
 				// GEO location not supported
@@ -450,10 +454,11 @@
 		// callbacks to the calling application (see events in the settings above)
 		//
 
-		/// <summary>
-		/// Internal event handler when the "Select" button is clicked
-		/// - Builds the model and forwards onto the callback for confirmation
-		/// </summary>
+		/**
+		 * Internal event handler when the "Select" button is clicked
+		 * - Builds the model and forwards onto the callback for confirmation
+		 * @param {any} element Element of the place being selected
+		 */
 		function onPlaceSelect(element) {
 			var $root = element.parents(".mapsed-root");
 			var $vw = element.parents(".mapsed-view");
@@ -466,10 +471,11 @@
 		} // onPlaceSelect
 
 
-		/// <summary>
-		/// Internal event handler when the "Edit" button is clicked
-		/// - Swaps the tooltip to edit mode, prompting for data entry
-		/// </summary>
+		/**
+		 * Internal event handler when the "Edit" button is clicked
+		 * - Swaps the tooltip to edit mode, prompting for data entry
+		 * @param {any} element 
+		 */
 		function onPlaceEdit(element) {
 			var $root = element.parents(".mapsed-root");
 			var lat = $root.find(".mapsed-lat").val();
@@ -513,9 +519,10 @@
 		}
 
 
-		/// <summary>
-		/// Internal event handler when the "Add" button is clicked
-		/// </summary>
+		/**
+		 * Internal event handler when the "Add" button is clicked
+		 * @param {any} evt
+		 */
 		function onPlaceAdd(evt) {
 			evt.preventDefault();
 
@@ -545,10 +552,11 @@
 		} // onPlaceAdd
 
 
-		/// <summary>
-		/// Internal event handler when the "Delete" button is clicked
-		/// - Builds the model and forwards onto the callback for confirmation.
-		/// </summary>
+		/**
+		 * Internal event handler when the "Delete" button is clicked
+		 * - Builds the model and forwards onto the callback for confirmation.
+		 * @param {any} element
+		 */
 		function onPlaceDelete(element) {
 			var $root = element.parents(".mapsed-root");
 			var $vw = $root.find(".mapsed-view");
@@ -566,12 +574,14 @@
 		} // onPlaceDelete
 
 
-		/// <summary>
-		/// Internal event handler when the "Save" button is clicked (in the edit dialog)
-		/// - Builds the model and forwards onto the callback for confirmation and validation
-		/// - Should the validation fail (callback returns error messages) the edit dialog
-		///   will remain for the user to resolve the errors
-		/// </summary>
+		/**
+		 * Internal event handler when the "Save" button is clicked (in the edit dialog)
+		 * - Builds the model and forwards onto the callback for confirmation and validation
+		 * - Should the validation fail (callback returns error messages) the edit dialog
+		 *   will remain for the user to resolve the errors
+		 * @param {any} element
+		 * @returns none
+		 */
 		function onPlaceSave(element) {
 			var root = element.parents(".mapsed-root");
 			var $rw = root.find(".mapsed-edit");
@@ -623,11 +633,11 @@
 		// - Set of Google events consumed by the plug-in
 		//
 
-		/// <summary>
-		/// Fires once the map has initially loaded.  This lets us do some initialisation
-		/// for the map (e.g. change positions of buttons we've added to the map as these are
-		/// set by Google Maps so we have to wait until the map is loaded before we tweak them).
-		/// </summary>
+		/**
+		 * Fires once the map has initially loaded.  This lets us do some initialisation
+		 * for the map (e.g. change positions of buttons we've added to the map as these are
+		 * set by Google Maps so we have to wait until the map is loaded before we tweak them).
+		 */
 		function gmMapLoaded() {
 
 			if (_helpDlg) {
@@ -643,12 +653,12 @@
 		} // gmMapLoaded
 
 
-		/// <summary>
-		/// When the user submits a search (see "searchOptions")
-		/// we clear any existing hits otherwise it will get confusing really
-		/// quickly.
-		/// (plus this is the same behaviour as Google Maps itself)
-		/// </summary>
+		/**
+		 * When the user submits a search (see "searchOptions")
+		 * we clear any existing hits otherwise it will get confusing really
+		 * quickly.
+		 * (plus this is the same behaviour as Google Maps itself)
+		 */
 		function clearMarkers() {
 			if (_markers && _markers.length > 0) {
 				for (var i = 0; i < _markers.length; i++) {
@@ -666,11 +676,13 @@
 		} // clearMarkers
 
 
-		/// <summary>
-		/// Event hookup for when a place is selected by the end user from the search
-		/// control (if enabled).
-		/// places: Results from the Google Places API query
-		/// </summary>
+		/**
+		 * Event hookup for when a place is selected by the end user from the search
+		 * control (if enabled).
+		 * @param {any} places Results from the Google Places API query
+		 * @param {any} status Status of the query (from Google API) - mainly used to see if there were _any_ results.
+		 * @param {any} pagination Flags whether there are more results to be found
+		 */
 		function gmPlaceSelected(places, status, pagination) {
 			if (!_firstSearch) {
 				// If we're pre-populated the map with markers (via "showOnLoad" setting)
@@ -725,16 +737,18 @@
 		} // gmPlaceSelected
 
 
-		/// <summary>
-		/// Helper method to perform a search to the Google Places API, translate
-		/// the results into something more useful for us and fire a callback once complete
-		/// </summary>
+		/**
+		 * Helper method to perform a search to the Google Places API, translate
+		 * the results into something more useful for us and fire a callback once complete
+		 * @param {any} forMarker Marker to show details of
+		 * @param {any} callback Callback to execute once details have been processed
+		 * @returns noe
+		 */
 		function getPlaceDetails(forMarker, callback) {
 			if (!forMarker.details)
 				return;
 			if (!forMarker.details.place_id)
 				return;
-
 
 			var request = {
 				placeId: forMarker.details.place_id
@@ -758,12 +772,13 @@
 		} // getPlaceDetails
 
 
-		/// <summary>
-		/// Map boundary change event (moving map, zooming in or out, etc).
-		/// - Required so we can tell the search box (if enabled) that the 
-		///   boundary of the map (and therefore the boundary the search should
-		///   be applied to) has changed.
-		/// </summary>
+		/**
+		 * Map boundary change event (moving map, zooming in or out, etc).
+		 * 
+		 * Required so we can tell the search box (if enabled) that the
+		 * boundary of the map (and therefore the boundary the search should
+		 * be applied to) has changed.
+		 */
 		function gmBoundsChanged() {
 			var bounds = _gMap.getBounds();
 			if (bounds) {
@@ -779,17 +794,17 @@
 		//
 		// PRIVATE METHODS
 		//
-		//		
+		//
 
-		/// <summary>
-		/// Helper for building up a modal message on the screen.
-		/// title - text for the title bar
-		/// msg - message text to appear
-		/// doConfirm - internal flag tell us whether we're building an "alert" or a "confirm"
-		/// prompt - text to appear next to the action buttons
-		/// callback - callback for when Yes/OK is clicked.  
-		///            Note the callback is _NOT_ called if "cancel" is pressed.
-		/// </summary>
+		/**
+		 * Helper for building up a modal message on the screen.
+		 * @param {any} title text for the title bar
+		 * @param {any} msg message text to appear
+		 * @param {any} doConfirm internal flag tell us whether we're building an "alert" or a "confirm"
+		 * @param {any} prompt text to appear next to the action buttons
+		 * @param {any} callback callback for when Yes/OK is clicked
+		 *                       Note the callback is _NOT_ called if "cancel" is pressed.
+		 */
 		function buildMsg(title, msg, doConfirm, prompt, callback) {
 			var $modal = null,
 				html = "",
@@ -852,11 +867,16 @@
 		} // buildMsg
 
 
-		/// <summary>
-		/// Convenience function to add a new marker onto a map
-		/// and wire up the events (click, etc).
-		/// </summary>
-		function addMarker(model, position, markerType, inBoundary) {
+		/**
+		 * Convenience function to add a new marker onto a map
+		 * and wire up the events (click, etc).
+		 * @param {any} model Data model for the marker (i.e. it's address details)
+		 * @param {any} position Position of the marker (lat/lng)
+		 * @param {any} markerType Type of marker ("add", "custom", "google", etc)
+		 * @param {any} bounds Lat/Lng boundary of the marker
+		 * @returns Created marked
+		 */
+		function addMarker(model, position, markerType, bounds) {
 			var marker = createMarker(
 				model.name,
 				position,
@@ -867,7 +887,7 @@
 			jQuery.extend(marker.details, model);
 			attachTooltip(marker);
 			_markers.push(marker);
-			inBoundary.extend(position);
+			bounds.extend(position);
 
 			// wire up click event
 			gm.event.addListener(marker, "click", onMarkerSelect);
@@ -884,10 +904,13 @@
 		} // addMarker
 
 
-		/// <summary>
-		/// Convenience function to shorten a string to a 
-		/// maximum length, adding an ellipsis (...) if required.
-		/// </summary>
+		/**
+		 * Convenience function to shorten a string to a
+		 * maximum length, adding an ellipsis (...) if required.
+		 * @param {any} value String to shorten
+		 * @param {any} maxLen Longest allowed length of the string
+		 * @returns value shortened to maxLen (or full if < maxLen)
+		 */
 		function shorten(value, maxLen) {
 			var shortValue = value;
 
@@ -904,9 +927,13 @@
 		} // shorten
 
 
-		/// <summary>
-		/// Quick and dirty replace method for applying templates
-		/// </summary>
+		/**
+		 * Quick and dirty replace method for applying templates
+		 * @param {any} find Text to find
+		 * @param {any} replace Text to replace with
+		 * @param {any} str Source text to apply find/replace against
+		 * @returns "str" with replacements applied
+		 */
 		var replaceAll = function (find, replace, str) {
 			if (replace == undefined)
 				replace = "";
@@ -915,10 +942,14 @@
 		} // replaceAll
 
 
-		/// <summary>
-		/// Quick and dirty template function, just does a replacement
-		/// according to our model ... nothing more advanced than that!
-		/// </summary>
+		/**
+		 * Quick and dirty template function, just does a replacement
+		 * according to our model ... nothing more advanced than that!
+		 * @param {any} tmpl Template string to apply template to
+		 * @param {any} model Data to be applied (i.e. address details of the "place")
+		 * @param {any} renderOptions Options to take into account (typically custom headers & footers)
+		 * @param {any} $ctx Element to apply template too (i.e. View or Edit element)
+		 */
 		function applyTemplate(tmpl, model, renderOptions, $ctx) {
 			var header = "", footer = "";
 			tmpl = replaceAll("{NAME}", model.name, tmpl);
@@ -955,10 +986,12 @@
 		} // applyTemplate
 
 
-		/// <summary>
-		/// Ensures when the view is shown any entities with nothing in them aren't 
-		/// shown (and any that are shown, are shown correctly)
-		/// </summary>
+		/**
+		 * Ensures when the view is shown any entities with nothing in them aren't
+		 * shown (and any that are shown, are shown correctly)
+		 * @param {any} model Data model to examine (e.g. if there's no data in the address we want to hide that part of the diaog)
+		 * @param {any} $vw Element to apply the hiding of data to (this _will_ be the ReadOnly template)
+		 */
 		function hideEmpty(model, $vw) {
 			// and hide bits that aren't relevant (or empty)
 			$vw.find(".mapsed-name").parent().toggle(model.name && model.name.length > 0);
@@ -1021,11 +1054,13 @@
 		} // hideEmpty
 
 
-		/// <summary>
-		/// Finds a marker in the loaded set based on the provided lat/lng 
-		/// co-ordinates
-		/// - the model doesn't have a "place_id" to the markers, hence the need to find them
-		/// </summary>
+		/**
+		 * Finds a marker in the loaded set based on the provided lat/lng given co-ordinates
+		 * - the model doesn't have a "place_id" to the markers, hence the need to find them
+		 * @param {any} lat Latitude position to search against
+		 * @param {any} lng Longitude position to search against
+		 * @returns Marker if found, null otherwise
+		 */
 		function findMarker(lat, lng) {
 			var marker = null;
 
@@ -1042,13 +1077,12 @@
 		} // findMarker
 
 
-		/// <summary>
-		/// Adds a search box to the top left of the map which the user can use
-		/// to search for places of interest.
-		///
-		/// Google Maps API:
-		/// 	https://developers.google.com/maps/documentation/javascript/examples/places-searchbox
-		/// </summary>
+		/**
+		 * Adds a search box to the top left of the map which the user can use
+		 * to search for places of interest.
+		 * @see https://developers.google.com/maps/documentation/javascript/examples/places-searchbox
+		 * @returns none
+		 */
 		function addSearch() {
 			var id = `mapsed-search-box-${_instance}`;
 
@@ -1110,10 +1144,11 @@
 		} // addSearch
 
 
-		/// <summary>
-		/// Adds a "+" icon to the top right of the map, allowing new places to 
-		/// added to the map
-		/// </summary>
+		/**
+		 * Adds a "+" icon to the top right of the map, allowing new places to
+		 * added to the map
+		 * @returns none
+		 */
 		function addNewPlaceButton() {
 			if (_addBtn)
 				// already done
@@ -1129,10 +1164,11 @@
 		} // addNewPlaceButton
 
 
-		/// <summary>
-		/// When in full window mode we need a close button so users can exit
-		/// the map (without having to select a place).
-		/// </summary>
+		/**
+		 * When in full window mode we need a close button so users can exit
+		 * the map (without having to select a place).
+		 * @returns none
+		 */
 		function addCloseButton() {
 			if (_closeBtn)
 				// already done
@@ -1176,10 +1212,11 @@
 		} // addCloseButton
 
 
-		/// <summary>
-		/// Adds a geo location button to the map, which the user can click to set their
-		/// location based on their geo-location.
-		/// </summary>
+		/**
+		 * Adds a geo location button to the map, which the user can click to set their
+		 * location based on their geo-location.
+		 * @returns none
+		 */
 		function addGeoLocationButton() {
 			if (_geoBtn)
 				// already added
@@ -1199,10 +1236,11 @@
 		} // addGeoLocationButton
 
 
-		/// <summary>
-		/// Places a help (?) icon at the top right of the map, allowing
-		/// instructions to be added to the end user of the map
-		/// </summary>
+		/**
+		 * Places a help (?) icon at the top right of the map, allowing
+		 * instructions to be added to the end user of the map
+		 * @returns none
+		 */
 		function addHelpButton() {
 			if (_helpDlg)
 				// already done
@@ -1235,17 +1273,18 @@
 		} // addHelpButton
 
 
-		/// <summary>
-		/// Convenience function for creating control buttons on the map (re-uses
-		/// the public "addMapContainer" method.  This is just a short-cut for buttons
-		/// buttonText: Text to appear in the button
-		///             You can also add a tooltip by prefixing it with a pipe, e.g. "Go|Perform a search" will give
-		///             a tooltip of "Perform a search"
-		/// ctrlPos: Where on the map the control should be added (TOP_LEFT, TOP_RIGHT, etc)
-		///          For options, see https://developers.google.com/maps/documentation/javascript/controls#ControlPositioning
-		/// addClass: Additional classes to add to the button (to target CSS)
-		/// onClickEvent: Callback to execute when the button is clicked
-		/// </summary>
+		/**
+		 * Convenience function for creating control buttons on the map (re-uses
+		 * the public "addMapContainer" method.  This is just a short-cut for buttons
+		 * @param {any} buttonText Text to appear in the button
+		 *                         You can also add a tooltip by prefixing it with a pipe, e.g. "Go|Perform a search" will give
+		 *                         a tooltip of "Perform a search"
+		 * @param {any} ctrlPos Where on the map the control should be added (TOP_LEFT, TOP_RIGHT, etc)
+		 *                      For options, see https://developers.google.com/maps/documentation/javascript/controls#ControlPositioning
+		 * @param {any} addClass Additional classes to add to the button (to target CSS)
+		 * @param {any} onClickEvent Callback to execute when the button is clicked
+		 * @returns Element of the button add (DOM element, not jQuery)
+		 */
 		function addToolBarButton(buttonText, ctrlPos, addClass, onClickEvent) {
 			var btn = null,
 				classes = "",
@@ -1278,9 +1317,9 @@
 		} // addToolBarButton
 
 
-		/// <summary>
-		/// Closes all marker tooltips that are on-screen.
-		/// </summary>
+		/**
+		 * Closes all marker tooltips that are on-screen.
+		 */
 		function closeTooltips() {
 			if (_markers && _markers.length > 0) {
 				for (var i = 0; i < _markers.length; i++) {
@@ -1293,18 +1332,19 @@
 		} // closeTooltips
 
 
-		/// <summary>
-		/// Helper method to create a new marker.
-		/// title (string): Tooltip when hovering over the marker on the map (before the dialog tooltip is displayed)
-		/// latLon (Google LatLng object): Detailing where the marker should be placed
-		/// isDraggable (bool): Flags the marker should be draggable (only used when adding new custom markers)
-		/// type (string): Internal flag for the plug-in, can be:
-		///   new - Marker is for a new "custom" place that is not yet know about
-		///   google - Marker is derived from Google Places API (result from a Places search)
-		///   custom - Marker is one specified by the calling application.
-		///            Note: A marker can start as "new", but once the application is told about it
-		///            it becomes "custom" - notion being the application has saved it to their DB.
-		/// </summary>
+		/**
+		 * Helper method to create a new marker.
+		 * @param {string} title Tooltip when hovering over the marker on the map (before the dialog tooltip is displayed)
+		 * @param {google LatLng object} latLng Detailing where the marker should be placed
+		 * @param {any} isDraggable Flags the marker should be draggable (only used when adding new custom markers)
+		 * @param {any} type Internal flag for the plug-in, can be:
+		 *   new - Marker is for a new "custom" place that is not yet know about
+		 *   google - Marker is derived from Google Places API (result from a Places search)
+		 *   custom - Marker is one specified by the calling application.
+		 *            Note: A marker can start as "new", but once the application is told about it
+		 *            it becomes "custom" - notion being the application has saved it to their DB.
+		 * @returns
+		 */
 		function createMarker(title, latLng, isDraggable, type) {
 			var image = null;
 
@@ -1350,11 +1390,13 @@
 		} // createMarker
 
 
-		/// <summary>
-		/// Builds up the content for an InfoWindow object, which builds up the 
-		/// read-only and read-write view templates ready for when the tooltip 
-		/// is shown.
-		/// </summary>
+		/**
+		 * Builds up the content for an InfoWindow object, which builds up the
+		 * read-only and read-write view templates ready for when the tooltip
+		 * is shown.
+		 * @param {any} forMarker Marker element to attach tooltip to
+		 * @returns jQuery element tooltip was attached to
+		 */
 		function attachTooltip(forMarker) {
 			if (forMarker.id) {
 				// already created, so return
@@ -1391,12 +1433,14 @@
 		} // createTooltip
 
 
-		/// <summary>
-		/// Handles the showing of the appropriate tooltip, depending 
-		/// on whether we're in "edit" or "read" mode.
-		/// Also attempts to get more detailed place information from the 
-		/// Google Places API if it can (only done once per tooltip).
-		/// </summary>
+		/**
+		 * Handles the showing of the appropriate tooltip, depending
+		 * on whether we're in "edit" or "read" mode.
+		 * Also attempts to get more detailed place information from the
+		 * Google Places API if it can (only done once per tooltip).
+		 * @param {any} inRwMode Flags whether tooltip is showing the edit template (true) or the view template (false)
+		 * @returns none
+		 */
 		function showTooltip(inRwMode) {
 			var marker = this;
 			if (!marker.tooltip) {
@@ -1460,14 +1504,15 @@
 		} // showTooltip
 
 
-		/// <summary>
-		/// Template for the read-only view.
-		/// </summary>
+		/**
+		 * Template for the read-only view.
+		 * @returns View template string
+		 */
 		function getViewTemplate() {
 			// tables!, yes I know, I know.  In my defence "proper" CSS 
 			// proved to be too unreliable when used with map tooltips!
 			var html =
-				`<table class='mapsed-container mapsed-view'>
+`<table class='mapsed-container mapsed-view'>
 	<tr class='mapsed-view-header'>
 		<td colspan='3'>{HEADER}</td>
 	</tr>
@@ -1513,9 +1558,10 @@
 		} // getViewTemplate
 
 
-		/// <summary>
-		/// Template for the read-write view.
-		/// </summary>
+		/**
+		 * Template for the read-write view.
+		 * @returns Edit template string
+		 */
 		function getEditTemplate() {
 			var html =
 `<div class='mapsed-container mapsed-address-entry mapsed-edit'>
@@ -1580,11 +1626,13 @@
 		} // getEditTemplate
 
 
-		/// <summary>
-		/// Creates a model from the view.  The "view" can be the 
-		/// read-only select view, or the read-write editor view, the method
-		/// works out which is appropriate
-		/// </summary>
+		/**
+		 * Creates a model from the view.  The "view" can be the
+		 * read-only select view, or the read-write editor view, the method
+		 * works out which is appropriate
+		 * @param {any} $vw jQuery element to take model data from
+		 * @returns Extracted data model
+		 */
 		function getViewModel($vw) {
 			var $root = $vw.parents(".mapsed-root");
 			var model = {
@@ -1650,10 +1698,10 @@
 		} // sanitise
 
 
-		/// <summary>
-		/// Draws any custom places on the map when the map is first drawn.
-		/// - see "settings.showOnLoad"
-		/// </summary>
+		/**
+		 * Draws any custom places on the map when the map is first drawn.
+		 * @see settings.showOnLoad
+		 */
 		function addInitialPlaces() {
 			var placeDetails = [],
 				bounds = new gm.LatLngBounds()
@@ -1706,10 +1754,12 @@
 		} // addInitialPlaces
 
 
-		/// <summary>
-		/// Performs a search on the map for the given search string, drawing
-		/// the results on the map
-		/// </summary>
+		/**
+		 * Performs a search on the map for the given search string, drawing
+		 * the results on the map
+		 * @param {any} searchFor Text string to search Google Places API for
+		 * @returns none
+		 */
 		function doSearch(searchFor) {
 			var boundary = _gMap.getBounds();
 			var location = null;
@@ -1753,12 +1803,14 @@
 		} // doSearch
 
 
-		/// <summary>
-		/// The "address_components" object provided by the API is quite, erm
-		/// "extensive".  This cuts it down into something a little more
-		/// usable for our purposes.
-		/// details: object to be normalised (this is a Google Places result)
-		/// </summary>
+		/**
+		 * The "address_components" object provided by the API is quite, erm
+		 * "extensive".  This cuts it down into something a little more
+		 * usable for our purposes.
+		 * 
+		 * @param {any} details object to be normalised (this is a Google Places result)
+		 * @param {any} fromGP hit from the Google Places API (to take data from)
+		 */
 		function normalisePlacesApiAddress(details, fromGP) {
 			var ac = fromGP.address_components;
 
@@ -1791,6 +1843,14 @@
 
 		} // normalisePlacesApiAddress
 
+
+		/**
+		 * Converts a single string address into it's component parts for 
+		 * the data model
+		 * @param {any} details Data model object to be populated
+		 * @param {any} src CSV address to extract data from
+		 * @returns none
+		 */
 		function normaliseFormattedAddress(details, src) {
 			if (!src)
 				return;
@@ -1810,9 +1870,13 @@
 		}
 
 
-		/// <summary>
-		/// Convenience function for finding parts of the address
-		/// </summary>
+		/**
+		 * Convenience function for finding parts of the address
+		 * @param {any} addressParts Google Places address to find part from
+		 * @param {any} typeName What to search for
+		 * @param {any} getShortVersion Flags whether short version of data should be returned (true), false returns long version
+		 * @returns Part data found
+		 */
 		function findPart(addressParts, typeName, getShortVersion) {
 			if (addressParts == null || addressParts.length == 0)
 				// address not available
@@ -1853,9 +1917,9 @@
 		// Initialisers
 		//
 
-		/// <summary>
-		/// Constructor
-		/// </summary>
+		/**
+		 * Constructor
+		 */
 		var ctor = function () {
 			var containerId = null;
 
