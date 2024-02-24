@@ -52,7 +52,6 @@
 			_fullWin = false,           // Flags "mapsed" is in full-window mode, which means "mapsed" created the DIV we're in
 			_firstSearch = true,        // Used to ensure we don't clear markers when the map is drawn for the first time (so any "showOnLoad" markers aren't cleared)
 			_hasMapInitFired = false,   // Used to flag initialisation of the map (after Google Maps API has finished drawing it)
-			_areBoundsSet = false,      // Used to flag that an event has set the boundary (so we don't set the zoom/center manually as GM will calc this for us)
 			_helpBtn = null,            // Reference to the help dialog button ([?])
 			_helpDlg = null,            // Reference to the help dialog that is toggled by the help button
 			_closeBtn = null,           // Reference to the close button (only used in full-window mode)
@@ -793,8 +792,6 @@
 				_gmSearchBox.setBounds(bounds);
 			}
 
-			// Boundary has been set, so don't set the zoom/center
-			_areBoundsSet = true;
 		} // gmBoundsChanged
 
 
@@ -934,8 +931,6 @@
 				// show on load enabled for marker
 				marker.showTooltip(false/*inRwMode*/);
 			}
-
-			_areBoundsSet = true;
 
 			return marker;
 
@@ -1160,7 +1155,6 @@
 			);
 			// and again for when they zoom in/out
 			gm.event.addListener(_gMap, "bounds_changed", gmBoundsChanged);
-
 
 			// add search button
 			_searchBtn = createButton("Go", "mapsed-search-button, mapsed-control-button", function (evt) {
