@@ -100,7 +100,7 @@
 				<div class="row">
 					<div class="col-md-10 col-md-offset-1">
 						<div class="portfolio-item">
-							<h3 class="text-center">Loading Places</h3>
+							<h3 class="text-center" id="loading-places">Loading Places</h3>
 								<p class="lead">
 									Here we're illustrating loading places from our own database,
 									and telling <em>mapsed</em> what places to draw
@@ -155,7 +155,7 @@ $("#custom-places").mapsed({
 				<div class="row">
 					<div class="col-md-10 col-md-offset-1">
 						<div class="portfolio-item">
-							<h3 class="text-center">Place Picker</h3>
+							<h3 class="text-center" id="place-picker">Place Picker</h3>
 							<p class="lead">
 								Ooooh, this time there's a <em>Select</em> button!
 							</p>
@@ -222,7 +222,7 @@ $("#place-picker").mapsed({
 				<div class="row">
 					<div class="col-md-10 col-md-offset-1">
 						<div class="portfolio-item">
-							<h3 class="text-center">Adding Places</h3>
+							<h3 class="text-center" id="adding-places">Adding Places</h3>
 							<p class="lead">
 								Being able to <em>Select</em> places is pretty useful,
 								but a waste of time if we can't create them!
@@ -315,7 +315,7 @@ $("#add-places").mapsed({
 				<div class="row">
 					 <div class="col-md-10 col-md-offset-1">
 						<div class="portfolio-item">
-							<h3 class="text-center">Deleting Places</h3>
+							<h3 class="text-center" id="deleting-places">Deleting Places</h3>
 							<p class="lead">
 								Completing our <a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">cruddy</a>
 								demos we can <strong>delete</strong> places too.
@@ -385,7 +385,7 @@ $("#add-places").mapsed({
 				<div class="row">
 					<div class="col-md-10 col-md-offset-1">
 						<div class="portfolio-item">
-							<h3 class="text-center">Searching for Places</h3>
+							<h3 class="text-center" id="searching-for-places">Searching for Places</h3>
 							<p class="lead">
 								All this viewing and editing <em>custom</em> places
 								is nice, but a bit limiting.  &ldquo;I want to hook-up
@@ -469,8 +469,64 @@ $("#search-for-places").mapsed({
 				</div>
 				<hr>
 
-			</div>
+				<div class="row">
+					<div class="col-md-10 col-md-offset-1">
+						<div class="portfolio-item">
+							<h3 class="text-center" id="database-integration">Database Integration</h3>
+							<p class="lead">
+								<a href="#loading-places">Loading places</a> on start-up is great for just placing
+								a few office locations on map.  But if you have thousands of markers you'll need
+								be able to hook into your back-end database.
+							</p>
+							<p class="lead">
+								This is where the <a href="https://github.com/toepoke/mapsed/blob/master/README.md#onMapMoved">onMapMoved</a>
+								hook comes into play.
+							</p>
+							<div id="map-moved" class="small-map"></div>
+							<p class="pull-right">
+								<a class="show-code">show/hide code illustration</a>
+							</p>
+							<div class="clearfix"></div>
+							<div class="code">
+								<pre class="prettyprint lang-js">
+$("#map-moved").mapsed({
 
+  onMapMoved: function (north, south, east, west) {
+    var hits = [];
+    console.log("onMapMoved:", north, south, east, west);
+
+    // Mimc back-end search for places within the boundary
+    for (var i = 0; i < _example6_places.length; i++) {
+      var place = _sporadic_places[i];
+      
+      var withinLat = (place.lat >= south && place.lat <= north);
+      var withinLng = (place.lng >= west && place.lng <= east);
+      
+      if (withinLat && withinLng) {
+        hits.push(place);
+      }
+    }
+
+    return hits;
+  }
+
+});
+									</pre>
+							</div>
+							<p class="lead">
+								In the example above there's no markers shown as the map isn't zoomed to a point
+								where there are any to display.  Keep zooming out and all will be revealed.
+							</p>
+							<p class="lead">
+								For bonus points, open <strong>DevTools</strong>, and you'll see feedback as it
+								happens 😊.
+							</p>
+						</div>
+					</div>
+				</div>
+				<hr>
+
+			</div>
 		</div>
 		<!-- /Examples -->
 
@@ -614,6 +670,7 @@ $("#search-for-places").mapsed({
 		<script src="examples/03-add-places-example.js"></script>
 		<script src="examples/04-delete-places-example.js"></script>
 		<script src="examples/05-search-for-places-example.js"></script>
+		<script src="examples/07-map-moved-example.js"></script>
 		<script src="examples/06-full-example.js"></script>
 
 		<!-- Custom JavaScript for the Side Menu and Smooth Scrolling -->

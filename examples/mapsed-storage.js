@@ -32,6 +32,58 @@ var _default_places = [
 	}
 ];
 
+// Set of places around the UK in areas that aren't likely to show up when zoomed in
+// folllowing a search.  This is so we can test the onMapMoved event which mimics adding 
+// "custom" places from a back-end database.
+var _sporadic_places = [
+	{
+		canEdit: true,
+		lat: 50.0657041,
+		lng: -5.713174599999999,
+		name: "Land's End",
+		street: "Land's End",
+	},
+	{
+		canEdit: false,
+		lat: 51.5054564,
+		lng: -0.07535649999999999,
+		name: "Tower Bridge",
+		street: "Tower Bridge Road",
+	},
+	{
+		canEdit: false,
+		lat: 58.6373368,
+		lng: -3.0688997,
+		name: "John o' Groats",
+		town: "John o' Groats",
+		postCode: "KW1 4YR"
+	},
+	{
+		canEdit: false,
+		lat: 27.173891,
+		lng: 78.042068,
+		name: "Taj Mahal",
+		town: "Agra",
+		postCode: "282001"
+	},
+	{
+		canEdit: false,
+		lat: -25.344490,
+		lng: 131.035431,
+		name: "Ayers Rock",
+		town: "Petermann NT",
+		postCode: "0872"
+	},
+	{
+		canEdit: false,
+		lat: 21.315603,
+		lng: -157.858093,
+		name: "Nankastu SC Hawaii Soccer Academy",
+		town: "Honolulu",
+		postCode: "96826"
+	}
+];
+
 var mapsedStorage = {
 
 	/**

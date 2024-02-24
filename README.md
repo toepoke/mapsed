@@ -314,6 +314,15 @@ Once your code has resolved the place details the *showAddDialog* method must be
 
 [See full-window example](examples/06-full-example.js)
 
+### onMapMoved
+
+Method called when maps [Idle](https://developers.google.com/maps/documentation/javascript/reference/map#Map.idle) event fires (e.g. when the user has finished panning or zooming).
+
+This gives you the opportunity to query your back-end database for any _places_ that are located within the <attr title="North, South, East and West">NSEW</abbr> _boundary_.
+
+[See full-window example](examples/06-full-example.js)
+
+
 ### showAddDialog *(method)*
 
 Once a new place has been resolved, use *showAddDialog* to have *mapsed* show the resulting dialog.

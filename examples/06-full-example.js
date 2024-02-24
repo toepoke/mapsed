@@ -99,7 +99,7 @@ function fullWindowExample(e) {
 		// Map initialisation options to pass onto Google Maps
 		mapOptions: {
 			zoom: 15,
-			center: new google.maps.LatLng(51.501364 , -0.14189),
+			center: new google.maps.LatLng(51.501364, -0.14189),
 			styles: _avocadoStyle
 		},
 
@@ -109,20 +109,20 @@ function fullWindowExample(e) {
 			initSearch: "Football near me",
 			placeholder: "Search for \"5aside\" ..."
 		},
-		
+
 		// Turn geo button on
 		allowGeo: true,
 
 		// Emulate places being loaded from a db
 		showOnLoad: _myPlaces,
-		
+
 		// Adds the "+" button to the control bar at the top right of the map
 		allowAdd: true,
 		disablePoi: true,
 
 		// Illustrating custom behaviour
 		// ... changing the added marker to have _some_data_
-		onAdd: function(m, marker) {
+		onAdd: function (m, marker) {
 			// note marker has "lat" and "lng" properties to use for querying google maps
 			marker.details.name = "Test name";
 			marker.details.street = "Test street";
@@ -140,11 +140,11 @@ function fullWindowExample(e) {
 		// Enables place selection
 		// ... note the presence of the callback is 
 		// ... all that's required to enable selection
-		onSelect: function(m, details) {
+		onSelect: function (m, details) {
 			var msg = getPlaceHtml(details);
-			
+
 			m.showMsg("YOUR SELECTION CODE HERE", msg);
-				
+
 			// indicate tip should be closed
 			return true;
 		},
@@ -194,7 +194,7 @@ function fullWindowExample(e) {
 
 		// Enables edit of new places (to your web application, not Google Maps!)
 		// ... again the presence of the callback enables the functionality
-		onSave: function(m, newPlace) {
+		onSave: function (m, newPlace) {
 			var missing = [];
 
 			// detect errors starting at bottom
@@ -209,7 +209,7 @@ function fullWindowExample(e) {
 				// return the error message so the callback doesn't progress
 				return "Required: " + missing.join();
 			}
-			
+
 			if (newPlace) {
 				if (!newPlace.userData) {
 					// simulate a primary key being save to a db
@@ -225,16 +225,16 @@ function fullWindowExample(e) {
 			// indicate form was OK and saved
 			return "";
 		},
-		
+
 		// Allows the user to delete a "custom" place they've previously 
 		// ... added
 		confirmDelete: true,
-		onDelete: function(m, placeToDelete) {
+		onDelete: function (m, placeToDelete) {
 			m.showMsg(
 				"YOUR DELETE CODE HERE",
 				"<strong>" + placeToDelete.name + "</strong> has been removed."
 			);
-			
+
 			// here would be code your application to do the actual delete
 			_store.deletePlace(placeToDelete);
 
@@ -244,32 +244,32 @@ function fullWindowExample(e) {
 		},
 
 		// Custom marker images
-		getMarkerImage: function(m, markerType, title) {
+		getMarkerImage: function (m, markerType, title) {
 			var imageUrl = "";
-			
+
 			if (markerType == "custom")
 				// a place dervied from "your" database
 				imageUrl = "examples/images/view-place.png";
 			else if (markerType == "new")
 				// user has clicked on the add place (+) icon to add a new place
 				imageUrl = "examples/images/add-place.png";
-			else 
+			else
 				// normal Google Places result
 				imageUrl = "examples/images/google-place.png";
-				
+
 			return {
 				url: imageUrl,
 				size: new google.maps.Size(28, 40),
 				origin: new google.maps.Point(0, 0),
-				
+
 				// where the little cross-hair appears (on new markers) relative to the image
 				anchor: new google.maps.Point(14, 45)
 			};
 		},
 
 		// shows additional instructions to the user
-		getHelpWindow: function(m) {
-			var html = 
+		getHelpWindow: function (m) {
+			var html =
 				"<div class='mapsed-help'>" +
 					"<h3>Find a venue</h3>" +
 					"<ol>" +
@@ -291,11 +291,31 @@ function fullWindowExample(e) {
 		showHelpOnLoad: true,
 
 		// Callback for when the user tries to load the map
-		onClose: function(mapsed) {
+		onClose: function (mapsed) {
 			var closeMap = confirm("Close map?");
 
 			// you can cancel the close of the map by returning false
 			return closeMap;
+		},
+
+		onMapMoved: function (north, south, east, west) {
+			var hits = [];
+			console.log("onMapMoved:", north, south, east, west);
+
+			// Mimc back-end search for places within the boundary
+			for (var i = 0; i < _sporadic_places.length; i++) {
+				var place = _sporadic_places[i];
+
+				var withinLat = (place.lat >= south && place.lat <= north);
+				var withinLng = (place.lng >= west && place.lng <= east);
+
+				if (withinLat && withinLng) {
+					hits.push(place);
+				}
+			}
+
+			console.log("Found", hits);
+			return hits;
 		},
 
 	  // Fired once the mapsed object has initialised, but before the map
