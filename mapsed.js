@@ -174,6 +174,14 @@
 			// 	return true to close the map, false keeps it open
 			onClose: null,
 
+			// Event fired when the "boundary" in the Google map changes, due to:
+			//   - User completes a new search, or
+			//   - User drags the map to a new location
+			//   - User zooms in or out
+			//   - Probably a 101 different reasons ...
+			// Params: (tlLat, tlLng, brLat, brLng) - the rectangle coordinates visible in the map bounds (ie. the container DIV)
+			onMapMoved: null,
+
 			// Callback for getting the [image] URL to use for a marker
 			// Parameter "markerType" is passed, indicating the type of marker, this can be
 			// prototype: function(mapsed, markerType, title)
@@ -788,6 +796,36 @@
 			// Boundary has been set, so don't set the zoom/center
 			_areBoundsSet = true;
 		} // gmBoundsChanged
+
+
+		/**
+		 * Map "Idle" event - fires when the user has stopped interacting (dragging, zooming, etc)
+		 * in the map.  This then fires the "onMapMoved" callback to the caller allowing them to search
+		 * for places in their back-end which fall onto the map at the current boundary and zoom level.
+		 */
+		function gmIdle() {
+			var bounds = _gMap.getBounds();
+
+			if (bounds) {
+				var compass = bounds.toJSON();
+
+				var hits = settings.onMapMoved(compass.north, compass.south, compass.east, compass.west);
+				if (hits) {
+					for (var i = 0; i < hits.length; i++) {
+						var place = hits[i];
+						if (!place.lat || !place.lng) {
+							continue;
+						}
+						var pos = new gm.LatLng(place.lat, place.lng);
+						if (!findMarker(place.lat, place.lng)) {
+							addMarker(place, pos, "custom", bounds);
+						}
+					}
+
+				}
+			}
+
+		} // gmIdle
 
 
 		//
@@ -1947,6 +1985,9 @@
 						onPlaceSelect(element);
 					}
 				);
+			}
+			if (settings.onMapMoved) {
+				gm.event.addListener(_gMap, "idle", gmIdle);
 			}
 			if (settings.onSave) {
 				_mapContainer.on("click", "button.mapsed-save-button",
