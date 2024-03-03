@@ -215,7 +215,11 @@
 			// When adding custom places, mapsed will expand the map to show all places
 			// Usually this is what you'd want, but sometimes you may want to focus on a particular area
 			// "forceCenter" will override the default behaviour and centre where specified in the options
-			forceCenter: false
+			forceCenter: false,
+
+			// Helper to aid debugging mapsed itself (you must include mapsed.dev.js to use this)
+			// ... (mainly to aid mapsed development)
+			debugger: null
 
 		}, options || {});
 
@@ -511,6 +515,7 @@
 			var currMarker = this;
 			closeTooltips();
 
+			settings?.debugger?.logger("_pagedMarkers", _pagedMarkers, "_currMarkerPage", _currMarkerPage);
 			if (currMarker.details.markerType == "new") {
 				canEdit = true;
 				if (settings.onAdd) {
@@ -801,6 +806,7 @@
 		 * for places in their back-end which fall onto the map at the current boundary and zoom level.
 		 */
 		function gmIdle() {
+			settings?.debugger?.clearPolygon();
 			var bounds = _gMap.getBounds();
 
 			if (bounds) {

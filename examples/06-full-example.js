@@ -96,6 +96,8 @@ function fullWindowExample(e) {
 	e.preventDefault();
 	
 	$.fn.mapsed({
+		debugger: new MapsedDebug(),
+
 		// Map initialisation options to pass onto Google Maps
 		mapOptions: {
 			zoom: 15,
