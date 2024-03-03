@@ -515,7 +515,7 @@
 		 * Shows the infoWindow for the location.
 		 * @param {any} evt
 		 */
-		function onMarkerSelect(evt) {
+		function onMarkerClicked(evt) {
 			var canEdit = false;
 			var currMarker = this;
 			closeTooltips();
@@ -583,7 +583,7 @@
 			_markers.push(newMarker);
 			bounds.extend(centre);
 
-			gm.event.addListener(newMarker, "click", onMarkerSelect);
+			gm.event.addListener(newMarker, "click", onMarkerClicked);
 
 			gm.event.addListener(newMarker, "dragend", function (evt) {
 				var currMarker = this;
@@ -971,7 +971,7 @@
 			bounds.extend(position);
 
 			// wire up click event
-			gm.event.addListener(marker, "click", onMarkerSelect);
+			gm.event.addListener(marker, "click", onMarkerClicked);
 
 			if (model.autoShow) {
 				// show on load enabled for marker
