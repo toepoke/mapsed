@@ -11,8 +11,10 @@
  *   - http://closure-compiler.appspot.com/
  *
  * History:
- *  v1.0 - Loads of fixes, mainly with the icon placement, particularly on mobile.
- *  v0.4 - Country wasn't supported
+ *  v1.2 - https://github.com/toepoke/mapsed/releases/tag/1.2.0
+ *  v1.1 - https://github.com/toepoke/mapsed/releases/tag/1.1.0
+ *  v1.0 - https://github.com/toepoke/mapsed/releases/tag/1.0.0
+ * 
  * 
 */
 
@@ -21,7 +23,7 @@
 	"use strict";
 
 	// singleton here (same variable across all instances of the plug-in)
-	var _version = '(1.1.0)',
+	var _version = '(1.2.0)',
 		_plugInName = "mapsed",
 		_plugInInstances = 1
 	;
