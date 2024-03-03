@@ -29,3 +29,8 @@ Google now charges for API use.  To avoid charges no [working] API keys are prov
 - Ensure you add _credentials_ to ensure you aren't charged from unscrupulous actors reusing your key for their own projects
 - Perform a search on your mapsed repo for **[YOUR-API-KEY]** and add your own key
 
+### Debugging
+
+To enable debug helper class, include the **mapsed.debug.js** file on the page.
+
+

@@ -13,7 +13,7 @@
 	}
 	
 	.mapsed-container {
-		width: 95%;
+		width: 98%;
 		margin: 3px;
 	}
 
@@ -229,24 +229,39 @@
 	/* we did play with putting these on the right, but the mobile view doesn't show them .... sometimes! */
 }
 
-button.mapsed-select-button, 
-button.mapsed-edit-button, 
-button.mapsed-save-button, 
-button.mapsed-delete-button, 
-button.mapsed-search-button, button.mapsed-more-button {
-	color: #fff;
-
-	padding: 5px 7px;
-
-	font-weight: bold;
-
-	background-image: -webkit-linear-gradient(top,#4d90fe,#4787ed);
-	background-color: #4d90fe;
-	border: none;
-	border-radius: 2px;
-	box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-	cursor: pointer;
+.mapsed-action-buttons {
+	float: left;
 }
+	button.mapsed-select-button,
+	button.mapsed-edit-button,
+	button.mapsed-save-button,
+	button.mapsed-delete-button,
+	button.mapsed-search-button, button.mapsed-more-button {
+		color: #fff;
+		padding: 5px 7px;
+		font-weight: bold;
+		background-image: -webkit-linear-gradient(top,#4d90fe,#4787ed);
+		background-color: #4d90fe;
+		border: none;
+		border-radius: 2px;
+		box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+		cursor: pointer;
+	}
+
+.mapsed-paging-buttons {
+	float: right;
+}
+.mapsed-paging-buttons::after {
+	clear: both;
+}
+	button.mapsed-prev-marker {
+		/* A little gap between the main & pager buttons */
+	}
+	button.mapsed-prev-marker,
+	button.mapsed-next-marker {
+		cursor: pointer;
+	}
+
 .mapsed-error {
 	color: #880000;
 	margin-left: 10px;
