@@ -48,6 +48,9 @@
 			_mapContainer = null,       // jQuery reference to the DIV the map is in
 			_placesApi = null,          // Reference to the Google Places API object
 			_markers = [],              // Set of markers displayed on the map
+			_pagedMarkers = [],         // Set of markers that are _near_ the one the user clicked on (see pagination)
+			_currMarkerPage = null,     // Currently selected index of _pagedMarkers
+			_compass = null,            // Current NSEW boundary shown in the map
 			_instance = -1,             // Instance "this" plug-in is managing (so we can support zmultiple maps on the page)
 			_fullWin = false,           // Flags "mapsed" is in full-window mode, which means "mapsed" created the DIV we're in
 			_firstSearch = true,        // Used to ensure we don't clear markers when the map is drawn for the first time (so any "showOnLoad" markers aren't cleared)
@@ -67,7 +70,7 @@
 		 * Plug-in options:
 		 * Set of options to configure how the map will behave
 		 */
-		var settings = $.extend(true,{
+		var settings = $.extend(true, {
 			// Array of places to show on the map initially
 			// (see accompanying examples for illustration)
 			showOnLoad: null,
@@ -515,7 +518,9 @@
 			var currMarker = this;
 			closeTooltips();
 
+			_pagedMarkers = findNearbyMarkers(currMarker);
 			settings?.debugger?.logger("_pagedMarkers", _pagedMarkers, "_currMarkerPage", _currMarkerPage);
+
 			if (currMarker.details.markerType == "new") {
 				canEdit = true;
 				if (settings.onAdd) {
@@ -528,6 +533,36 @@
 			}
 
 			currMarker.showTooltip(canEdit);
+		}
+
+
+		/**
+		 * Event fired when the user clicks the "Next" button (>)
+		 * on a paginated result.
+		 * @param {any} evt - Next button click event
+		 */
+		function onNextMarker(evt) {
+			var currMarker = _pagedMarkers[_currMarkerPage];
+			currMarker.tooltip.close();
+
+			_currMarkerPage++;
+			currMarker = _pagedMarkers[_currMarkerPage];
+			currMarker.showTooltip(false/*view*/);
+		}
+
+
+		/**
+		 * Event fired when the user clicks the "Previous" button (<)
+		 * on a paginated result.
+		 * @param {any} evt - Previous button click event
+		 */
+		function onPrevMarker(evt) {
+			var currMarker = _pagedMarkers[_currMarkerPage];
+			currMarker.tooltip.close();
+
+			_currMarkerPage--;
+			currMarker = _pagedMarkers[_currMarkerPage];
+			currMarker.showTooltip(false/*view*/);
 		}
 
 
@@ -808,11 +843,14 @@
 		function gmIdle() {
 			settings?.debugger?.clearPolygon();
 			var bounds = _gMap.getBounds();
+			if (!bounds) {
+				return;
+			}
 
-			if (bounds) {
-				var compass = bounds.toJSON();
+			_compass = bounds.toJSON();
 
-				var hits = settings.onMapMoved(compass.north, compass.south, compass.east, compass.west);
+			if (settings.onMapMoved) {
+				var hits = settings.onMapMoved(_compass.north, _compass.south, _compass.east, _compass.west);
 				if (hits) {
 					for (var i = 0; i < hits.length; i++) {
 						var place = hits[i];
@@ -1022,6 +1060,29 @@
 			$ctx.find(".mapsed-view-header").toggle( header !== '' );
 			$ctx.find(".mapsed-view-footer").toggle( footer !== '' );
 
+			var pagingButtons = $ctx.find(".mapsed-paging-buttons");
+
+			// Paging buttons may not necessarily be present
+			// ... (e.g.if we've created a new marker, we don't have paging enabled)
+			if (pagingButtons.length > 0) {
+				var hasNearbyMakers = hasNearbyMarkers();
+				pagingButtons.toggle(hasNearbyMakers);
+
+				if (hasNearbyMakers) {
+					var $prev = $ctx.find(".mapsed-prev-marker");
+					var $next = $ctx.find(".mapsed-next-marker");
+
+					$prev.click(onPrevMarker);
+					$next.click(onNextMarker);
+					if (_currMarkerPage == 0) {
+						$prev[0].disabled = true;
+					}
+					if (_currMarkerPage == _pagedMarkers.length - 1) {
+						$next[0].disabled = true;
+					}
+				}
+			}
+
 		} // applyTemplate
 
 
@@ -1114,6 +1175,110 @@
 			return marker;
 
 		} // findMarker
+
+
+		/**
+		 * When zoomed out and the user clicks on a marker there
+		 * can be lots of markers in a similar area, often overlapping
+		 * each other.  
+		 * 
+		 * This method finds all markers that are _near_ to the one that 
+		 * was clicked so we can page through similar markers without 
+		 * having to zoom-in or delicately click the right one.
+		 * @param {any} selectedMarker - Marker on map user has clicked
+		 * @returns The set of nearby markers found (also stored in _pagedMarkers)
+		 */
+		function findNearbyMarkers(selectedMarker) {
+			var ns = (_compass.north - _compass.south);
+			var ew = (_compass.west - _compass.east);
+			var nsPc = Math.abs(ns / 75);
+			var ewPc = Math.abs(ew / 50);
+			var lat = selectedMarker.position.lat(),
+				lng = selectedMarker.position.lng()
+				;
+			var currMarkerBounds = {
+				x1: lat - nsPc,
+				x2: lat + nsPc,
+				y1: lng - ewPc,
+				y2: lng + ewPc
+			};
+
+			settings?.debugger?.drawNearbyPolygon(_gMap, currMarkerBounds);
+
+			// Reset
+			_pagedMarkers = [];
+			_currMarkerPage = null;
+			for (var i = 0; i < _markers.length; i++) {
+				var m = _markers[i];
+				var mLat = m.position.lat();
+				var mLng = m.position.lng();
+
+				var isLatNearby = false, isLngNearby = false;
+				if (mLat > currMarkerBounds.x1 && mLat < currMarkerBounds.x2) {
+					settings?.debugger?.logger("mLat", mLat, "x1", currMarkerBounds.x1, "x2", currMarkerBounds.x2);
+					settings?.debugger?.logger("mLng", mLng, "y1", currMarkerBounds.y1, "y2", currMarkerBounds.y2);
+					isLatNearby = true;
+				}
+				if (mLng > currMarkerBounds.y1 && mLng < currMarkerBounds.y2) {
+					isLngNearby = true;
+				}
+
+				if (isLatNearby || isLngNearby) {
+					settings?.debugger?.logger(m.details.name, "m",
+						{
+							mLat: mLat,
+							mLng: mLng,
+							isLatNearby: isLatNearby,
+							isLngNearby: isLngNearby
+						},
+						currMarkerBounds
+					);
+				}
+
+				if (isLatNearby && isLngNearby) {
+					_pagedMarkers.push(m);
+					if (selectedMarker == m) {
+						_currMarkerPage = _pagedMarkers.length - 1;
+					}
+				}
+			}
+
+			settings?.debugger?.clearLog();
+			for (var i = 0; i < _pagedMarkers.length; i++) {
+				settings?.debugger?.logger(i, _pagedMarkers[i].details.name);
+
+				const cityCircle = new google.maps.Circle({
+					strokeColor: "#000000",
+					strokeOpacity: 0.8,
+					strokeWeight: 2,
+					fillColor: "#000000",
+					fillOpacity: 0.35,
+					_gMap,
+					center: {
+						lat: _pagedMarkers[i].position.lat() + 0.001,
+						lng: _pagedMarkers[i].position.lng() + 0.001
+					},
+					radius: 100000,
+				});
+			}
+
+			return _pagedMarkers;
+
+		} // findNearbyMarkers
+
+
+		/**
+		 * 
+		 * @returns
+		 */
+		function hasNearbyMarkers() {
+			if (!_pagedMarkers) {
+				return false;
+			}
+
+			// > 1 as we always add the marker the user has selected
+			return (_pagedMarkers.length > 1);
+		}
 
 
 		/**
@@ -1581,9 +1746,15 @@
 	</tr>
 	<tr class='mapsed-buttons'>
 		<td colspan='3'>
-			<button class='mapsed-select-button'>${settings.ActionButtons.Select}</button>
-			<button class='mapsed-edit-button'>${settings.ActionButtons.Edit}</button>
-			<button class='mapsed-delete-button'>${settings.ActionButtons.Delete}</button>
+			<span class='mapsed-action-buttons'>
+				<button class='mapsed-select-button'>${settings.ActionButtons.Select}</button>
+				<button class='mapsed-edit-button'>${settings.ActionButtons.Edit}</button>
+				<button class='mapsed-delete-button'>${settings.ActionButtons.Delete}</button>
+			</span>
+			<span class='mapsed-paging-buttons'>
+				<button class="mapsed-prev-marker">&lt;</button>
+				<button class="mapsed-next-marker">&gt;</button>
+			</span>
 		</td>
 	</tr>
 	<tr class='mapsed-view-footer'>
@@ -1986,9 +2157,6 @@
 					}
 				);
 			}
-			if (settings.onMapMoved) {
-				gm.event.addListener(_gMap, "idle", gmIdle);
-			}
 			if (settings.onSave) {
 				_mapContainer.on("click", "button.mapsed-save-button",
 					function () {
@@ -2059,7 +2227,7 @@
 				settings.onPreInit(_plugIn);
 			}
 
-
+			gm.event.addListener(_gMap, "idle", gmIdle);
 			gm.event.addListener(_gMap, "tilesloaded", function (evt) {
 				// tiles_loaded event is still too early to initialise the map
 				// so give it another second to finish up before we initialise ourselves
