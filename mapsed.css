@@ -449,8 +449,8 @@ button.mapsed-more-button {
 			.mapsed-more-button   { width: 20%; }
 
 		.mapsed-toolbar-button {
-			font-size: 3rem;
-			padding: 1.5rem 1rem;
+			font-size: 1.5rem;
+			padding: 1rem 0.5rem;
 		}
 
 		td.mapsed-photo {
