@@ -361,3 +361,4 @@ Read [how to work locally](Local-Development.md) to play around and maybe contri
 
 - **0.0.1**
 Initial release 
+
