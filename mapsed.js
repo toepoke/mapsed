@@ -11,10 +11,10 @@
  *   - http://closure-compiler.appspot.com/
  *
  * History:
+ *  v2.0 - https://github.com/toepoke/mapsed/releases/tag/2.0.0
  *  v1.2 - https://github.com/toepoke/mapsed/releases/tag/1.2.0
  *  v1.1 - https://github.com/toepoke/mapsed/releases/tag/1.1.0
  *  v1.0 - https://github.com/toepoke/mapsed/releases/tag/1.0.0
- * 
  * 
 */
 
