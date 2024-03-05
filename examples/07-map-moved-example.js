@@ -46,17 +46,23 @@ var _example6_places = [
 		postCode: "96826"
 	}
 ];
+var _sporadicPlaces = null;
 
 function runExample7() {
 	$("#map-moved").mapsed({
 
-		onMapMoved: function (north, south, east, west) {
+		onMapMoved: async function (north, south, east, west) {
 			var hits = [];
 			console.log("onMapMoved:", north, south, east, west);
 
-			// Mimc back-end search for places within the boundary
-			for (var i = 0; i < _example6_places.length; i++) {
-				var place = _sporadic_places[i];
+			if (!_sporadicPlaces) {
+				// Mimc back-end search for places within the boundary
+				var resp = await fetch("/data/sporadic-places.json");
+				_sporadicPlaces = await resp.json();
+			}
+
+			for (var i = 0; i < _sporadicPlaces.length; i++) {
+				var place = _sporadicPlaces[i];
 
 				var withinLat = (place.lat >= south && place.lat <= north);
 				var withinLng = (place.lng >= west && place.lng <= east);
