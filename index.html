@@ -491,13 +491,19 @@ $("#search-for-places").mapsed({
 								<pre class="prettyprint lang-js">
 $("#map-moved").mapsed({
 
-  onMapMoved: function (north, south, east, west) {
+  onMapMoved: async function (north, south, east, west) {
     var hits = [];
     console.log("onMapMoved:", north, south, east, west);
-
+    
+    if (!_sporadicPlaces) {
+      // emulate caching the result, or only hitting an in-memory array of results
+      var resp = await fetch("/data/sporadic-places.json");
+      _sporadicPlaces = await resp.json();
+    }
+    
     // Mimc back-end search for places within the boundary
-    for (var i = 0; i < _example6_places.length; i++) {
-      var place = _sporadic_places[i];
+    for (var i = 0; i < _sporadicPlaces.length; i++) {
+      var place = _sporadicPlaces[i];
       
       var withinLat = (place.lat >= south && place.lat <= north);
       var withinLng = (place.lng >= west && place.lng <= east);
@@ -506,9 +512,10 @@ $("#map-moved").mapsed({
         hits.push(place);
       }
     }
-
+    
+    console.log("Found", hits);
     return hits;
-  }
+  },
 
 });
 									</pre>

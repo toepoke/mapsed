@@ -1,6 +1,7 @@
 
 var _myPlaces = [];
 var _store = mapsedStorage;
+var _sporadicPlaces = null;
 
 // 
 // Map style to use when loading the map
@@ -300,13 +301,22 @@ function fullWindowExample(e) {
 			return closeMap;
 		},
 
-		onMapMoved: function (north, south, east, west) {
+		onMapMoved: async function (north, south, east, west) {
 			var hits = [];
 			console.log("onMapMoved:", north, south, east, west);
 
+			if (!_sporadicPlaces) {
+				// emulate caching the result, or only hitting an in-memory array of results
+				var resp = await fetch("/data/sporadic-places.json");
+				_sporadicPlaces = await resp.json();
+
+				// You could also cache the results locally and use the following to return the cached results
+				//return Promise.resolve(_sporadicPlaces);
+			}
+
 			// Mimc back-end search for places within the boundary
-			for (var i = 0; i < _sporadic_places.length; i++) {
-				var place = _sporadic_places[i];
+			for (var i = 0; i < _sporadicPlaces.length; i++) {
+				var place = _sporadicPlaces[i];
 
 				var withinLat = (place.lat >= south && place.lat <= north);
 				var withinLng = (place.lng >= west && place.lng <= east);
