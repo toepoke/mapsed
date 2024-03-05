@@ -178,7 +178,7 @@
 			// 	return true to close the map, false keeps it open
 			onClose: null,
 
-			// Event fired when the "boundary" in the Google map changes, due to:
+			// [async] Event fired when the "boundary" in the Google map changes, due to:
 			//   - User completes a new search, or
 			//   - User drags the map to a new location
 			//   - User zooms in or out
@@ -842,7 +842,7 @@
 		 * in the map.  This then fires the "onMapMoved" callback to the caller allowing them to search
 		 * for places in their back-end which fall onto the map at the current boundary and zoom level.
 		 */
-		function gmIdle() {
+		async function gmIdle() {
 			settings?.debugger?.clearPolygon();
 			var bounds = _gMap.getBounds();
 			if (!bounds) {
@@ -852,7 +852,7 @@
 			_compass = bounds.toJSON();
 
 			if (settings.onMapMoved) {
-				var hits = settings.onMapMoved(_compass.north, _compass.south, _compass.east, _compass.west);
+				var hits = await settings.onMapMoved(_compass.north, _compass.south, _compass.east, _compass.west);
 				if (hits) {
 					for (var i = 0; i < hits.length; i++) {
 						var place = hits[i];
