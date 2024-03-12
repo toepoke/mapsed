@@ -6,10 +6,6 @@
 class MapsedDebug {
 	#polygon = null;
 
-	logMarker(mLatName, mLat, x1Name, x1, x2Name, x2) {
-		console.log(mLatName, mLat, x1Name, x1, x2Name, x2);
-	}
-
 	logger(...args) {
 		console.log(args);
 	}
