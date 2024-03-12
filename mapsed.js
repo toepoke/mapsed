@@ -1199,10 +1199,10 @@
 				lng = selectedMarker.position.lng()
 				;
 			var currMarkerBounds = {
-				x1: lat - nsPc,
-				x2: lat + nsPc,
-				y1: lng - ewPc,
-				y2: lng + ewPc
+				n: lat - nsPc,
+				s: lat + nsPc,
+				w: lng - ewPc,
+				e: lng + ewPc
 			};
 
 			settings?.debugger?.drawNearbyPolygon(_gMap, currMarkerBounds);
@@ -1216,12 +1216,12 @@
 				var mLng = m.position.lng();
 
 				var isLatNearby = false, isLngNearby = false;
-				if (mLat > currMarkerBounds.x1 && mLat < currMarkerBounds.x2) {
-					settings?.debugger?.logger("mLat", mLat, "x1", currMarkerBounds.x1, "x2", currMarkerBounds.x2);
-					settings?.debugger?.logger("mLng", mLng, "y1", currMarkerBounds.y1, "y2", currMarkerBounds.y2);
+				if (mLat > currMarkerBounds.n && mLat < currMarkerBounds.s) {
+					settings?.debugger?.logger("mLat", mLat, "n", currMarkerBounds.n, "s", currMarkerBounds.s);
+					settings?.debugger?.logger("mLng", mLng, "w", currMarkerBounds.w, "e", currMarkerBounds.e);
 					isLatNearby = true;
 				}
-				if (mLng > currMarkerBounds.y1 && mLng < currMarkerBounds.y2) {
+				if (mLng > currMarkerBounds.w && mLng < currMarkerBounds.e) {
 					isLngNearby = true;
 				}
 

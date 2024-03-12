@@ -16,12 +16,13 @@ class MapsedDebug {
 
 	drawNearbyPolygon(onMap, boundaryDef) {
 		const markerCoords = [
-			{ lat: boundaryDef.x1, lng: boundaryDef.y1 },
-			{ lat: boundaryDef.x2, lng: boundaryDef.y1 },
-			{ lat: boundaryDef.x2, lng: boundaryDef.y2 },
-			{ lat: boundaryDef.x1, lng: boundaryDef.y2 },
+			{ lat: boundaryDef.n, lng: boundaryDef.w },
 
-			{ lat: boundaryDef.x1, lng: boundaryDef.y1 },
+			{ lat: boundaryDef.s, lng: boundaryDef.w },
+			{ lat: boundaryDef.s, lng: boundaryDef.e },
+			{ lat: boundaryDef.n, lng: boundaryDef.e },
+
+			{ lat: boundaryDef.n, lng: boundaryDef.w },
 		];
 
 		// Construct the polygon.
