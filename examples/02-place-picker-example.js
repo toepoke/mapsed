@@ -31,13 +31,11 @@ function runExample2() {
 				lng:-1.5426760000000286,
 				place_id: "ChIJQd3IwBtceUgRha6laiANoro"
 			},
-		templateOptions: {
-			google: {
-				view: {
-					footer: "<center>I came from Google Places</center>",
-				}
-			}
-		}
+
+		getFooterTemplate: function(marker, isEditing) {
+			// Same footer for view & edit template
+			return "<center>Selected from Google Places</center>";
+		},
 
 	}); // mapsed
 }

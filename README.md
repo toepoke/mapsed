@@ -209,17 +209,18 @@ Allows custom text/html to be injected as a header and/or footer to the tooltip 
 appears when the end-user selects or adds a new _place_.
 
 ````js
-templateOptions: {
-  custom: {
-    view: {
-      header: "<center>custom view header</center>",
-      footer: "<center>custom view footer</center>",
-    },
-    edit: {
-      header: "<center>custom edit header</center>",
-      footer: "<center>custom edit footer</center>"
-    }
-  }
+// Defines header and footers to be applied to the 
+// ... select/edit/delete tooltips shown to the user
+getHeaderTemplate: function(marker, isEditing) {
+	// You can have a different header for
+	// each "markerType".  Supported customisations are:
+	// "custom" - Where your user has previously added a marker
+	// "add" - Where your user has click "add" to create a new marker
+	// "google" - Where your user has clicked on a marker found via Google Places APi
+	var markerType = marker.markerType;
+	var mode = (isEditing ? "edit" : "view");
+
+	return `<center>${markerType} ${mode} header</center>`.toUpperCase();
 }
 ````
 

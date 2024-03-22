@@ -195,13 +195,20 @@ $("#place-picker").mapsed({
     lng:-1.5426760000000286,
     place_id: "ChIJQd3IwBtceUgRha6laiANoro"
   },
-  templateOptions: {
-    google: {
-      view: {
-        footer: '&lt;center&gt;I came from Google Places&lt;/center&gt;',
-      }
-    }
-  }
+
+	// Defines header and footers to be applied to the 
+	// ... select/edit/delete tooltips shown to the user
+	getHeaderTemplate: function(marker, isEditing) {
+		// You can have a different header for
+		// each "markerType".  Supported customisations are:
+		// "custom" - Where your user has previously added a marker
+		// "add" - Where your user has click "add" to create a new marker
+		// "google" - Where your user has clicked on a marker found via Google Places APi
+		var markerType = marker.markerType;
+		var mode = (isEditing ? "edit" : "view");
+
+		return `&lt;center&gt;${markerType} ${mode} header&lt;/center&gt;`.toUpperCase();
+	},
 
 });
 								</pre>

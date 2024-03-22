@@ -1705,13 +1705,13 @@
 			sanitise(model);
 
 			// Do we have any header/footer customisation for _this_ typeof marker
-			var renderOptions = null;
-			if (settings.templateOptions && settings.templateOptions[marker.markerType]) {
-				if (inRwMode) {
-					renderOptions = settings.templateOptions[marker.markerType].edit;
-				} else {
-					renderOptions = settings.templateOptions[marker.markerType].view;
-				}
+			var renderOptions = {};
+
+			if (settings.getHeaderTemplate) {
+				renderOptions.header = settings.getHeaderTemplate(marker, inRwMode);
+			}
+			if (settings.getFooterTemplate) {
+				renderOptions.footer = settings.getFooterTemplate(marker, inRwMode);
 			}
 
 			if (inRwMode) {

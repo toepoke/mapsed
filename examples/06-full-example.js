@@ -155,33 +155,31 @@ function fullWindowExample(e) {
 
 		// Defines header and footers to be applied to the 
 		// ... select/edit/delete tooltips shown to the user
-		templateOptions: {
-			// You can have a different header or footer for
+		getHeaderTemplate: function(marker, isEditing) {
+			// You can have a different header for
 			// each "markerType".  Supported customisations are:
 			// "custom" - Where your user has previously added a marker
 			// "add" - Where your user has click "add" to create a new marker
 			// "google" - Where your user has clicked on a marker found via Google Places APi
-			custom: {
-				view: {
-					header: "<center>custom view header</center>",
-					footer: "<center>custom view footer</center>",
-				},
-				edit: {
-					header: "<center>custom edit header</center>",
-					footer: "<center>custom edit footer</center>"
-				}
-			},
+			var markerType = marker.markerType;
+			var mode = (isEditing ? "edit" : "view");
 
-			add: {
-				view: {
-					header: "<center>add view header</center>",
-					footer: "<center>add view footer</center>",
-				},
-				edit: {
-					header: "<center>add edit header</center>",
-					footer: "<center>add edit footer</center>"
-				}
-			},
+			return `<center>${markerType} ${mode} header</center>`.toUpperCase();
+		},
+
+		// Defines header and footers to be applied to the 
+		// ... select/edit/delete tooltips shown to the user
+		getFooterTemplate: function(marker, isEditing) {
+			// You can have a different footer for
+			// each "markerType".  Supported customisations are:
+			// "custom" - Where your user has previously added a marker
+			// "add" - Where your user has click "add" to create a new marker
+			// "google" - Where your user has clicked on a marker found via Google Places APi
+			var markerType = marker.markerType;
+			var mode = (isEditing ? "edit" : "view");
+
+			return `<center>${markerType} ${mode} footer</center>`.toUpperCase();
+		},
 
 			google: {
 				view: {
