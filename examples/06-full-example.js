@@ -181,19 +181,6 @@ function fullWindowExample(e) {
 			return `<center>${markerType} ${mode} footer</center>`.toUpperCase();
 		},
 
-			google: {
-				view: {
-					header: "<center>google view header</center>",
-					footer: "<center>google view footer</center>",
-				},
-				edit: {
-					header: "<center>google edit header</center>",
-					footer: "<center>google edit footer</center>"
-				}
-			}
-
-		},
-
 		// Enables edit of new places (to your web application, not Google Maps!)
 		// ... again the presence of the callback enables the functionality
 		onSave: function (m, newPlace) {
