@@ -119,8 +119,9 @@ function fullWindowExample(e) {
 		// Emulate places being loaded from a db
 		showOnLoad: _myPlaces,
 
-		// Adds the "+" button to the control bar at the top right of the map
-		allowAdd: true,
+		// Disables showing Googles Points of Interest 
+		// (so we only show the user what we want them to see)
+		// ... note this doesn't work with custom themes
 		disablePoi: true,
 
 		// Illustrating custom behaviour
@@ -198,6 +199,15 @@ function fullWindowExample(e) {
 		// Enables edit of new places (to your web application, not Google Maps!)
 		// ... again the presence of the callback enables the functionality
 		onSave: function (m, newPlace) {
+			return this.__update(m, newPlace);
+		},
+		// Adds the "+" button to the control bar at the top right of the map
+		// And wires up the event for saving
+		onAddSave: function (m, newPlace) {
+			return this.__update(m, newPlace);
+		},
+
+		__update: function (m, newPlace) {
 			var missing = [];
 
 			// detect errors starting at bottom

@@ -78,7 +78,7 @@ The method signature for the callback is *getMarkerImage(mapsed, markerType, tit
     <td><strong>markerType</strong> (string)</td>
     <td>
     	The type of marker being added to the map, this can be:<br/>
-    	*new* - New marker is being added by user (via the "+" button - see allowAdd)<br/>
+    	*new* - New marker is being added by user (via the "+" button - see onAddSave)<br/>
     	*google* - Marker being added was derived from the Google Places API<br/>
     	*custom* - Marker being added was derived from the application database, i.e. derived from the showOnLoad array.
     </td>
@@ -103,14 +103,6 @@ On a map, Google adds places of interest hotspots that can be clicked.  These mi
 Ordinarily this is quite useful, however if it's outside the concern of your audience you may not wish to distract them.  For instance [our audience](https://toepoke.co.uk/) is concerned with football venues, so cinemas aren't of interest to them at that time.
 
 The **disablePoi** setting turns off these point of interest hotspots.  However POI cannot be turned off with [styled maps](https://developers.google.com/maps/documentation/javascript/styling).
-
-### allowAdd *(bool)*
-
-Places an "add place" icon (+) in the top-right of the map which allows the user to add additional places to your map.
-
-The *onSave* callback (see below) must be implemented to capture the place being added so it can be saved.
-
-[See add places example](examples/03-add-places-example.js)
 
 ### searchOptions *(object)*
 
@@ -261,9 +253,16 @@ Callback method signature:
 
 [See place picker example](examples/02-place-picker-example.js)
 
+
+### onAddSave
 ### onSave
 
-Fired when the **Save** button is clicked in a place window (after adding or editing a place).
+Fired when the **Save** button is clicked in a place window.  
+
+- For **new** places (added via the **+** toolbar icon) the **onAddSave** event is fired.
+- For **existing** places the **onSave** event is fired.
+
+The presence of the **onAddSave** event enables the **+** icon on the toolbar allowing the user to add a new place.
 
 Callback method signature:
 <table>

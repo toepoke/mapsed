@@ -11,6 +11,7 @@
  *   - http://closure-compiler.appspot.com/
  *
  * History:
+ *  v2.1 - https://github.com/toepoke/mapsed/releases/tag/2.1.0
  *  v2.0 - https://github.com/toepoke/mapsed/releases/tag/2.0.0
  *  v1.2 - https://github.com/toepoke/mapsed/releases/tag/1.2.0
  *  v1.1 - https://github.com/toepoke/mapsed/releases/tag/1.1.0
@@ -23,7 +24,7 @@
 	"use strict";
 
 	// singleton here (same variable across all instances of the plug-in)
-	var _version = '(1.2.0)',
+	var _version = '(2.1.0)',
 		_plugInName = "mapsed",
 		_plugInInstances = 1
 	;
@@ -131,10 +132,6 @@
 			// If you require custom maps, you need "disablePoi" set to false
 			disablePoi: false,
 
-			// Flags that the user can add new places (as well as edit/delete), an "+" icon appears
-			// at the top right of the map
-			allowAdd: false,
-
 			searchOptions: {
 				// Flags that the user can search for places themselves
 				// ... adds a search box to the map
@@ -154,11 +151,26 @@
 				geoSearch: "5aside football near {POSITION}"
 			},
 
+			// Event fired when user clicks the "Add" button (+)
+			// Useful if you want to perform some initialisation on the marker/place details
+			// prototype: function(mapsed, marker)
+			onAdd: null,
+
+			// Event fired when user clicks "Save" button on a "new" place.
+			// The presence of this event adds the the "+" button to the toolbar.
+			// In many cases you can just re-use your "onSave" event handler.
+			// Seealso "onSave" which has the same prototype
+			// prototype: function(mapsed, newPlace)
+			//   return a error message string if you're not happy with what's been entered
+			//   return an empty string to confirm it's been saved
+			onAddSave: null,
+
 			// Event when user clicks the "Select" button
 			// prototype: function(mapsed, details)
 			onSelect: null,
 
-			// Allows new places to be edited
+			// Allows custom places to be edited and then saved
+			// Seealso "onAddSave" which has the same prototype
 			// prototype: function(mapsed, newPlace)
 			//   return a error message string if you're not happy with what's been entered
 			//   return an empty string to confirm it's been saved
@@ -636,12 +648,24 @@
 			var $rw = root.find(".mapsed-edit");
 			var errors = "";
 			var place = getViewModel($rw);
+			var isNew = (place.markerType == "new");
+
+			// Ensure the end user has the event wired up
+			if (isNew) {
+				if (!settings.onAddSave) throw new Error("onAddSave event has not been defined");
+			} else {
+				if (!settings.onSave) throw new Error("onSave event has not been defined");
+			}
 
 			// if we're saving it can no longer be "new"
 			place.markerType = "custom";
 
 			// see if the calling code is happy with what's being changed
-			errors = settings.onSave(_plugIn, place);
+			if (isNew) {
+				errors = settings.onAddSave(_plugIn, place);
+			} else {
+				errors = settings.onSave(_plugIn, place);
+			}
 
 			var errCtx = $rw.find(".mapsed-error");
 			if (errors && errors.length > 0) {
@@ -2174,6 +2198,14 @@
 					}
 				);
 			}
+			if (settings.onAddSave) {
+				_mapContainer.on("click", "button.mapsed-save-button",
+					function () {
+						var element = $(this);
+						onPlaceSave(element);
+					}
+				);
+			}
 			if (settings.onDelete) {
 				_mapContainer.on("click", "button.mapsed-delete-button",
 					function () {
@@ -2222,7 +2254,7 @@
 			if (settings.getHelpWindow) {
 				addHelpButton();
 			}
-			if (settings.allowAdd) {
+			if (settings.onAddSave) {
 				addNewPlaceButton();
 			}
 			if (settings.onPreInit) {
