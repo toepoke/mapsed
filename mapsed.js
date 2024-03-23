@@ -888,7 +888,7 @@
 
 			if (settings.onMapMoved) {
 				var hits = await settings.onMapMoved(_compass.north, _compass.south, _compass.east, _compass.west);
-				if (hits) {
+				if (hits && hits.length > 0) {
 					for (var i = 0; i < hits.length; i++) {
 						var place = hits[i];
 						if (!place.lat || !place.lng) {
