@@ -1312,8 +1312,11 @@
 
 
 		/**
-		 * 
-		 * @returns
+		 * Convenience function to determine if any markers were found "nearby" 
+		 * to the currently displayed marker.  Used to determine if the pagination
+		 * feature should become active.
+		 * @returns - true => has markers nearby
+		 *            false => no markers nearby
 		 */
 		function hasNearbyMarkers() {
 			if (!_pagedMarkers) {
@@ -1521,50 +1524,6 @@
 
 
 		/**
-		 * Convenience function for creating control buttons on the map (re-uses
-		 * the public "addMapContainer" method.  This is just a short-cut for buttons
-		 * @param {any} buttonText Text to appear in the button
-		 *                         You can also add a tooltip by prefixing it with a pipe, e.g. "Go|Perform a search" will give
-		 *                         a tooltip of "Perform a search"
-		 * @param {any} ctrlPos Where on the map the control should be added (TOP_LEFT, TOP_RIGHT, etc)
-		 *                      For options, see https://developers.google.com/maps/documentation/javascript/controls#ControlPositioning
-		 * @param {any} addClass Additional classes to add to the button (to target CSS)
-		 * @param {any} onClickEvent Callback to execute when the button is clicked
-		 * @returns Element of the button add (DOM element, not jQuery)
-		 */
-		function addToolBarButton(buttonText, ctrlPos, addClass, onClickEvent) {
-			var btn = null,
-				classes = "",
-				tooltip = ""
-			;
-
-			if (addClass && addClass.length > 0) {
-				classes = ` class='${addClass}' `;
-			}
-
-			// see if there's a tooltip added
-			if (buttonText && buttonText.length > 0) {
-				var arrSplit = buttonText.split("|");
-				buttonText = arrSplit[0];
-				tooltip = arrSplit[1];
-			}
-
-			var btn = document.createElement("BUTTON");
-			var classArray = addClass.split(" ");
-			btn.classList.add(...classArray);
-			btn.innerHTML = buttonText;
-			btn.setAttribute("title", tooltip);
-			if (onClickEvent) {
-				btn.addEventListener("click", onClickEvent);
-			}
-			_toolbarContainer.appendChild(btn);
-
-			return btn;
-
-		} // addToolBarButton
-
-
-		/**
 		 * Closes all marker tooltips that are on-screen.
 		 */
 		function closeTooltips() {
@@ -1576,6 +1535,7 @@
 				}
 			}
 
+			settings?.debugger?.clearPolygon();
 		} // closeTooltips
 
 
