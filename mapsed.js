@@ -66,8 +66,9 @@
 			_toolbarContainer = null,   // Container for mapsed tools (add, geo, help, etc)
 			_searchBarContainer = null, // Container for search control, button & more
 			gm = null,                  // Short cut reference to the Google Maps namespace (this is initialised in the constructor to give the Google API time to load on the page)
-			gp = null                   // Short cut reference to the Google Places namespace (this is initialised in the constructor to give the Google API time to load on the page)
-			;
+			gp = null,                  // Short cut reference to the Google Places namespace (this is initialised in the constructor to give the Google API time to load on the page)
+			_selectedMarker = null
+		;
 
 		/**
 		 * Plug-in options:
@@ -532,6 +533,13 @@
 			var canDelete = false;
 			var currMarker = this;
 			closeTooltips();
+
+			if (_selectedMarker == currMarker) {
+				// Already selecting the marker, so treat as a toggle and turn
+				// it off again (closeTooltips above has already closed it)
+				_selectedMarker = null;
+				return;
+			}
 
 			_pagedMarkers = findNearbyMarkers(currMarker);
 			settings?.debugger?.logger("_pagedMarkers", _pagedMarkers, "_currMarkerPage", _currMarkerPage);
@@ -1742,6 +1750,8 @@
 			// re-open for the right width to be used
 			tip.open(_gMap, marker);
 
+			// flag which marker is open (so we can toggle off later)
+			_selectedMarker = marker;
 		} // showTooltip
 
 
