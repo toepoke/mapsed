@@ -8,6 +8,7 @@ var _default_places = [
 		// "canEdit" flags that the user can edit the contents of this place
 		// once the user has finished editing you will get the "onEditOK" event
 		canEdit: true,
+		canDelete: true,
 		lat: 53.798823,
 		lng: -1.5426760000000286,
 		// The "place_id" is a Google Places reference string 
@@ -24,6 +25,7 @@ var _default_places = [
 		// Flag this place can edited (tooltip has an "Edit" button)
 		// Once editing has completed a callback is fired so you can save the details to your DB
 		canEdit: true,
+		canDelete: true,
 		lat: 53.79,
 		lng: -1.59,
 		name: "Somewhere",

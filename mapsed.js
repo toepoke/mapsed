@@ -529,6 +529,7 @@
 		 */
 		function onMarkerClicked(evt) {
 			var canEdit = false;
+			var canDelete = false;
 			var currMarker = this;
 			closeTooltips();
 
@@ -537,6 +538,7 @@
 
 			if (currMarker.details.markerType == "new") {
 				canEdit = true;
+				canDelete = true; // whilst it's just been created there's no reason they can't delete it again straight away ... may have changed their mind
 				if (settings.onAdd) {
 					settings.onAdd(_plugIn, currMarker);
 				}
@@ -544,6 +546,7 @@
 				// Initially we show the view template.  User can then decide
 				// whether to SELECT, EDIT or DELETE the marker
 				canEdit = false;
+				canDelete = false;
 			}
 
 			currMarker.showTooltip(canEdit);
@@ -1154,17 +1157,24 @@
 			var settings = _plugIn.getSettings();
 
 			if (settings.onSelect || settings.onSave || settings.onDelete) {
-				var showSelect, showSave, showDelete, canEdit;
+				var showSelect, showSave, showDelete, canEdit, canDelete;
 
 				canEdit = model.canEdit;
+				canDelete = model.canDelete;
 				// however if it's a google marker we can't, so ignore what the input says!
-				if (model.markerType == "google")
+				if (model.markerType == "google") {
 					canEdit = false;
+					canDelete = false;
+				}
 
 				showSelect = settings.onSelect != null;
-				showSave = (settings.onSave != null && canEdit);
+				showSave = (
+					settings.onSave != null && canEdit
+					// can only delete markers we created!
+					&& model.markerType == "custom"
+				);
 				showDelete = (
-					settings.onDelete != null && canEdit
+					settings.onDelete != null && canDelete
 					// can only delete markers we created!
 					&& model.markerType == "custom"
 				);
@@ -1611,6 +1621,7 @@
 				telNo: "",
 				website: "",
 				url: "",
+				canDelete: (type == "new" || type == "custom"),
 				canEdit: (type == "new" || type == "custom")
 			};
 
@@ -1643,6 +1654,7 @@
 	<input type='hidden' class='mapsed-lat' value='${forMarker.position.lat()}' />
 	<input type='hidden' class='mapsed-lng' value='${forMarker.position.lng()}' />
 	<input type='hidden' class='mapsed-can-edit' value='${d.canEdit}' />
+	<input type='hidden' class='mapsed-can-delete' value='${d.canDelete}' />
 	<input type='hidden' class='mapsed-place-id' value='${d.place_id}' />
 	<input type='hidden' class='mapsed-user-data' value='${d.userData}' />
 	<input type='hidden' class='mapsed-marker-type' value='${forMarker.markerType}' />
@@ -1872,6 +1884,7 @@
 			var $root = $vw.parents(".mapsed-root");
 			var model = {
 				canEdit: ($root.find(".mapsed-can-edit").val() === "true"),
+				canDelete: ($root.find(".mapsed-can-delete").val() === "true"),
 				lat: $root.find(".mapsed-lat").val(),
 				lng: $root.find(".mapsed-lng").val(),
 				place_id: $root.find(".mapsed-place-id").val(),
@@ -1917,6 +1930,7 @@
 		// ... so make sure the data we return is sensible
 		function sanitise(place) {
 			if (!place.canEdit) place.canEdit = false;
+			if (!place.canDelete) place.canDelete = false;
 			if (!place.lat) place.lat = 0;
 			if (!place.lng) place.lng = 0;
 			if (!place.userData) place.userData = "";

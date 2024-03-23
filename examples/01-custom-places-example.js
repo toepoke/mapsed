@@ -1,13 +1,14 @@
 function runExample1() {
     $("#custom-places").mapsed({
-		showOnLoad: 	
+		showOnLoad:
 		[
 			// City Varieties
 			{
 				// flag that this place should have the tooltip shown when the map is first loaded
 				autoShow: true,
-				// flags the user can edit this place
+				// flags the user cannot edit or delete this place
 				canEdit: false,
+				canDelete: false,
 				lat: 53.798823,
 				lng:-1.5426760000000286,
 				place_id: "ChIJQd3IwBtceUgRha6laiANoro"

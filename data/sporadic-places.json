@@ -1,6 +1,7 @@
 [
 	{
 		"canEdit": true,
+		"canDelete": true,
 		"lat": 50.0657041,
 		"lng": -5.713174599999999,
 		"name": "Land's End",
@@ -8,6 +9,7 @@
 	},
 	{
 		"canEdit": false,
+		"canDelete": false,
 		"lat": 51.5054564,
 		"lng": -0.07535649999999999,
 		"name": "Tower Bridge",
@@ -15,6 +17,7 @@
 	},
 	{
 		"canEdit": false,
+		"canDelete": false,
 		"lat": 58.6373368,
 		"lng": -3.0688997,
 		"name": "John o' Groats",
@@ -23,6 +26,7 @@
 	},
 	{
 		"canEdit": false,
+		"canDelete": false,
 		"lat": 27.173891,
 		"lng": 78.042068,
 		"name": "Taj Mahal",
@@ -31,6 +35,7 @@
 	},
 	{
 		"canEdit": false,
+		"canDelete": false,
 		"lat": -25.344490,
 		"lng": 131.035431,
 		"name": "Ayers Rock",
@@ -39,6 +44,7 @@
 	},
 	{
 		"canEdit": false,
+		"canDelete": false,
 		"lat": 21.315603,
 		"lng": -157.858093,
 		"name": "Nankastu SC Hawaii Soccer Academy",

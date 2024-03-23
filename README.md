@@ -166,6 +166,7 @@ As part of the callback *mapsed* typically passes the data for the place the eve
     <th>Property</th><th>Description</th>
   </tr>
   <tr><td>canEdit</td><td>Flags this an <strong>editable</strong> place, i.e. when it's clicked on the map it has an <strong>edit</strong> button.</td></tr>
+  <tr><td>canDelete</td><td>Flags this a <strong>deletable</strong> place, i.e. when it's clicked on the map it has an <strong>delete</strong> button.</td></tr>
   <tr><td>lat</td><td>Latitude position of the place.</td></tr>
   <tr><td>lng</td><td>Longitude position of the place.</td></tr>
   <tr><td>place_id</td><td>Unique reference to a place in the Google Places database (this is provided by Google), see also <a href="#google-place">Google Place</a></td></tr>
