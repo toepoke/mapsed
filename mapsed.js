@@ -11,6 +11,7 @@
  *   - http://closure-compiler.appspot.com/
  *
  * History:
+ *  v2.1 - https://github.com/toepoke/mapsed/releases/tag/2.1.0
  *  v2.0 - https://github.com/toepoke/mapsed/releases/tag/2.0.0
  *  v1.2 - https://github.com/toepoke/mapsed/releases/tag/1.2.0
  *  v1.1 - https://github.com/toepoke/mapsed/releases/tag/1.1.0
@@ -23,7 +24,7 @@
 	"use strict";
 
 	// singleton here (same variable across all instances of the plug-in)
-	var _version = '(1.2.0)',
+	var _version = '(2.1.0)',
 		_plugInName = "mapsed",
 		_plugInInstances = 1
 	;
@@ -65,8 +66,9 @@
 			_toolbarContainer = null,   // Container for mapsed tools (add, geo, help, etc)
 			_searchBarContainer = null, // Container for search control, button & more
 			gm = null,                  // Short cut reference to the Google Maps namespace (this is initialised in the constructor to give the Google API time to load on the page)
-			gp = null                   // Short cut reference to the Google Places namespace (this is initialised in the constructor to give the Google API time to load on the page)
-			;
+			gp = null,                  // Short cut reference to the Google Places namespace (this is initialised in the constructor to give the Google API time to load on the page)
+			_selectedMarker = null
+		;
 
 		/**
 		 * Plug-in options:
@@ -131,10 +133,6 @@
 			// If you require custom maps, you need "disablePoi" set to false
 			disablePoi: false,
 
-			// Flags that the user can add new places (as well as edit/delete), an "+" icon appears
-			// at the top right of the map
-			allowAdd: false,
-
 			searchOptions: {
 				// Flags that the user can search for places themselves
 				// ... adds a search box to the map
@@ -154,11 +152,26 @@
 				geoSearch: "5aside football near {POSITION}"
 			},
 
+			// Event fired when user clicks the "Add" button (+)
+			// Useful if you want to perform some initialisation on the marker/place details
+			// prototype: function(mapsed, marker)
+			onAdd: null,
+
+			// Event fired when user clicks "Save" button on a "new" place.
+			// The presence of this event adds the the "+" button to the toolbar.
+			// In many cases you can just re-use your "onSave" event handler.
+			// Seealso "onSave" which has the same prototype
+			// prototype: function(mapsed, newPlace)
+			//   return a error message string if you're not happy with what's been entered
+			//   return an empty string to confirm it's been saved
+			onAddSave: null,
+
 			// Event when user clicks the "Select" button
 			// prototype: function(mapsed, details)
 			onSelect: null,
 
-			// Allows new places to be edited
+			// Allows custom places to be edited and then saved
+			// Seealso "onAddSave" which has the same prototype
 			// prototype: function(mapsed, newPlace)
 			//   return a error message string if you're not happy with what's been entered
 			//   return an empty string to confirm it's been saved
@@ -517,14 +530,23 @@
 		 */
 		function onMarkerClicked(evt) {
 			var canEdit = false;
+			var canDelete = false;
 			var currMarker = this;
 			closeTooltips();
+
+			if (_selectedMarker == currMarker) {
+				// Already selecting the marker, so treat as a toggle and turn
+				// it off again (closeTooltips above has already closed it)
+				_selectedMarker = null;
+				return;
+			}
 
 			_pagedMarkers = findNearbyMarkers(currMarker);
 			settings?.debugger?.logger("_pagedMarkers", _pagedMarkers, "_currMarkerPage", _currMarkerPage);
 
 			if (currMarker.details.markerType == "new") {
 				canEdit = true;
+				canDelete = true; // whilst it's just been created there's no reason they can't delete it again straight away ... may have changed their mind
 				if (settings.onAdd) {
 					settings.onAdd(_plugIn, currMarker);
 				}
@@ -532,6 +554,7 @@
 				// Initially we show the view template.  User can then decide
 				// whether to SELECT, EDIT or DELETE the marker
 				canEdit = false;
+				canDelete = false;
 			}
 
 			currMarker.showTooltip(canEdit);
@@ -636,12 +659,24 @@
 			var $rw = root.find(".mapsed-edit");
 			var errors = "";
 			var place = getViewModel($rw);
+			var isNew = (place.markerType == "new");
+
+			// Ensure the end user has the event wired up
+			if (isNew) {
+				if (!settings.onAddSave) throw new Error("onAddSave event has not been defined");
+			} else {
+				if (!settings.onSave) throw new Error("onSave event has not been defined");
+			}
 
 			// if we're saving it can no longer be "new"
 			place.markerType = "custom";
 
 			// see if the calling code is happy with what's being changed
-			errors = settings.onSave(_plugIn, place);
+			if (isNew) {
+				errors = settings.onAddSave(_plugIn, place);
+			} else {
+				errors = settings.onSave(_plugIn, place);
+			}
 
 			var errCtx = $rw.find(".mapsed-error");
 			if (errors && errors.length > 0) {
@@ -853,7 +888,7 @@
 
 			if (settings.onMapMoved) {
 				var hits = await settings.onMapMoved(_compass.north, _compass.south, _compass.east, _compass.west);
-				if (hits) {
+				if (hits && hits.length > 0) {
 					for (var i = 0; i < hits.length; i++) {
 						var place = hits[i];
 						if (!place.lat || !place.lng) {
@@ -1130,17 +1165,24 @@
 			var settings = _plugIn.getSettings();
 
 			if (settings.onSelect || settings.onSave || settings.onDelete) {
-				var showSelect, showSave, showDelete, canEdit;
+				var showSelect, showSave, showDelete, canEdit, canDelete;
 
 				canEdit = model.canEdit;
+				canDelete = model.canDelete;
 				// however if it's a google marker we can't, so ignore what the input says!
-				if (model.markerType == "google")
+				if (model.markerType == "google") {
 					canEdit = false;
+					canDelete = false;
+				}
 
 				showSelect = settings.onSelect != null;
-				showSave = (settings.onSave != null && canEdit);
+				showSave = (
+					settings.onSave != null && canEdit
+					// can only delete markers we created!
+					&& model.markerType == "custom"
+				);
 				showDelete = (
-					settings.onDelete != null && canEdit
+					settings.onDelete != null && canDelete
 					// can only delete markers we created!
 					&& model.markerType == "custom"
 				);
@@ -1270,8 +1312,11 @@
 
 
 		/**
-		 * 
-		 * @returns
+		 * Convenience function to determine if any markers were found "nearby" 
+		 * to the currently displayed marker.  Used to determine if the pagination
+		 * feature should become active.
+		 * @returns - true => has markers nearby
+		 *            false => no markers nearby
 		 */
 		function hasNearbyMarkers() {
 			if (!_pagedMarkers) {
@@ -1479,50 +1524,6 @@
 
 
 		/**
-		 * Convenience function for creating control buttons on the map (re-uses
-		 * the public "addMapContainer" method.  This is just a short-cut for buttons
-		 * @param {any} buttonText Text to appear in the button
-		 *                         You can also add a tooltip by prefixing it with a pipe, e.g. "Go|Perform a search" will give
-		 *                         a tooltip of "Perform a search"
-		 * @param {any} ctrlPos Where on the map the control should be added (TOP_LEFT, TOP_RIGHT, etc)
-		 *                      For options, see https://developers.google.com/maps/documentation/javascript/controls#ControlPositioning
-		 * @param {any} addClass Additional classes to add to the button (to target CSS)
-		 * @param {any} onClickEvent Callback to execute when the button is clicked
-		 * @returns Element of the button add (DOM element, not jQuery)
-		 */
-		function addToolBarButton(buttonText, ctrlPos, addClass, onClickEvent) {
-			var btn = null,
-				classes = "",
-				tooltip = ""
-			;
-
-			if (addClass && addClass.length > 0) {
-				classes = ` class='${addClass}' `;
-			}
-
-			// see if there's a tooltip added
-			if (buttonText && buttonText.length > 0) {
-				var arrSplit = buttonText.split("|");
-				buttonText = arrSplit[0];
-				tooltip = arrSplit[1];
-			}
-
-			var btn = document.createElement("BUTTON");
-			var classArray = addClass.split(" ");
-			btn.classList.add(...classArray);
-			btn.innerHTML = buttonText;
-			btn.setAttribute("title", tooltip);
-			if (onClickEvent) {
-				btn.addEventListener("click", onClickEvent);
-			}
-			_toolbarContainer.appendChild(btn);
-
-			return btn;
-
-		} // addToolBarButton
-
-
-		/**
 		 * Closes all marker tooltips that are on-screen.
 		 */
 		function closeTooltips() {
@@ -1534,6 +1535,7 @@
 				}
 			}
 
+			settings?.debugger?.clearPolygon();
 		} // closeTooltips
 
 
@@ -1587,6 +1589,7 @@
 				telNo: "",
 				website: "",
 				url: "",
+				canDelete: (type == "new" || type == "custom"),
 				canEdit: (type == "new" || type == "custom")
 			};
 
@@ -1619,6 +1622,7 @@
 	<input type='hidden' class='mapsed-lat' value='${forMarker.position.lat()}' />
 	<input type='hidden' class='mapsed-lng' value='${forMarker.position.lng()}' />
 	<input type='hidden' class='mapsed-can-edit' value='${d.canEdit}' />
+	<input type='hidden' class='mapsed-can-delete' value='${d.canDelete}' />
 	<input type='hidden' class='mapsed-place-id' value='${d.place_id}' />
 	<input type='hidden' class='mapsed-user-data' value='${d.userData}' />
 	<input type='hidden' class='mapsed-marker-type' value='${forMarker.markerType}' />
@@ -1681,13 +1685,13 @@
 			sanitise(model);
 
 			// Do we have any header/footer customisation for _this_ typeof marker
-			var renderOptions = null;
-			if (settings.templateOptions && settings.templateOptions[marker.markerType]) {
-				if (inRwMode) {
-					renderOptions = settings.templateOptions[marker.markerType].edit;
-				} else {
-					renderOptions = settings.templateOptions[marker.markerType].view;
-				}
+			var renderOptions = {};
+
+			if (settings.getHeaderTemplate) {
+				renderOptions.header = settings.getHeaderTemplate(marker, inRwMode);
+			}
+			if (settings.getFooterTemplate) {
+				renderOptions.footer = settings.getFooterTemplate(marker, inRwMode);
 			}
 
 			if (inRwMode) {
@@ -1706,6 +1710,8 @@
 			// re-open for the right width to be used
 			tip.open(_gMap, marker);
 
+			// flag which marker is open (so we can toggle off later)
+			_selectedMarker = marker;
 		} // showTooltip
 
 
@@ -1848,6 +1854,7 @@
 			var $root = $vw.parents(".mapsed-root");
 			var model = {
 				canEdit: ($root.find(".mapsed-can-edit").val() === "true"),
+				canDelete: ($root.find(".mapsed-can-delete").val() === "true"),
 				lat: $root.find(".mapsed-lat").val(),
 				lng: $root.find(".mapsed-lng").val(),
 				place_id: $root.find(".mapsed-place-id").val(),
@@ -1893,6 +1900,7 @@
 		// ... so make sure the data we return is sensible
 		function sanitise(place) {
 			if (!place.canEdit) place.canEdit = false;
+			if (!place.canDelete) place.canDelete = false;
 			if (!place.lat) place.lat = 0;
 			if (!place.lng) place.lng = 0;
 			if (!place.userData) place.userData = "";
@@ -2174,6 +2182,14 @@
 					}
 				);
 			}
+			if (settings.onAddSave) {
+				_mapContainer.on("click", "button.mapsed-save-button",
+					function () {
+						var element = $(this);
+						onPlaceSave(element);
+					}
+				);
+			}
 			if (settings.onDelete) {
 				_mapContainer.on("click", "button.mapsed-delete-button",
 					function () {
@@ -2222,7 +2238,7 @@
 			if (settings.getHelpWindow) {
 				addHelpButton();
 			}
-			if (settings.allowAdd) {
+			if (settings.onAddSave) {
 				addNewPlaceButton();
 			}
 			if (settings.onPreInit) {

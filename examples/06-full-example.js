@@ -119,8 +119,9 @@ function fullWindowExample(e) {
 		// Emulate places being loaded from a db
 		showOnLoad: _myPlaces,
 
-		// Adds the "+" button to the control bar at the top right of the map
-		allowAdd: true,
+		// Disables showing Googles Points of Interest 
+		// (so we only show the user what we want them to see)
+		// ... note this doesn't work with custom themes
 		disablePoi: true,
 
 		// Illustrating custom behaviour
@@ -154,50 +155,44 @@ function fullWindowExample(e) {
 
 		// Defines header and footers to be applied to the 
 		// ... select/edit/delete tooltips shown to the user
-		templateOptions: {
-			// You can have a different header or footer for
+		getHeaderTemplate: function(marker, isEditing) {
+			// You can have a different header for
 			// each "markerType".  Supported customisations are:
 			// "custom" - Where your user has previously added a marker
 			// "add" - Where your user has click "add" to create a new marker
 			// "google" - Where your user has clicked on a marker found via Google Places APi
-			custom: {
-				view: {
-					header: "<center>custom view header</center>",
-					footer: "<center>custom view footer</center>",
-				},
-				edit: {
-					header: "<center>custom edit header</center>",
-					footer: "<center>custom edit footer</center>"
-				}
-			},
+			var markerType = marker.markerType;
+			var mode = (isEditing ? "edit" : "view");
 
-			add: {
-				view: {
-					header: "<center>add view header</center>",
-					footer: "<center>add view footer</center>",
-				},
-				edit: {
-					header: "<center>add edit header</center>",
-					footer: "<center>add edit footer</center>"
-				}
-			},
+			return `<center>${markerType} ${mode} header</center>`.toUpperCase();
+		},
 
-			google: {
-				view: {
-					header: "<center>google view header</center>",
-					footer: "<center>google view footer</center>",
-				},
-				edit: {
-					header: "<center>google edit header</center>",
-					footer: "<center>google edit footer</center>"
-				}
-			}
+		// Defines header and footers to be applied to the 
+		// ... select/edit/delete tooltips shown to the user
+		getFooterTemplate: function(marker, isEditing) {
+			// You can have a different footer for
+			// each "markerType".  Supported customisations are:
+			// "custom" - Where your user has previously added a marker
+			// "add" - Where your user has click "add" to create a new marker
+			// "google" - Where your user has clicked on a marker found via Google Places APi
+			var markerType = marker.markerType;
+			var mode = (isEditing ? "edit" : "view");
 
+			return `<center>${markerType} ${mode} footer</center>`.toUpperCase();
 		},
 
 		// Enables edit of new places (to your web application, not Google Maps!)
 		// ... again the presence of the callback enables the functionality
 		onSave: function (m, newPlace) {
+			return this.__update(m, newPlace);
+		},
+		// Adds the "+" button to the control bar at the top right of the map
+		// And wires up the event for saving
+		onAddSave: function (m, newPlace) {
+			return this.__update(m, newPlace);
+		},
+
+		__update: function (m, newPlace) {
 			var missing = [];
 
 			// detect errors starting at bottom

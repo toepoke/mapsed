@@ -4,7 +4,8 @@ function runExample4() {
 			// City Varieties
 			{
 				autoShow: true,
-				canEdit: true,
+				canEdit: false,
+				canDelete: true,
 				lat: 53.798823,
 				lng:-1.5426760000000286,
 				name: "CITY Varieties Music Hall",

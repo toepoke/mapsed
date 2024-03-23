@@ -127,6 +127,7 @@ $("#custom-places").mapsed({
       autoShow: true,
       // flags the user can edit this place
       canEdit: false,
+      canDelete: false,
       lat: 53.798823,
       lng:-1.5426760000000286,
       place_id: "ChIJQd3IwBtceUgRha6laiANoro"
@@ -195,13 +196,20 @@ $("#place-picker").mapsed({
     lng:-1.5426760000000286,
     place_id: "ChIJQd3IwBtceUgRha6laiANoro"
   },
-  templateOptions: {
-    google: {
-      view: {
-        footer: '&lt;center&gt;I came from Google Places&lt;/center&gt;',
-      }
-    }
-  }
+
+	// Defines header and footers to be applied to the 
+	// ... select/edit/delete tooltips shown to the user
+	getHeaderTemplate: function(marker, isEditing) {
+		// You can have a different header for
+		// each "markerType".  Supported customisations are:
+		// "custom" - Where your user has previously added a marker
+		// "add" - Where your user has click "add" to create a new marker
+		// "google" - Where your user has clicked on a marker found via Google Places APi
+		var markerType = marker.markerType;
+		var mode = (isEditing ? "edit" : "view");
+
+		return `&lt;center&gt;${markerType} ${mode} header&lt;/center&gt;`.toUpperCase();
+	},
 
 });
 								</pre>
@@ -244,55 +252,68 @@ $("#place-picker").mapsed({
 							<div class="clearfix"></div>
 							<div class="code">
 								<pre class="prettyprint lang-js">
-$("#add-places").mapsed({
+function updateDatabase(m, newPlace) {
+  var missing = [];
 
-  // Adds the "+" button to the control bar at the top right of the map
-  allowAdd: true,
-  
-  // Enables edit of custom places (to your web application, not Google Maps!)
-  // ... again the presence of the callback enables the functionality
-  onSave: function(mapsed, newPlace) {
-    var missing = [];
-    
-    // detect errors starting at bottom
-    // ... we only have space for one error at a time, so this way we'll report 
-    // ... from the top down
-    if (newPlace.postCode === "") missing.push("postcode");
-    if (newPlace.street === "")   missing.push("street");
-    if (newPlace.name === "")     missing.push("name");
-    
-    // anything missing?
-    if (missing.length > 0) {
-      // return the error message so the callback doesn't progress
-      return "Required: " + missing.join();
+  // detect errors starting at bottom
+  // ... we only have space for one error at a time, so this way we'll report 
+  // ... from the top down
+  if (newPlace.postCode === "") missing.push("postcode");
+  if (newPlace.street === "")   missing.push("street");
+  if (newPlace.name === "")     missing.push("name");
+
+  // anything missing?
+  if (missing.length > 0) {
+    // return the error message so the callback doesn't progress
+    return "Required: " + missing.join();
+  }
+
+  if (newPlace) {
+    if (!newPlace.userData) {
+    	// simulate a primary key being save to a db
+    	newPlace.userData = parseInt(Math.random() * 100000);
     }
     
-    if (newPlace) {
-      if (newPlace.markerType == "new") {
-        // simulate a primary key being save to a db
-        newPlace.userData = parseInt(Math.random() * 100000);
-      }
-      var title = "";
-      var msg = 
-        "userData: " + newPlace.userData + 
-        "name: " + newPlace.name +
-        "street: " + newPlace.street + ", " + 
+    var title = "";
+    var msg = 
+      "userData: " + newPlace.userData + 
+      "&lt;br /&gt;name: " + newPlace.name +
+      "&lt;br /&gt;street: " + newPlace.street + ", " + 
         newPlace.area + ", " + 
         newPlace.town + ", " + newPlace.postCode + 
-        "telNo: " + newPlace.telNo + 
-        "website: " + newPlace.website + 
-        "more: " + newPlace.url
-      ;
-      if (newPlace.markerType == "new")
-        title = "New place added!";
-      else
-        title = "Place saved!";
-			mapsed.showMsg(title, msg);
+      "&lt;br /&gt;telNo: " + newPlace.telNo + 
+      "&lt;br /&gt;website: " + newPlace.website + 
+      "&lt;br /&gt;more: " + newPlace.url
+    ;
+    if (newPlace.place_id) {
+      msg += "&lt;br /&gt;Place_id: " + details.place_id
     }
-  
-    // indicate form was OK and saved
-    return "";
+    if (newPlace.markerType == "new") {
+      title = "New place added!";
+    } else {
+      title = "Place saved!";
+    }
+    m.showMsg(title, msg);
   }
+
+  // indicate form was OK and saved
+  return "";
+}
+
+$("#add-places").mapsed({
+
+  // Enables edit of custom places (to your web application, not Google Maps!)
+  // ... again the presence of the callback enables the functionality
+  onSave: function(m, newPlace) {
+    return updateDatabase(m, newPlace);
+  },
+  // Adds the "+" button to the control bar at the top right of the map
+	// And wires up the save event for "new" places
+  onAddSave: function(m, newPlace) {
+    return updateDatabase(m, newPlace);
+  }
+
+	// .... &gt;/snip&lt;
 });
 								</pre>
 							</div>
@@ -301,10 +322,8 @@ $("#add-places").mapsed({
 								button to make changes.
 							</p>
 							<p class="lead">
-								Simply set the <a href="https://github.com/toepoke/mapsed/blob/master/README.md#allowadd-bool">allowAdd</a>
-								property to <strong>true</strong> to enable the icon, and an
-								<a href="https://github.com/toepoke/mapsed/blob/master/README.md#onsave">onSave</a>
-								callback to save the new place (and subsequent edits).
+								Simply wire up the <a href="https://github.com/toepoke/mapsed/blob/master/README.md#onaddsave">onAddSave</a>
+								callback to save the new place.  Wiring up the event also enables the icon
 							</p>
 
 						</div>
@@ -334,6 +353,7 @@ $("#add-places").mapsed({
       {
         autoShow: true,
         canEdit: true,
+        canDelete: true,
         lat: 53.798823,
         lng:-1.5426760000000286,
         name: "CITY Varieties Music Hall",

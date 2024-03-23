@@ -78,7 +78,7 @@ The method signature for the callback is *getMarkerImage(mapsed, markerType, tit
     <td><strong>markerType</strong> (string)</td>
     <td>
     	The type of marker being added to the map, this can be:<br/>
-    	*new* - New marker is being added by user (via the "+" button - see allowAdd)<br/>
+    	*new* - New marker is being added by user (via the "+" button - see onAddSave)<br/>
     	*google* - Marker being added was derived from the Google Places API<br/>
     	*custom* - Marker being added was derived from the application database, i.e. derived from the showOnLoad array.
     </td>
@@ -103,14 +103,6 @@ On a map, Google adds places of interest hotspots that can be clicked.  These mi
 Ordinarily this is quite useful, however if it's outside the concern of your audience you may not wish to distract them.  For instance [our audience](https://toepoke.co.uk/) is concerned with football venues, so cinemas aren't of interest to them at that time.
 
 The **disablePoi** setting turns off these point of interest hotspots.  However POI cannot be turned off with [styled maps](https://developers.google.com/maps/documentation/javascript/styling).
-
-### allowAdd *(bool)*
-
-Places an "add place" icon (+) in the top-right of the map which allows the user to add additional places to your map.
-
-The *onSave* callback (see below) must be implemented to capture the place being added so it can be saved.
-
-[See add places example](examples/03-add-places-example.js)
 
 ### searchOptions *(object)*
 
@@ -174,6 +166,7 @@ As part of the callback *mapsed* typically passes the data for the place the eve
     <th>Property</th><th>Description</th>
   </tr>
   <tr><td>canEdit</td><td>Flags this an <strong>editable</strong> place, i.e. when it's clicked on the map it has an <strong>edit</strong> button.</td></tr>
+  <tr><td>canDelete</td><td>Flags this a <strong>deletable</strong> place, i.e. when it's clicked on the map it has an <strong>delete</strong> button.</td></tr>
   <tr><td>lat</td><td>Latitude position of the place.</td></tr>
   <tr><td>lng</td><td>Longitude position of the place.</td></tr>
   <tr><td>place_id</td><td>Unique reference to a place in the Google Places database (this is provided by Google), see also <a href="#google-place">Google Place</a></td></tr>
@@ -217,17 +210,18 @@ Allows custom text/html to be injected as a header and/or footer to the tooltip 
 appears when the end-user selects or adds a new _place_.
 
 ````js
-templateOptions: {
-  custom: {
-    view: {
-      header: "<center>custom view header</center>",
-      footer: "<center>custom view footer</center>",
-    },
-    edit: {
-      header: "<center>custom edit header</center>",
-      footer: "<center>custom edit footer</center>"
-    }
-  }
+// Defines header and footers to be applied to the 
+// ... select/edit/delete tooltips shown to the user
+getHeaderTemplate: function(marker, isEditing) {
+	// You can have a different header for
+	// each "markerType".  Supported customisations are:
+	// "custom" - Where your user has previously added a marker
+	// "add" - Where your user has click "add" to create a new marker
+	// "google" - Where your user has clicked on a marker found via Google Places APi
+	var markerType = marker.markerType;
+	var mode = (isEditing ? "edit" : "view");
+
+	return `<center>${markerType} ${mode} header</center>`.toUpperCase();
 }
 ````
 
@@ -261,9 +255,16 @@ Callback method signature:
 
 [See place picker example](examples/02-place-picker-example.js)
 
+
+### onAddSave
 ### onSave
 
-Fired when the **Save** button is clicked in a place window (after adding or editing a place).
+Fired when the **Save** button is clicked in a place window.  
+
+- For **new** places (added via the **+** toolbar icon) the **onAddSave** event is fired.
+- For **existing** places the **onSave** event is fired.
+
+The presence of the **onAddSave** event enables the **+** icon on the toolbar allowing the user to add a new place.
 
 Callback method signature:
 <table>
